@@ -7,7 +7,7 @@ A simple notification area application allows user to choose from a list of vari
 
 Double-click on the app's icon turns the application on and off.
 
-Available actions:
+### Available actions:
 * Start menu
 * Task View
 * Switch to a Virtual Desktop on the left
@@ -21,7 +21,7 @@ Available actions:
 * Snip & Sketch
 * Windows Ink Workspace
 
-TODO list:
+### TODO list:
 * Autostart
 * Installer
 * About dialog
@@ -30,7 +30,7 @@ TODO list:
 * Adjustable corner area size
 * Check if it works in multimonitor environments
 
-Attributions:
+### Attributions:
 
 <a target="_blank" href="https://icons8.com/icon/3pKFQN9sPxow/layout">Screen</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
 
