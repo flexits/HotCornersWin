@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotCornersWin", "src\HotCornersWin\HotCornersWin.csproj", "{CD9B445F-B3B3-4A7F-BE70-E67F2F8DD00F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotCornersWin", "src\HotCornersWin\HotCornersWin.csproj", "{CD9B445F-B3B3-4A7F-BE70-E67F2F8DD00F}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "HotCornersWin.Installer", "src\HotCornersWin.Installer\HotCornersWin.Installer.vdproj", "{82451D8C-F5EA-469B-AF61-1EE327184D50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,8 @@ Global
 		{CD9B445F-B3B3-4A7F-BE70-E67F2F8DD00F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD9B445F-B3B3-4A7F-BE70-E67F2F8DD00F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD9B445F-B3B3-4A7F-BE70-E67F2F8DD00F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82451D8C-F5EA-469B-AF61-1EE327184D50}.Debug|Any CPU.ActiveCfg = Debug
+		{82451D8C-F5EA-469B-AF61-1EE327184D50}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
