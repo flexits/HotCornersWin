@@ -10,10 +10,10 @@ namespace HotCornersWin
             Rectangle workingArea = Screen.GetWorkingArea(this);
             Location = new(workingArea.Right - Size.Width, workingArea.Bottom - Size.Height);
             groupBoxCorners.Text = Properties.Resources.strChooseAction;
-            groupBoxStart.Text = Properties.Resources.strAutostartSettings;
-            radioButtonAutoOff.Text = Properties.Resources.strAutoOff;
-            radioButtonAutoCurUsr.Text = Properties.Resources.strAutoCurUsr;
-            radioButtonAutoAllUsr.Text = Properties.Resources.strAutoAllUsr;
+            groupBoxMulti.Text = Properties.Resources.strMonSet;
+            radioButtonVirt.Text = Properties.Resources.strMonVirt;
+            radioButtonPrim.Text = Properties.Resources.strMonPrim;
+            radioButtonSept.Text = Properties.Resources.strMonSepr;
             buttonApply.Text = Properties.Resources.strApply;
             buttonCancel.Text = Properties.Resources.strCancel;
             _actionNames = ActionCaller.GetActionNames();
@@ -37,6 +37,29 @@ namespace HotCornersWin
             comboBoxRB.DataSource = _actionNames.ToArray();
             index = Array.IndexOf(_actionNames, Properties.Settings.Default.RightBottom);
             comboBoxRB.SelectedIndex = (index >= 0) ? index : 0;
+
+            if (Enum.IsDefined(typeof(MultiMonCfg), Properties.Settings.Default.MultiMonCfg))
+            {
+                switch ((MultiMonCfg)Properties.Settings.Default.MultiMonCfg)
+                {
+                    case MultiMonCfg.Virtual:
+                        radioButtonVirt.Checked = true;
+                        break;
+                    case MultiMonCfg.Primary:
+                        radioButtonPrim.Checked = true;
+                        break;
+                    case MultiMonCfg.Separate:
+                        radioButtonSept.Checked = true;
+                        break;
+                    default:
+                        radioButtonPrim.Checked = true;
+                        break;
+                }
+            }
+            else
+            {
+                radioButtonPrim.Checked = true;
+            }
         }
 
         private void buttonApply_Click(object sender, EventArgs e)
@@ -45,6 +68,16 @@ namespace HotCornersWin
             Properties.Settings.Default.RightTop = (string)comboBoxRT.SelectedItem;
             Properties.Settings.Default.LeftBottom = (string)comboBoxLB.SelectedItem;
             Properties.Settings.Default.RightBottom = (string)comboBoxRB.SelectedItem;
+            int monCfg = (int)MultiMonCfg.Primary;
+            if (radioButtonVirt.Checked)
+            {
+                monCfg = (int)MultiMonCfg.Virtual;
+            }
+            else if (radioButtonSept.Checked)
+            {
+                monCfg = (int)MultiMonCfg.Separate;
+            }
+            Properties.Settings.Default.MultiMonCfg = monCfg;
             Properties.Settings.Default.Save();
             DialogResult = DialogResult.OK;
         }

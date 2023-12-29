@@ -1,103 +1,71 @@
-﻿namespace HotCornersWin
+﻿using System.Windows.Forms;
+
+namespace HotCornersWin
 {
     public class MoveProcessor
     {
         public delegate void CornerReachedHandler(Corners corner);
 
+        /// <summary>
+        /// The event will be invoked by the CornerHitTest method  
+        /// if the mouse cursor have reached a screen corner.
+        /// </summary>
         public event CornerReachedHandler? CornerReached;
 
-        private const int SENSITIVITY = 2;
-
-        private readonly Rectangle _screenBounds;
-
-        private Corners _currentPosition;
-
-        public MoveProcessor(Rectangle screenBounds)
+        public required Rectangle[] Screens
         {
-            _screenBounds = screenBounds;
-            _currentPosition = Corners.None;
-        }
-
-        public void CornerHitTest(Point coords)
-        {
-            Corners newPosition = Corners.None;
-            if (coords.Y - _screenBounds.Y < SENSITIVITY)
+            set
             {
-                if (coords.X - _screenBounds.X < SENSITIVITY)
+                _cornerCoords.Clear();
+                // Calculate each screen's corners coordinates and add to the enumeration.
+                foreach (var screen in value)
                 {
-                    // LeftTop x=0 y=0
-                    newPosition = Corners.LeftTop;
-                }
-                else if (_screenBounds.Width - coords.X < SENSITIVITY)
-                {
-                    // RightTop x=width y=0
-                    newPosition = Corners.RightTop;
+                    Point coordLT = new(screen.X, screen.Y);
+                    Point coordLB = new(screen.X, screen.Height + screen.Y);
+                    Point coordRT = new(screen.Width + screen.X, screen.Y);
+                    Point coordRB = new(screen.Width + screen.X, screen.Height + screen.Y);
+                    _cornerCoords.TryAdd(coordLT, Corners.LeftTop);
+                    _cornerCoords.TryAdd(coordLB, Corners.LeftBottom);
+                    _cornerCoords.TryAdd(coordRT, Corners.RightTop);
+                    _cornerCoords.TryAdd(coordRB, Corners.RightBottom);
                 }
             }
-            else if (_screenBounds.Height - coords.Y < SENSITIVITY)
+        }
+
+        // TODO settings
+        private const int SENSITIVITY = 5;
+        
+        private readonly Dictionary<Point, Corners> _cornerCoords = new();
+
+        private Corners _currentPosition = Corners.None;
+
+        /// <summary>
+        /// Test if the mouse cursor is in a screen corner.
+        /// Invokes CornerReached event.
+        /// </summary>
+        /// <param name="coords">The cursor coordinates.</param>
+        public void CornerHitTest(Point coords)
+        {
+            // hit test cursor
+            Corners newPosition = Corners.None;
+            foreach(var pair in _cornerCoords)
             {
-                if (coords.X - _screenBounds.X < SENSITIVITY)
+                Point diff = coords.AbsDiff(pair.Key);
+                if (diff.X <= SENSITIVITY && diff.Y <= SENSITIVITY)
                 {
-                    // LeftBottom x=0 y=height
-                    newPosition = Corners.LeftBottom;
-                }
-                else if (_screenBounds.Width - coords.X < SENSITIVITY)
-                {
-                    // RightBottom x=width y=height
-                    newPosition = Corners.RightBottom;
+                    newPosition = pair.Value;
+                    break;
                 }
             }
             if (newPosition == Corners.None)
             {
                 _currentPosition = Corners.None;
             }
-            else if (_currentPosition == Corners.None)
+            else if (_currentPosition == Corners.None) // invoke only once
             {
                 _currentPosition = newPosition;
                 CornerReached?.Invoke(newPosition);
             }
         }
-
-        /*
-        public void CornerHitTest(Point coords)
-        {
-            Corners newPosition = Corners.None;
-            if (coords.Y < SENSITIVITY)
-            {
-                if (coords.X < SENSITIVITY)
-                {
-                    // LeftTop x=0 y=0
-                    newPosition = Corners.LeftTop;
-                }
-                else if (_screenSize.Width - coords.X < SENSITIVITY)
-                {
-                    // RightTop x=width y=0
-                    newPosition = Corners.RightTop;
-                }
-            }
-            else if (_screenSize.Height - coords.Y < SENSITIVITY)
-            {
-                if (coords.X < SENSITIVITY)
-                {
-                    // LeftBottom x=0 y=height
-                    newPosition = Corners.LeftBottom;
-                }
-                else if (_screenSize.Width - coords.X < SENSITIVITY)
-                {
-                    // RightBottom x=width y=height
-                    newPosition = Corners.RightBottom;
-                }
-            }
-            if (newPosition == Corners.None)
-            {
-                _currentPosition = Corners.None;
-            }
-            else if (_currentPosition == Corners.None)
-            {
-                _currentPosition = newPosition;
-                CornerReached?.Invoke(newPosition);
-            }
-        }
-        */
     }
 }

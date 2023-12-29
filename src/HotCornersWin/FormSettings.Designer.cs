@@ -40,14 +40,14 @@
             comboBoxLB = new ComboBox();
             buttonApply = new Button();
             buttonCancel = new Button();
-            groupBoxStart = new GroupBox();
-            radioButtonAutoAllUsr = new RadioButton();
-            radioButtonAutoCurUsr = new RadioButton();
-            radioButtonAutoOff = new RadioButton();
+            groupBoxMulti = new GroupBox();
+            radioButtonSept = new RadioButton();
+            radioButtonPrim = new RadioButton();
+            radioButtonVirt = new RadioButton();
             contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBoxCorners.SuspendLayout();
-            groupBoxStart.SuspendLayout();
+            groupBoxMulti.SuspendLayout();
             SuspendLayout();
             // 
             // contextMenuStrip1
@@ -95,7 +95,7 @@
             groupBoxCorners.Controls.Add(comboBoxLT);
             groupBoxCorners.Location = new Point(12, 12);
             groupBoxCorners.Name = "groupBoxCorners";
-            groupBoxCorners.Size = new Size(680, 248);
+            groupBoxCorners.Size = new Size(680, 210);
             groupBoxCorners.TabIndex = 3;
             groupBoxCorners.TabStop = false;
             groupBoxCorners.Text = "Choose actions for the hot corners:";
@@ -129,7 +129,7 @@
             // 
             // buttonApply
             // 
-            buttonApply.Location = new Point(617, 374);
+            buttonApply.Location = new Point(617, 336);
             buttonApply.Name = "buttonApply";
             buttonApply.Size = new Size(75, 23);
             buttonApply.TabIndex = 4;
@@ -139,7 +139,7 @@
             // 
             // buttonCancel
             // 
-            buttonCancel.Location = new Point(12, 374);
+            buttonCancel.Location = new Point(12, 336);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(75, 23);
             buttonCancel.TabIndex = 5;
@@ -147,50 +147,50 @@
             buttonCancel.UseVisualStyleBackColor = true;
             buttonCancel.Click += buttonCancel_Click;
             // 
-            // groupBoxStart
+            // groupBoxMulti
             // 
-            groupBoxStart.Controls.Add(radioButtonAutoAllUsr);
-            groupBoxStart.Controls.Add(radioButtonAutoCurUsr);
-            groupBoxStart.Controls.Add(radioButtonAutoOff);
-            groupBoxStart.Location = new Point(12, 266);
-            groupBoxStart.Name = "groupBoxStart";
-            groupBoxStart.Size = new Size(680, 102);
-            groupBoxStart.TabIndex = 6;
-            groupBoxStart.TabStop = false;
-            groupBoxStart.Text = "Autostart settings";
+            groupBoxMulti.Controls.Add(radioButtonSept);
+            groupBoxMulti.Controls.Add(radioButtonPrim);
+            groupBoxMulti.Controls.Add(radioButtonVirt);
+            groupBoxMulti.Location = new Point(12, 228);
+            groupBoxMulti.Name = "groupBoxMulti";
+            groupBoxMulti.Size = new Size(680, 102);
+            groupBoxMulti.TabIndex = 6;
+            groupBoxMulti.TabStop = false;
+            groupBoxMulti.Text = "Multi-monitor settings";
             // 
-            // radioButtonAutoAllUsr
+            // radioButtonSept
             // 
-            radioButtonAutoAllUsr.AutoSize = true;
-            radioButtonAutoAllUsr.Location = new Point(6, 72);
-            radioButtonAutoAllUsr.Name = "radioButtonAutoAllUsr";
-            radioButtonAutoAllUsr.Size = new Size(190, 19);
-            radioButtonAutoAllUsr.TabIndex = 2;
-            radioButtonAutoAllUsr.TabStop = true;
-            radioButtonAutoAllUsr.Text = "Start with Windows for all users";
-            radioButtonAutoAllUsr.UseVisualStyleBackColor = true;
+            radioButtonSept.AutoSize = true;
+            radioButtonSept.Location = new Point(6, 72);
+            radioButtonSept.Name = "radioButtonSept";
+            radioButtonSept.Size = new Size(277, 19);
+            radioButtonSept.TabIndex = 2;
+            radioButtonSept.TabStop = true;
+            radioButtonSept.Text = "Each physical monitor has the same hot corners";
+            radioButtonSept.UseVisualStyleBackColor = true;
             // 
-            // radioButtonAutoCurUsr
+            // radioButtonPrim
             // 
-            radioButtonAutoCurUsr.AutoSize = true;
-            radioButtonAutoCurUsr.Location = new Point(6, 47);
-            radioButtonAutoCurUsr.Name = "radioButtonAutoCurUsr";
-            radioButtonAutoCurUsr.Size = new Size(231, 19);
-            radioButtonAutoCurUsr.TabIndex = 1;
-            radioButtonAutoCurUsr.TabStop = true;
-            radioButtonAutoCurUsr.Text = "Start with Windows for the current user";
-            radioButtonAutoCurUsr.UseVisualStyleBackColor = true;
+            radioButtonPrim.AutoSize = true;
+            radioButtonPrim.Location = new Point(6, 47);
+            radioButtonPrim.Name = "radioButtonPrim";
+            radioButtonPrim.Size = new Size(234, 19);
+            radioButtonPrim.TabIndex = 1;
+            radioButtonPrim.TabStop = true;
+            radioButtonPrim.Text = "Hot corners on the primary display only";
+            radioButtonPrim.UseVisualStyleBackColor = true;
             // 
-            // radioButtonAutoOff
+            // radioButtonVirt
             // 
-            radioButtonAutoOff.AutoSize = true;
-            radioButtonAutoOff.Location = new Point(6, 22);
-            radioButtonAutoOff.Name = "radioButtonAutoOff";
-            radioButtonAutoOff.Size = new Size(91, 19);
-            radioButtonAutoOff.TabIndex = 0;
-            radioButtonAutoOff.TabStop = true;
-            radioButtonAutoOff.Text = "No autostart";
-            radioButtonAutoOff.UseVisualStyleBackColor = true;
+            radioButtonVirt.AutoSize = true;
+            radioButtonVirt.Location = new Point(6, 22);
+            radioButtonVirt.Name = "radioButtonVirt";
+            radioButtonVirt.Size = new Size(339, 19);
+            radioButtonVirt.TabIndex = 0;
+            radioButtonVirt.TabStop = true;
+            radioButtonVirt.Text = "Hot corners on the virtual display (the four farmost corners)";
+            radioButtonVirt.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -198,8 +198,8 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = buttonCancel;
-            ClientSize = new Size(706, 410);
-            Controls.Add(groupBoxStart);
+            ClientSize = new Size(706, 369);
+            Controls.Add(groupBoxMulti);
             Controls.Add(buttonCancel);
             Controls.Add(buttonApply);
             Controls.Add(groupBoxCorners);
@@ -213,8 +213,8 @@
             contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             groupBoxCorners.ResumeLayout(false);
-            groupBoxStart.ResumeLayout(false);
-            groupBoxStart.PerformLayout();
+            groupBoxMulti.ResumeLayout(false);
+            groupBoxMulti.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -231,9 +231,9 @@
         private ComboBox comboBoxRB;
         private ComboBox comboBoxRT;
         private ComboBox comboBoxLB;
-        private GroupBox groupBoxStart;
-        private RadioButton radioButtonAutoAllUsr;
-        private RadioButton radioButtonAutoCurUsr;
-        private RadioButton radioButtonAutoOff;
+        private GroupBox groupBoxMulti;
+        private RadioButton radioButtonSept;
+        private RadioButton radioButtonPrim;
+        private RadioButton radioButtonVirt;
     }
 }

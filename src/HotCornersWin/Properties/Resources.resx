@@ -217,4 +217,16 @@
   <data name="strMenuSettings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="strMonPrim" xml:space="preserve">
+    <value>Hot corners on the primary display only</value>
+  </data>
+  <data name="strMonSepr" xml:space="preserve">
+    <value>Each physical monitor has the same hot corners</value>
+  </data>
+  <data name="strMonSet" xml:space="preserve">
+    <value>Multi-monitor behavior:</value>
+  </data>
+  <data name="strMonVirt" xml:space="preserve">
+    <value>Hot corners on the virtual display (the four farmost corners)</value>
+  </data>
 </root>
