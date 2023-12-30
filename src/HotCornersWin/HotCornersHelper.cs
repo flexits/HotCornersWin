@@ -2,7 +2,10 @@
 
 namespace HotCornersWin
 {
-    public class MoveProcessor
+    /// <summary>
+    /// A helper class to determine whether a hot corner of a display was reached.
+    /// </summary>
+    public class HotCornersHelper
     {
         public delegate void CornerReachedHandler(Corners corner);
 
@@ -12,7 +15,16 @@ namespace HotCornersWin
         /// </summary>
         public event CornerReachedHandler? CornerReached;
 
-        public required Rectangle[] Screens
+        private readonly Dictionary<Point, Corners> _cornerCoords = new();
+
+        private int _cornerAreaSize;
+
+        private Corners _currentPosition = Corners.None;
+
+        /// <summary>
+        /// Dimensions (Width, Height) and locations (X, Y) of system screen(s).
+        /// </summary>
+        public Rectangle[] Screens
         {
             set
             {
@@ -21,27 +33,46 @@ namespace HotCornersWin
                 foreach (var screen in value)
                 {
                     Point coordLT = new(screen.X, screen.Y);
-                    Point coordLB = new(screen.X, screen.Height + screen.Y);
-                    Point coordRT = new(screen.Width + screen.X, screen.Y);
-                    Point coordRB = new(screen.Width + screen.X, screen.Height + screen.Y);
                     _cornerCoords.TryAdd(coordLT, Corners.LeftTop);
+                    Point coordLB = new(screen.X, screen.Height + screen.Y);
                     _cornerCoords.TryAdd(coordLB, Corners.LeftBottom);
+                    Point coordRT = new(screen.Width + screen.X, screen.Y);
                     _cornerCoords.TryAdd(coordRT, Corners.RightTop);
+                    Point coordRB = new(screen.Width + screen.X, screen.Height + screen.Y);
                     _cornerCoords.TryAdd(coordRB, Corners.RightBottom);
                 }
             }
         }
 
-        // TODO settings
-        private const int SENSITIVITY = 5;
-        
-        private readonly Dictionary<Point, Corners> _cornerCoords = new();
+        /// <summary>
+        /// A screen corner is a square area with side of the give size.
+        /// </summary>
+        public int CornerAreaSize
+        {
+            get { return _cornerAreaSize; }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), 
+                        "Corner area size value must be positive");
+                }
+                _cornerAreaSize = value;
+            }
+        }
 
-        private Corners _currentPosition = Corners.None;
+        public HotCornersHelper(Rectangle[] screens, int cornerAreaSize = 5)
+        {
+            Screens = screens;
+            CornerAreaSize = cornerAreaSize;
+        }
 
         /// <summary>
         /// Test if the mouse cursor is in a screen corner.
         /// Invokes CornerReached event.
+        /// The event will be invoked only once, 
+        /// a repeated invocation is possible only after the cursor 
+        /// leaves the corner area.
         /// </summary>
         /// <param name="coords">The cursor coordinates.</param>
         public void CornerHitTest(Point coords)
@@ -51,7 +82,7 @@ namespace HotCornersWin
             foreach(var pair in _cornerCoords)
             {
                 Point diff = coords.AbsDiff(pair.Key);
-                if (diff.X <= SENSITIVITY && diff.Y <= SENSITIVITY)
+                if (diff.X <= _cornerAreaSize && diff.Y <= _cornerAreaSize)
                 {
                     newPosition = pair.Value;
                     break;

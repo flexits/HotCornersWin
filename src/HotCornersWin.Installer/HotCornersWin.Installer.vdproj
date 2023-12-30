@@ -43,6 +43,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -59,6 +67,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -188,15 +204,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:HotCornersWin"
-        "ProductCode" = "8:{53AEBC24-AC9C-47E3-8F4F-7ACA58AEB3D5}"
-        "PackageCode" = "8:{57876438-1104-4C78-A0A3-2299369ACC2E}"
+        "ProductCode" = "8:{C77DB6CC-290E-4B8F-9CB4-8F56B09C3B6E}"
+        "PackageCode" = "8:{6CC5DD84-3A72-43C8-A421-24CB33B3A4BD}"
         "UpgradeCode" = "8:{EB9819AE-B33C-412C-AC3A-FFF208CFFC44}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.5.1"
+        "ProductVersion" = "8:0.6.1"
         "Manufacturer" = "8:HotCornersWin"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

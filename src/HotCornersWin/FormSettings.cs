@@ -64,20 +64,29 @@ namespace HotCornersWin
 
         private void buttonApply_Click(object sender, EventArgs e)
         {
+            // validate monitor config
+            MultiMonCfg monCfg = MultiMonCfg.Primary;
+            if (radioButtonVirt.Checked)
+            {
+                monCfg = MultiMonCfg.Virtual;
+            }
+            else if (radioButtonSept.Checked)
+            {
+                monCfg = MultiMonCfg.Separate;
+            }
+            if (ScreenInfoHelper.GetScreens(monCfg).Length == 0)
+            {
+                _ = MessageBox.Show(Properties.Resources.strBoundsErr,
+                    Properties.Resources.strFatalErr,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            Properties.Settings.Default.MultiMonCfg = (int)monCfg;
+            // assign actions
             Properties.Settings.Default.LeftTop = (string)comboBoxLT.SelectedItem;
             Properties.Settings.Default.RightTop = (string)comboBoxRT.SelectedItem;
             Properties.Settings.Default.LeftBottom = (string)comboBoxLB.SelectedItem;
             Properties.Settings.Default.RightBottom = (string)comboBoxRB.SelectedItem;
-            int monCfg = (int)MultiMonCfg.Primary;
-            if (radioButtonVirt.Checked)
-            {
-                monCfg = (int)MultiMonCfg.Virtual;
-            }
-            else if (radioButtonSept.Checked)
-            {
-                monCfg = (int)MultiMonCfg.Separate;
-            }
-            Properties.Settings.Default.MultiMonCfg = monCfg;
             Properties.Settings.Default.Save();
             DialogResult = DialogResult.OK;
         }

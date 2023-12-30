@@ -17,7 +17,7 @@ namespace HotCornersWin
         private static readonly NotifyIcon _notifyIcon;
         private static readonly ToolStripMenuItem _menuItemSwitch;
         private static readonly MouseHook _mouseHook;
-        private static MoveProcessor? _moveProcessor;
+        private static HotCornersHelper? _hotCornersHelper;
         private static bool _enabled;
 
         private static bool IsEnabled
@@ -88,9 +88,9 @@ namespace HotCornersWin
                 Environment.Exit(1);
             }
             // Init mouse movement processing on the selected monitor configuration.
-            _moveProcessor = new() { Screens = screens };
-            _moveProcessor.CornerReached += ActionCaller.ExecuteAction;
-            _mouseHook.Move += (coords) => _moveProcessor?.CornerHitTest(coords);
+            _hotCornersHelper = new(screens);
+            _hotCornersHelper.CornerReached += ActionCaller.ExecuteAction;
+            _mouseHook.Move += (coords) => _hotCornersHelper?.CornerHitTest(coords);
             // Enable or disable operation according to the settings.
             IsEnabled = Properties.Settings.Default.IsEnabled;
 
@@ -105,22 +105,7 @@ namespace HotCornersWin
             {
                 moncfg = (MultiMonCfg)Properties.Settings.Default.MultiMonCfg;
             }
-            // get screen information according to the specified multi-monitor behavior
-            switch (moncfg)
-            {
-                case MultiMonCfg.Virtual:
-                    return new Rectangle[] { SystemInformation.VirtualScreen };
-                case MultiMonCfg.Primary:
-                    Rectangle? bounds = Screen.PrimaryScreen?.Bounds;
-                    if (bounds is not null)
-                    {
-                        return new Rectangle[] { (Rectangle)bounds };
-                    }
-                    break;
-                case MultiMonCfg.Separate:
-                    return Screen.AllScreens.Select(s => s.Bounds).ToArray();
-            }
-            return Array.Empty<Rectangle>();
+            return ScreenInfoHelper.GetScreens(moncfg);
         }
 
         private static void OnEnableChanged(object? sender, EventArgs e)
@@ -137,9 +122,9 @@ namespace HotCornersWin
             };
             if (fs.ShowDialog() == DialogResult.OK)
             {
-                if (_moveProcessor is not null)
+                if (_hotCornersHelper is not null)
                 {
-                    _moveProcessor.Screens = GetScreens();
+                    _hotCornersHelper.Screens = GetScreens();
                 }
                 ActionCaller.ReloadSettings();
             }
