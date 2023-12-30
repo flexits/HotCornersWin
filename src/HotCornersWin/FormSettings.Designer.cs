@@ -44,10 +44,17 @@
             radioButtonSept = new RadioButton();
             radioButtonPrim = new RadioButton();
             radioButtonVirt = new RadioButton();
+            groupBoxAdvanced = new GroupBox();
+            labelRadius = new Label();
+            numericUpDownRadius = new NumericUpDown();
+            buttonCustomActions = new Button();
+            buttonDebugInfo = new Button();
             contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBoxCorners.SuspendLayout();
             groupBoxMulti.SuspendLayout();
+            groupBoxAdvanced.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownRadius).BeginInit();
             SuspendLayout();
             // 
             // contextMenuStrip1
@@ -129,9 +136,9 @@
             // 
             // buttonApply
             // 
-            buttonApply.Location = new Point(617, 336);
+            buttonApply.Location = new Point(584, 336);
             buttonApply.Name = "buttonApply";
-            buttonApply.Size = new Size(75, 23);
+            buttonApply.Size = new Size(108, 23);
             buttonApply.TabIndex = 4;
             buttonApply.Text = "Apply";
             buttonApply.UseVisualStyleBackColor = true;
@@ -141,7 +148,7 @@
             // 
             buttonCancel.Location = new Point(12, 336);
             buttonCancel.Name = "buttonCancel";
-            buttonCancel.Size = new Size(75, 23);
+            buttonCancel.Size = new Size(108, 23);
             buttonCancel.TabIndex = 5;
             buttonCancel.Text = "Cancel";
             buttonCancel.UseVisualStyleBackColor = true;
@@ -154,7 +161,7 @@
             groupBoxMulti.Controls.Add(radioButtonVirt);
             groupBoxMulti.Location = new Point(12, 228);
             groupBoxMulti.Name = "groupBoxMulti";
-            groupBoxMulti.Size = new Size(680, 102);
+            groupBoxMulti.Size = new Size(362, 102);
             groupBoxMulti.TabIndex = 6;
             groupBoxMulti.TabStop = false;
             groupBoxMulti.Text = "Multi-monitor settings";
@@ -192,6 +199,58 @@
             radioButtonVirt.Text = "Hot corners on the virtual display (the four farmost corners)";
             radioButtonVirt.UseVisualStyleBackColor = true;
             // 
+            // groupBoxAdvanced
+            // 
+            groupBoxAdvanced.Controls.Add(buttonDebugInfo);
+            groupBoxAdvanced.Controls.Add(buttonCustomActions);
+            groupBoxAdvanced.Controls.Add(labelRadius);
+            groupBoxAdvanced.Controls.Add(numericUpDownRadius);
+            groupBoxAdvanced.Location = new Point(380, 228);
+            groupBoxAdvanced.Name = "groupBoxAdvanced";
+            groupBoxAdvanced.Size = new Size(312, 102);
+            groupBoxAdvanced.TabIndex = 7;
+            groupBoxAdvanced.TabStop = false;
+            groupBoxAdvanced.Text = "Advanced settings:";
+            // 
+            // labelRadius
+            // 
+            labelRadius.AutoSize = true;
+            labelRadius.Location = new Point(6, 24);
+            labelRadius.Name = "labelRadius";
+            labelRadius.Size = new Size(38, 15);
+            labelRadius.TabIndex = 1;
+            labelRadius.Text = "label1";
+            // 
+            // numericUpDownRadius
+            // 
+            numericUpDownRadius.Location = new Point(237, 22);
+            numericUpDownRadius.Maximum = new decimal(new int[] { 64, 0, 0, 0 });
+            numericUpDownRadius.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDownRadius.Name = "numericUpDownRadius";
+            numericUpDownRadius.Size = new Size(69, 23);
+            numericUpDownRadius.TabIndex = 0;
+            numericUpDownRadius.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // buttonCustomActions
+            // 
+            buttonCustomActions.Location = new Point(6, 72);
+            buttonCustomActions.Name = "buttonCustomActions";
+            buttonCustomActions.Size = new Size(108, 23);
+            buttonCustomActions.TabIndex = 2;
+            buttonCustomActions.Text = "Custom actions";
+            buttonCustomActions.UseVisualStyleBackColor = true;
+            buttonCustomActions.Visible = false;
+            // 
+            // buttonDebugInfo
+            // 
+            buttonDebugInfo.Location = new Point(198, 70);
+            buttonDebugInfo.Name = "buttonDebugInfo";
+            buttonDebugInfo.Size = new Size(108, 23);
+            buttonDebugInfo.TabIndex = 3;
+            buttonDebugInfo.Text = "Debug info";
+            buttonDebugInfo.UseVisualStyleBackColor = true;
+            buttonDebugInfo.Visible = false;
+            // 
             // FormSettings
             // 
             AcceptButton = buttonApply;
@@ -199,6 +258,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = buttonCancel;
             ClientSize = new Size(706, 369);
+            Controls.Add(groupBoxAdvanced);
             Controls.Add(groupBoxMulti);
             Controls.Add(buttonCancel);
             Controls.Add(buttonApply);
@@ -215,6 +275,9 @@
             groupBoxCorners.ResumeLayout(false);
             groupBoxMulti.ResumeLayout(false);
             groupBoxMulti.PerformLayout();
+            groupBoxAdvanced.ResumeLayout(false);
+            groupBoxAdvanced.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownRadius).EndInit();
             ResumeLayout(false);
         }
 
@@ -235,5 +298,10 @@
         private RadioButton radioButtonSept;
         private RadioButton radioButtonPrim;
         private RadioButton radioButtonVirt;
+        private GroupBox groupBoxAdvanced;
+        private Label labelRadius;
+        private NumericUpDown numericUpDownRadius;
+        private Button buttonDebugInfo;
+        private Button buttonCustomActions;
     }
 }

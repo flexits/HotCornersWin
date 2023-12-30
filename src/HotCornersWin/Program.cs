@@ -88,7 +88,7 @@ namespace HotCornersWin
                 Environment.Exit(1);
             }
             // Init mouse movement processing on the selected monitor configuration.
-            _hotCornersHelper = new(screens);
+            _hotCornersHelper = new(screens, Properties.Settings.Default.AreaSize);
             _hotCornersHelper.CornerReached += ActionCaller.ExecuteAction;
             _mouseHook.Move += (coords) => _hotCornersHelper?.CornerHitTest(coords);
             // Enable or disable operation according to the settings.
@@ -125,6 +125,7 @@ namespace HotCornersWin
                 if (_hotCornersHelper is not null)
                 {
                     _hotCornersHelper.Screens = GetScreens();
+                    _hotCornersHelper.CornerAreaSize = Properties.Settings.Default.AreaSize;
                 }
                 ActionCaller.ReloadSettings();
             }

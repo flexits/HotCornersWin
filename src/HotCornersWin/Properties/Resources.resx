@@ -172,6 +172,9 @@
   <data name="saWinInk" xml:space="preserve">
     <value>Windows Ink Workspace</value>
   </data>
+  <data name="strAdvSet" xml:space="preserve">
+    <value>Advanced settings:</value>
+  </data>
   <data name="strApply" xml:space="preserve">
     <value>Apply</value>
   </data>
@@ -195,6 +198,15 @@
   </data>
   <data name="strChooseAction" xml:space="preserve">
     <value>Choose actions for the hot corners:</value>
+  </data>
+  <data name="strCornerRadius" xml:space="preserve">
+    <value>Hot corner area radius</value>
+  </data>
+  <data name="strCustAct" xml:space="preserve">
+    <value>Custom actions</value>
+  </data>
+  <data name="strDebugExport" xml:space="preserve">
+    <value>Debug info</value>
   </data>
   <data name="strDisabled" xml:space="preserve">
     <value>disabled</value>

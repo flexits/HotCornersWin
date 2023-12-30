@@ -11,16 +11,22 @@ namespace HotCornersWin
             Location = new(workingArea.Right - Size.Width, workingArea.Bottom - Size.Height);
             groupBoxCorners.Text = Properties.Resources.strChooseAction;
             groupBoxMulti.Text = Properties.Resources.strMonSet;
+            groupBoxAdvanced.Text = Properties.Resources.strAdvSet;
             radioButtonVirt.Text = Properties.Resources.strMonVirt;
             radioButtonPrim.Text = Properties.Resources.strMonPrim;
             radioButtonSept.Text = Properties.Resources.strMonSepr;
+            labelRadius.Text = Properties.Resources.strCornerRadius;
             buttonApply.Text = Properties.Resources.strApply;
             buttonCancel.Text = Properties.Resources.strCancel;
+            buttonCustomActions.Text = Properties.Resources.strCustAct;
+            buttonDebugInfo.Text = Properties.Resources.strDebugExport;
             _actionNames = ActionCaller.GetActionNames();
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
+            numericUpDownRadius.Value = Properties.Settings.Default.AreaSize;
+
             int index = -1;
             comboBoxLT.DataSource = _actionNames.ToArray();
             index = Array.IndexOf(_actionNames, Properties.Settings.Default.LeftTop);
@@ -64,6 +70,7 @@ namespace HotCornersWin
 
         private void buttonApply_Click(object sender, EventArgs e)
         {
+            Properties.Settings.Default.AreaSize = (int)numericUpDownRadius.Value;
             // validate monitor config
             MultiMonCfg monCfg = MultiMonCfg.Primary;
             if (radioButtonVirt.Checked)
