@@ -1,16 +1,9 @@
-using System.Reflection;
-using System.Windows.Forms;
-
 namespace HotCornersWin
 {
     // TODO autorun
     // https://gist.github.com/HelBorn/2266242
 
     // TODO custom actions
-    // TODO installer
-    // TODO about
-    // TODO add attribution to https://uxwing.com/
-    // TODO add attribution to Icons8 <a target="_blank" href="https://icons8.com/icon/3pKFQN9sPxow/layout">Screen</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
 
     internal static class Program
     {
