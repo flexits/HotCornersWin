@@ -18,6 +18,8 @@ namespace HotCornersWin
 
         private bool _enabled = false;
 
+        private bool _isMouseBtnReleased = true;
+
         /// <summary>
         /// Enable or disable mouse tracking (does nothing if disabled).
         /// </summary>
@@ -32,10 +34,14 @@ namespace HotCornersWin
                     if (_enabled)
                     {
                         _keyboardMouseEvents.MouseMove += MouseHook_MouseMove;
+                        _keyboardMouseEvents.MouseDown += MouseHook_MouseDown;
+                        _keyboardMouseEvents.MouseUp += MouseHook_MouseUp;
                     }
                     else
                     {
                         _keyboardMouseEvents.MouseMove -= MouseHook_MouseMove;
+                        _keyboardMouseEvents.MouseDown -= MouseHook_MouseDown;
+                        _keyboardMouseEvents.MouseUp -= MouseHook_MouseUp;
                     }
                 }
             }
@@ -46,19 +52,29 @@ namespace HotCornersWin
             _keyboardMouseEvents = Hook.GlobalEvents();
         }
 
+        private void MouseHook_MouseUp(object? sender, MouseEventArgs e)
+        {
+            _isMouseBtnReleased = true;
+        }
+
+        private void MouseHook_MouseDown(object? sender, MouseEventArgs e)
+        {
+            _isMouseBtnReleased = false;
+        }
+
         private void MouseHook_MouseMove(object? sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.None)
+            if (_isMouseBtnReleased)
             {
-                // TODO doesnt work
-                return;
+                Move?.Invoke(e.Location);
             }
-            Move?.Invoke(e.Location);
         }
 
         public void Dispose()
         {
             _keyboardMouseEvents.MouseMove -= MouseHook_MouseMove;
+            _keyboardMouseEvents.MouseDown -= MouseHook_MouseDown;
+            _keyboardMouseEvents.MouseUp -= MouseHook_MouseUp;
             _keyboardMouseEvents.Dispose();
         }
 
