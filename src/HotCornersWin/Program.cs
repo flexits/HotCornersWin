@@ -1,7 +1,6 @@
 namespace HotCornersWin
 {
-    // TODO autorun
-    // https://gist.github.com/HelBorn/2266242
+    // TODO consider autorun through registry, https://gist.github.com/HelBorn/2266242
     // TODO ignore actions if mouse button is pressed
     // TODO custom actions (commands)
     // TODO custom actions (hotkeys)

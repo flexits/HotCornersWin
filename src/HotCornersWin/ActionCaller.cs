@@ -1,7 +1,13 @@
 ﻿namespace HotCornersWin
 {
+    /// <summary>
+    /// Invokes an action associated with a hot corner in the app's settings.
+    /// </summary>
     public static class ActionCaller
     {
+        /// <summary>
+        /// All available actions and their human-readable names.
+        /// </summary>
         private static Dictionary<string, Action> _allActions = new()
         {
             {Properties.Resources.saNone,  () => { } },
@@ -85,6 +91,9 @@
             },
         };
 
+        /// <summary>
+        /// Hot corners and their correspondent actions configured in the settings.
+        /// </summary>
         private static Dictionary<Corners, Action> _execActions = new()
         {
             {Corners.LeftTop, () => {} },
@@ -98,6 +107,9 @@
             ReloadSettings();
         }
 
+        /// <summary>
+        /// Reload hot corner actions from the app's settings.
+        /// </summary>
         public static void ReloadSettings()
         {
             _execActions[Corners.LeftTop] = _allActions
@@ -110,11 +122,17 @@
                 .TryGetValue(Properties.Settings.Default.RightBottom, out Action? actionRB) ? actionRB : (() => { });
         }
         
+        /// <summary>
+        /// Returns an array of human-readable names for all available actions.
+        /// </summary>
         public static string[] GetActionNames()
         {
             return _allActions.Keys.ToArray();
         }
 
+        /// <summary>
+        /// Executes the action associated with the given hot corner.
+        /// </summary>
         public static void ExecuteAction(Corners corner)
         {
             if (_execActions.TryGetValue(corner, out Action? action))

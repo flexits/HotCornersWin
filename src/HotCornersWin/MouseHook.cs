@@ -2,16 +2,25 @@
 
 namespace HotCornersWin
 {
+    /// <summary>
+    /// Tracks mouse cursor and generates events on its movement.
+    /// </summary>
     public class MouseHook : IDisposable
     {
         public delegate void MouseActionHandler(Point coords);
 
+        /// <summary>
+        /// Invoked on mouse movement detection.
+        /// </summary>
         public event MouseActionHandler? Move;
 
         private readonly IKeyboardMouseEvents _keyboardMouseEvents;
 
         private bool _enabled = false;
 
+        /// <summary>
+        /// Enable or disable mouse tracking (does nothing if disabled).
+        /// </summary>
         public bool IsEnabled
         {
             get { return _enabled; }
@@ -53,7 +62,7 @@ namespace HotCornersWin
             _keyboardMouseEvents.Dispose();
         }
 
-        // own low-level implementation
-        //https://github.com/rvknth043/Global-Low-Level-Key-Board-And-Mouse-Hook
+        // own low-level implementation example
+        // https://github.com/rvknth043/Global-Low-Level-Key-Board-And-Mouse-Hook
     }
 }
