@@ -4,9 +4,12 @@ Add MacOS hot corners function to Windows 10!
 ![Settings window and the notification area icon](https://github.com/flexits/HotCornersWin/assets/86118729/2d07e3f8-544d-4120-8bb4-cc5b4d2a64f1)
 
 
-A simple notification area application allows user to choose from a list of various actions to be triggered when the mouse cursor hits a corner of the screen. Of course, one can choose independent action for different corners or leave some without an action at all. 
+A simple notification area application allows user to choose from a list of various actions to be triggered when the mouse cursor hits a corner of the screen. Of course, one can choose independent action for different corners or leave some without an action at all. Multi-monitor environments are supported as well, with customizable placing of the hot corners.
 
 Double-click on the app's icon turns the application on and off.
+
+### Installation and usage
+Download the latest version from the [Releases](https://github.com/flexits/HotCornersWin/releases) page and run the installer. The app will be added to the current user's StartUp folder in Start->Programs.
 
 ### Available actions:
 * Start menu
@@ -23,13 +26,9 @@ Double-click on the app's icon turns the application on and off.
 * Windows Ink Workspace
 
 ### TODO list:
-* Autostart
-* Installer
-* About dialog
-* Custom actions
-* Adjustable delay
-* Adjustable corner area size
-* Check if it works in multimonitor environments
+* Custom actions (commands and hotkeys)
+* Ignore actions if mouse button is pressed (on dragging)
+* Auto-disable if a full-screen app is running
 
 ### Attributions:
 
