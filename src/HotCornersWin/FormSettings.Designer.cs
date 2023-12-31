@@ -45,16 +45,19 @@
             radioButtonPrim = new RadioButton();
             radioButtonVirt = new RadioButton();
             groupBoxAdvanced = new GroupBox();
+            buttonDebugInfo = new Button();
+            buttonCustomActions = new Button();
             labelRadius = new Label();
             numericUpDownRadius = new NumericUpDown();
-            buttonCustomActions = new Button();
-            buttonDebugInfo = new Button();
+            labelRepDelay = new Label();
+            numericUpDownRepDelay = new NumericUpDown();
             contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBoxCorners.SuspendLayout();
             groupBoxMulti.SuspendLayout();
             groupBoxAdvanced.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownRadius).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownRepDelay).BeginInit();
             SuspendLayout();
             // 
             // contextMenuStrip1
@@ -201,8 +204,8 @@
             // 
             // groupBoxAdvanced
             // 
-            groupBoxAdvanced.Controls.Add(buttonDebugInfo);
-            groupBoxAdvanced.Controls.Add(buttonCustomActions);
+            groupBoxAdvanced.Controls.Add(numericUpDownRepDelay);
+            groupBoxAdvanced.Controls.Add(labelRepDelay);
             groupBoxAdvanced.Controls.Add(labelRadius);
             groupBoxAdvanced.Controls.Add(numericUpDownRadius);
             groupBoxAdvanced.Location = new Point(380, 228);
@@ -211,6 +214,26 @@
             groupBoxAdvanced.TabIndex = 7;
             groupBoxAdvanced.TabStop = false;
             groupBoxAdvanced.Text = "Advanced settings:";
+            // 
+            // buttonDebugInfo
+            // 
+            buttonDebugInfo.Location = new Point(470, 336);
+            buttonDebugInfo.Name = "buttonDebugInfo";
+            buttonDebugInfo.Size = new Size(108, 23);
+            buttonDebugInfo.TabIndex = 3;
+            buttonDebugInfo.Text = "Debug info";
+            buttonDebugInfo.UseVisualStyleBackColor = true;
+            buttonDebugInfo.Visible = false;
+            // 
+            // buttonCustomActions
+            // 
+            buttonCustomActions.Location = new Point(356, 336);
+            buttonCustomActions.Name = "buttonCustomActions";
+            buttonCustomActions.Size = new Size(108, 23);
+            buttonCustomActions.TabIndex = 2;
+            buttonCustomActions.Text = "Custom actions";
+            buttonCustomActions.UseVisualStyleBackColor = true;
+            buttonCustomActions.Visible = false;
             // 
             // labelRadius
             // 
@@ -223,7 +246,7 @@
             // 
             // numericUpDownRadius
             // 
-            numericUpDownRadius.Location = new Point(237, 22);
+            numericUpDownRadius.Location = new Point(237, 16);
             numericUpDownRadius.Maximum = new decimal(new int[] { 64, 0, 0, 0 });
             numericUpDownRadius.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDownRadius.Name = "numericUpDownRadius";
@@ -231,25 +254,23 @@
             numericUpDownRadius.TabIndex = 0;
             numericUpDownRadius.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
-            // buttonCustomActions
+            // labelRepDelay
             // 
-            buttonCustomActions.Location = new Point(6, 72);
-            buttonCustomActions.Name = "buttonCustomActions";
-            buttonCustomActions.Size = new Size(108, 23);
-            buttonCustomActions.TabIndex = 2;
-            buttonCustomActions.Text = "Custom actions";
-            buttonCustomActions.UseVisualStyleBackColor = true;
-            buttonCustomActions.Visible = false;
+            labelRepDelay.AutoSize = true;
+            labelRepDelay.Location = new Point(6, 51);
+            labelRepDelay.Name = "labelRepDelay";
+            labelRepDelay.Size = new Size(148, 15);
+            labelRepDelay.TabIndex = 2;
+            labelRepDelay.Text = "Repetitive action delay, ms";
             // 
-            // buttonDebugInfo
+            // numericUpDownRepDelay
             // 
-            buttonDebugInfo.Location = new Point(198, 70);
-            buttonDebugInfo.Name = "buttonDebugInfo";
-            buttonDebugInfo.Size = new Size(108, 23);
-            buttonDebugInfo.TabIndex = 3;
-            buttonDebugInfo.Text = "Debug info";
-            buttonDebugInfo.UseVisualStyleBackColor = true;
-            buttonDebugInfo.Visible = false;
+            numericUpDownRepDelay.Location = new Point(237, 43);
+            numericUpDownRepDelay.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
+            numericUpDownRepDelay.Name = "numericUpDownRepDelay";
+            numericUpDownRepDelay.Size = new Size(69, 23);
+            numericUpDownRepDelay.TabIndex = 3;
+            numericUpDownRepDelay.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // FormSettings
             // 
@@ -258,6 +279,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = buttonCancel;
             ClientSize = new Size(706, 369);
+            Controls.Add(buttonCustomActions);
+            Controls.Add(buttonDebugInfo);
             Controls.Add(groupBoxAdvanced);
             Controls.Add(groupBoxMulti);
             Controls.Add(buttonCancel);
@@ -278,6 +301,7 @@
             groupBoxAdvanced.ResumeLayout(false);
             groupBoxAdvanced.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownRadius).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownRepDelay).EndInit();
             ResumeLayout(false);
         }
 
@@ -303,5 +327,7 @@
         private NumericUpDown numericUpDownRadius;
         private Button buttonDebugInfo;
         private Button buttonCustomActions;
+        private Label labelRepDelay;
+        private NumericUpDown numericUpDownRepDelay;
     }
 }

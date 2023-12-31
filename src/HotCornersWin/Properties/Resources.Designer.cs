@@ -307,7 +307,7 @@ namespace HotCornersWin.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hot corner area radius.
+        ///   Ищет локализованную строку, похожую на Hot corner area radius, px.
         /// </summary>
         internal static string strCornerRadius {
             get {
@@ -429,6 +429,15 @@ namespace HotCornersWin.Properties {
         internal static string strMonVirt {
             get {
                 return ResourceManager.GetString("strMonVirt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Repetitive action delay, ms.
+        /// </summary>
+        internal static string strRepeatHitDelay {
+            get {
+                return ResourceManager.GetString("strRepeatHitDelay", resourceCulture);
             }
         }
     }

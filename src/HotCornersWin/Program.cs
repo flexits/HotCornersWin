@@ -2,8 +2,10 @@ namespace HotCornersWin
 {
     // TODO autorun
     // https://gist.github.com/HelBorn/2266242
-
-    // TODO custom actions
+    // TODO ignore actions if mouse button is pressed
+    // TODO custom actions (commands)
+    // TODO custom actions (hotkeys)
+    // TODO detect a full-screen app and disable itself
 
     internal static class Program
     {
@@ -81,7 +83,9 @@ namespace HotCornersWin
                 Environment.Exit(1);
             }
             // Init mouse movement processing on the selected monitor configuration.
-            _hotCornersHelper = new(screens, Properties.Settings.Default.AreaSize);
+            _hotCornersHelper = new(screens, 
+                Properties.Settings.Default.AreaSize,
+                Properties.Settings.Default.HitRepeatDelay);
             _hotCornersHelper.CornerReached += ActionCaller.ExecuteAction;
             _mouseHook.Move += (coords) => _hotCornersHelper?.CornerHitTest(coords);
             // Enable or disable operation according to the settings.
@@ -119,6 +123,7 @@ namespace HotCornersWin
                 {
                     _hotCornersHelper.Screens = GetScreens();
                     _hotCornersHelper.CornerAreaSize = Properties.Settings.Default.AreaSize;
+                    _hotCornersHelper.RepetitiveHitDelay = Properties.Settings.Default.HitRepeatDelay;
                 }
                 ActionCaller.ReloadSettings();
             }

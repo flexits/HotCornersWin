@@ -16,6 +16,7 @@ namespace HotCornersWin
             radioButtonPrim.Text = Properties.Resources.strMonPrim;
             radioButtonSept.Text = Properties.Resources.strMonSepr;
             labelRadius.Text = Properties.Resources.strCornerRadius;
+            labelRepDelay.Text = Properties.Resources.strRepeatHitDelay;
             buttonApply.Text = Properties.Resources.strApply;
             buttonCancel.Text = Properties.Resources.strCancel;
             buttonCustomActions.Text = Properties.Resources.strCustAct;
@@ -26,6 +27,7 @@ namespace HotCornersWin
         private void FormSettings_Load(object sender, EventArgs e)
         {
             numericUpDownRadius.Value = Properties.Settings.Default.AreaSize;
+            numericUpDownRepDelay.Value = Properties.Settings.Default.HitRepeatDelay;
 
             int index = -1;
             comboBoxLT.DataSource = _actionNames.ToArray();
@@ -71,6 +73,7 @@ namespace HotCornersWin
         private void buttonApply_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.AreaSize = (int)numericUpDownRadius.Value;
+            Properties.Settings.Default.HitRepeatDelay = (int)numericUpDownRepDelay.Value;
             // validate monitor config
             MultiMonCfg monCfg = MultiMonCfg.Primary;
             if (radioButtonVirt.Checked)

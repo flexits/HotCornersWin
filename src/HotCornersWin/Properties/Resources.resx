@@ -200,7 +200,7 @@
     <value>Choose actions for the hot corners:</value>
   </data>
   <data name="strCornerRadius" xml:space="preserve">
-    <value>Hot corner area radius</value>
+    <value>Hot corner area radius, px</value>
   </data>
   <data name="strCustAct" xml:space="preserve">
     <value>Custom actions</value>
@@ -240,5 +240,8 @@
   </data>
   <data name="strMonVirt" xml:space="preserve">
     <value>Hot corners on the virtual display (the four farmost corners)</value>
+  </data>
+  <data name="strRepeatHitDelay" xml:space="preserve">
+    <value>Repetitive action delay, ms</value>
   </data>
 </root>
