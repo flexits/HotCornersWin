@@ -105,8 +105,11 @@
                 Point diff = coords.AbsDiff(pair.Key);
                 if (diff.X <= _cornerAreaSize && diff.Y <= _cornerAreaSize)
                 {
-                    currentPosition = pair.Value;
-                    break;
+                    if (diff.Hypotenuse() <= _cornerAreaSize)
+                    {
+                        currentPosition = pair.Value;
+                        break;
+                    }
                 }
             }
             if (currentPosition == Corners.None)
