@@ -26,9 +26,14 @@ Download the latest version from the [Releases](https://github.com/flexits/HotCo
 * Windows Ink Workspace
 
 ### TODO list:
+* Ignore actions if mouse button is pressed (on dragging) — implemented, needs testing
 * Custom actions (commands and hotkeys)
-* Ignore actions if mouse button is pressed (on dragging)
-* Auto-disable if a full-screen app is running
+* Auto-disable if a full-screen app is running (consider [SHQueryUserNotificationState()](https://github.com/kruizer23/hotframefx/issues/5#issuecomment-1470891647))
+* Adjustable delay before triggering an action (set separately for different corners)
+* Open Settings with a single click on the icon
+* Prevent multiple instances
+* Autostart settings
+* Win11-friendly UI and icons redesign
 
 ### Attributions:
 
