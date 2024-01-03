@@ -213,6 +213,7 @@ namespace HotCornersWin
             {
                 Icon = Properties.Resources.icons8_layout_96_cl,
                 Text = Properties.Resources.FormSettingsText,
+                TopMost = true,
             };
             if (fs.ShowDialog() == DialogResult.OK)
             {
