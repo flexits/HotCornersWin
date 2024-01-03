@@ -21,6 +21,8 @@
 
         private Corners _lastTestCorner = Corners.None;
 
+        private Corners _lastHitCorner = Corners.None;
+
         private long _lasHitTimestamp = 0;
 
         /// <summary>
@@ -99,43 +101,45 @@
         public void CornerHitTest(Point coords)
         {
             // hit test cursor
-            long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            Corners currentPosition = Corners.None;
-            foreach(var pair in _cornerCoords)
+            Corners currentCorner = Corners.None;
+            foreach (var pair in _cornerCoords)
             {
                 Point diff = coords.AbsDiff(pair.Key);
                 if (diff.X <= _cornerAreaSize && diff.Y <= _cornerAreaSize)
                 {
                     if (diff.Hypotenuse() <= _cornerAreaSize)
                     {
-                        currentPosition = pair.Value;
+                        currentCorner = pair.Value;
                         break;
                     }
                 }
             }
-            if (currentPosition == Corners.None)
+            if (currentCorner == Corners.None)
             {
                 // no hit, nothing to do here
-                if (currentTime - _lasHitTimestamp >= _repetitiveHitDelay)
-                {
-                    _lastTestCorner = Corners.None;
-                }
+                _lastTestCorner = Corners.None;
                 return;
             }
             // hit:
             // don't trigger the same corner multiple times without leaving it
-            if (_lastTestCorner != Corners.None)
+            if (_lastTestCorner == currentCorner)
             {
                 return;
             }
             // ensure a delay before triggering the same corner after leaving it
-            if (currentTime - _lasHitTimestamp >= _repetitiveHitDelay)
+            long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            if (_lastHitCorner == currentCorner)
             {
-                System.Diagnostics.Debug.WriteLine($"invoke at {currentPosition}");
-                _lasHitTimestamp = currentTime;
-                _lastTestCorner = currentPosition;
-                CornerReached?.Invoke(currentPosition);
+                if (currentTime - _lasHitTimestamp < _repetitiveHitDelay)
+                {
+                    return;
+                }
             }
+            _lastTestCorner = currentCorner;
+            System.Diagnostics.Debug.WriteLine($"invoke at {currentCorner}"); // TODO remove debug
+            _lasHitTimestamp = currentTime;
+            _lastHitCorner = currentCorner;
+            CornerReached?.Invoke(currentCorner);
         }
     }
 }

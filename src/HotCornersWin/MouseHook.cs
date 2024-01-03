@@ -1,4 +1,5 @@
 ﻿using Gma.System.MouseKeyHook;
+using System.Timers;
 
 namespace HotCornersWin
 {
@@ -15,6 +16,8 @@ namespace HotCornersWin
         public event MouseActionHandler? Move;
 
         private readonly IKeyboardMouseEvents _keyboardMouseEvents;
+
+        private readonly System.Timers.Timer _timer;
 
         private bool _enabled = false;
 
@@ -33,15 +36,17 @@ namespace HotCornersWin
                     _enabled = value;
                     if (_enabled)
                     {
-                        _keyboardMouseEvents.MouseMove += MouseHook_MouseMove;
+                        //_keyboardMouseEvents.MouseMove += MouseHook_MouseMove;
                         _keyboardMouseEvents.MouseDown += MouseHook_MouseDown;
                         _keyboardMouseEvents.MouseUp += MouseHook_MouseUp;
+                        _timer.Start();
                     }
                     else
                     {
-                        _keyboardMouseEvents.MouseMove -= MouseHook_MouseMove;
+                        //_keyboardMouseEvents.MouseMove -= MouseHook_MouseMove;
                         _keyboardMouseEvents.MouseDown -= MouseHook_MouseDown;
                         _keyboardMouseEvents.MouseUp -= MouseHook_MouseUp;
+                        _timer.Stop();
                     }
                 }
             }
@@ -50,6 +55,12 @@ namespace HotCornersWin
         public MouseHook()
         {
             _keyboardMouseEvents = Hook.GlobalEvents();
+            _timer = new System.Timers.Timer()
+            { 
+                AutoReset = true,
+                Interval = 75
+            };
+            _timer.Elapsed += OnTimerElapsed;
         }
 
         private void MouseHook_MouseUp(object? sender, MouseEventArgs e)
@@ -62,6 +73,16 @@ namespace HotCornersWin
             _isMouseBtnReleased = false;
         }
 
+        private void OnTimerElapsed(object? sender, ElapsedEventArgs e)
+        {
+            if (_isMouseBtnReleased)
+            {
+                
+                Move?.Invoke(Cursor.Position);
+            }
+        }
+
+        /*
         private void MouseHook_MouseMove(object? sender, MouseEventArgs e)
         {
             if (_isMouseBtnReleased)
@@ -69,10 +90,13 @@ namespace HotCornersWin
                 Move?.Invoke(e.Location);
             }
         }
+        */
 
         public void Dispose()
         {
-            _keyboardMouseEvents.MouseMove -= MouseHook_MouseMove;
+            _timer.Stop();
+            _timer.Dispose();
+            //_keyboardMouseEvents.MouseMove -= MouseHook_MouseMove;
             _keyboardMouseEvents.MouseDown -= MouseHook_MouseDown;
             _keyboardMouseEvents.MouseUp -= MouseHook_MouseUp;
             _keyboardMouseEvents.Dispose();
