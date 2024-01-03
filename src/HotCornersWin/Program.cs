@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using System.Reflection;
+
 namespace HotCornersWin
 {
     // TODO consider autorun through registry, https://gist.github.com/HelBorn/2266242
@@ -81,6 +84,16 @@ namespace HotCornersWin
         [STAThread]
         static void Main()
         {
+            // Limit running instances to one
+            if (Assembly.GetEntryAssembly() is Assembly assembly)
+            {
+                var pName = Path.GetFileNameWithoutExtension(assembly.Location);
+                if (Process.GetProcessesByName(pName).Length > 1)
+                {
+                    Environment.Exit(0);
+                }
+            }
+
             // Get monitor configuration according to the app's settings.
             var screens = GetScreens();
             if (screens.Length == 0)
