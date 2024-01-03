@@ -27,10 +27,10 @@ Download the latest version from the [Releases](https://github.com/flexits/HotCo
 ### TODO list:
 * Ignore actions if mouse button is pressed (on dragging) — implemented, needs testing
 * Auto-disable if a full-screen app is running — implemented, needs testing
-* Custom actions (commands and hotkeys)
 * Adjustable delay before triggering an action (set separately for different corners)
+* Custom actions (commands and hotkeys)
 * Autostart settings
-* Win11-friendly UI and icons redesign
+* Looks terrible under Win11 — move to WinUI 3, redesign icons
 
 ### Attributions:
 
