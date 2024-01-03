@@ -12,6 +12,14 @@ namespace HotCornersWin
         private static readonly ToolStripMenuItem _menuItemSwitch;
         private static readonly MouseHook _mouseHook;
         private static HotCornersHelper? _hotCornersHelper;
+        
+        /// <summary>
+        /// The flag is used to distinguish single and double clicks.
+        /// It is set when a click occurs and must be reset 
+        /// when either a single or double click is handled.
+        /// </summary>
+        private static bool _wasIconClicked;
+
         private static bool _enabled;
 
         private static bool IsEnabled
@@ -38,7 +46,7 @@ namespace HotCornersWin
             {
                 CheckOnClick = true
             };
-            _menuItemSwitch.Click += OnEnableChanged;
+            _menuItemSwitch.Click += NotifyIcon_DoubleClick;
 
             ToolStripMenuItem menuItemSettings = new(Properties.Resources.strMenuSettings);
             menuItemSettings.Click += MenuItemSettings_Click;
@@ -64,7 +72,8 @@ namespace HotCornersWin
                 },
                 Visible = true
             };
-            _notifyIcon.DoubleClick += OnEnableChanged;
+            _notifyIcon.MouseClick += NotifyIcon_MouseClick;
+            _notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
 
             _mouseHook = new();
         }
@@ -104,8 +113,36 @@ namespace HotCornersWin
             return ScreenInfoHelper.GetScreens(moncfg);
         }
 
-        private static void OnEnableChanged(object? sender, EventArgs e)
+        private static async void NotifyIcon_MouseClick(object? sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+            // if the clicked flag is set, this is a second click - do nothing
+            if (_wasIconClicked)
+            {
+                return;
+            }
+            // if the clicked flag isn't set, this is a first click -
+            // set the flag and wait for a possible double click
+            _wasIconClicked = true;
+            await Task.Delay(SystemInformation.DoubleClickTime + 1);
+            // check if the flag was reset, if no -
+            // then there was no double click handled, reset the flag and
+            // execute single click actions
+            if (_wasIconClicked)
+            {
+                _wasIconClicked = false;
+                MenuItemSettings_Click(sender, e);
+            }
+        }
+
+        private static void NotifyIcon_DoubleClick(object? sender, EventArgs e)
+        {
+            // reset the clicked flag
+            _wasIconClicked = false;
+            // execute double click actions
             IsEnabled = !IsEnabled;
         }
 
