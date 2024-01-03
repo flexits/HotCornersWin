@@ -99,6 +99,7 @@
         public void CornerHitTest(Point coords)
         {
             // hit test cursor
+            long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             Corners currentPosition = Corners.None;
             foreach(var pair in _cornerCoords)
             {
@@ -115,7 +116,10 @@
             if (currentPosition == Corners.None)
             {
                 // no hit, nothing to do here
-                _lastTestCorner = Corners.None;
+                if (currentTime - _lasHitTimestamp >= _repetitiveHitDelay)
+                {
+                    _lastTestCorner = Corners.None;
+                }
                 return;
             }
             // hit:
@@ -125,9 +129,9 @@
                 return;
             }
             // ensure a delay before triggering the same corner after leaving it
-            long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             if (currentTime - _lasHitTimestamp >= _repetitiveHitDelay)
             {
+                System.Diagnostics.Debug.WriteLine($"invoke at {currentPosition}");
                 _lasHitTimestamp = currentTime;
                 _lastTestCorner = currentPosition;
                 CornerReached?.Invoke(currentPosition);
