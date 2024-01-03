@@ -184,6 +184,9 @@
   <data name="strAutoCurUsr" xml:space="preserve">
     <value>Start with Windows for the current user</value>
   </data>
+  <data name="strAutoFullscreen" xml:space="preserve">
+    <value>Turn off if a fullscreen app is opened</value>
+  </data>
   <data name="strAutoOff" xml:space="preserve">
     <value>No autostart</value>
   </data>

@@ -21,6 +21,7 @@ namespace HotCornersWin
             buttonCancel.Text = Properties.Resources.strCancel;
             buttonCustomActions.Text = Properties.Resources.strCustAct;
             buttonDebugInfo.Text = Properties.Resources.strDebugExport;
+            checkBoxAutoFullscreen.Text = Properties.Resources.strAutoFullscreen;
             _actionNames = ActionCaller.GetActionNames();
         }
 
@@ -28,6 +29,7 @@ namespace HotCornersWin
         {
             numericUpDownRadius.Value = Properties.Settings.Default.AreaSize;
             numericUpDownRepDelay.Value = Properties.Settings.Default.HitRepeatDelay;
+            checkBoxAutoFullscreen.Checked = Properties.Settings.Default.AutoFullscreen;
 
             int index = -1;
             comboBoxLT.DataSource = _actionNames.ToArray();
@@ -74,6 +76,7 @@ namespace HotCornersWin
         {
             Properties.Settings.Default.AreaSize = (int)numericUpDownRadius.Value;
             Properties.Settings.Default.HitRepeatDelay = (int)numericUpDownRepDelay.Value;
+            Properties.Settings.Default.AutoFullscreen = checkBoxAutoFullscreen.Checked;
             // validate monitor config
             MultiMonCfg monCfg = MultiMonCfg.Primary;
             if (radioButtonVirt.Checked)
