@@ -101,8 +101,5 @@ namespace HotCornersWin
             _keyboardMouseEvents.MouseUp -= MouseHook_MouseUp;
             _keyboardMouseEvents.Dispose();
         }
-
-        // own low-level implementation example
-        // https://github.com/rvknth043/Global-Low-Level-Key-Board-And-Mouse-Hook
     }
 }

@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace HotCornersWin
 {
@@ -39,8 +38,6 @@ namespace HotCornersWin
                 string tooltip = _enabled ? Properties.Resources.strEnabled : Properties.Resources.strDisabled;
                 _notifyIcon.Text = $"HotCornersWin ({tooltip})";
                 _mouseHook.IsEnabled = _enabled;
-                Properties.Settings.Default.IsEnabled = _enabled;
-                Properties.Settings.Default.Save();
             }
         }
 
@@ -159,6 +156,7 @@ namespace HotCornersWin
                         IsEnabled = true;
                     }
                 }
+                Debug.WriteLine($"Fullscreen state changed to {state}"); // TODO remove debug
             }));
         }
 
@@ -192,8 +190,10 @@ namespace HotCornersWin
         {
             // reset the clicked flag
             _wasIconClicked = false;
-            // toggle enable on double click
+            // toggle enable on double click and save changes
             IsEnabled = !IsEnabled;
+            Properties.Settings.Default.IsEnabled = IsEnabled;
+            Properties.Settings.Default.Save();
             if (Properties.Settings.Default.AutoFullscreen)
             {
                 if (IsEnabled)
