@@ -6,9 +6,11 @@
     public static class ScreenInfoHelper
     {
         /// <summary>
-        /// Get system screen information according to the specified multi-monitor behavior scenario.
+        /// Get system screen information according to the specified 
+        /// multi-monitor behavior scenario.
         /// </summary>
-        /// <returns>An array of rectangles representing screens' locations and dimensions.
+        /// <returns>An array of rectangles representing screens' 
+        /// locations and dimensions.
         /// The array will be empty on any error.</returns>
         public static Rectangle[] GetScreens(MultiMonCfg moncfg)
         {

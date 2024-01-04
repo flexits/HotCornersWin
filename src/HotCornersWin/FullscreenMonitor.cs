@@ -10,7 +10,8 @@ namespace HotCornersWin
         Undefined,
 
         /// <summary>
-        /// Nothing is currently running in a full screen mode.
+        /// Nothing is currently running in a full screen mode, 
+        /// user notification is allowed.
         /// </summary>
         NoFullscreen,
 
@@ -30,7 +31,32 @@ namespace HotCornersWin
     {
         public delegate void FullscreenStateChanged(FullscreenState state);
 
+        /// <summary>
+        /// The event will be generated if something enters 
+        /// a fullscreen mode and/or leaves a fullscreen mode.
+        /// </summary>
         public event FullscreenStateChanged? OnFullscreenStateChanged;
+
+        /// <summary>
+        /// If enabled, starts monitoring of any fullscreen activity.
+        /// Generates OnFullscreenStateChanged event immediately after 
+        /// being enabled and then every time the fullscreen state changes. 
+        /// </summary>
+        public bool Enabled
+        {
+            get { return _enabled; }
+            set
+            {
+                if (_enabled != value)
+                {
+                    _enabled = value;
+                    if (_enabled)
+                    {
+                        _ = Task.Run(PollingCycle);
+                    }
+                }
+            }
+        }
 
         private enum QUERY_USER_NOTIFICATION_STATE
         {
@@ -43,62 +69,67 @@ namespace HotCornersWin
             QUNS_APP = 7
         };
 
-        private readonly int HRESULT_S_OK = 0;
+        private const int HRESULT_S_OK = 0;
 
         [DllImport("Shell32.dll")]
         private static extern int SHQueryUserNotificationState(out QUERY_USER_NOTIFICATION_STATE state);
 
-        private bool _allowRun;
+        private bool _enabled;
         private int _pollInterval;
+
+        /// <summary>
+        /// Stores the state from the last polling cycle.
+        /// </summary>
         private FullscreenState _state;
 
         public FullscreenMonitor(int pollInterval = 100)
         {
+            if (pollInterval <= 0)
+            {
+                pollInterval = 1;
+            }
             _pollInterval = pollInterval;
-            _allowRun = false;
+            _enabled = false;
             _state = FullscreenState.Undefined;
         }
 
-        public void Run()
+        /// <summary>
+        /// While Enabled == true, calls SHQueryUserNotificationState() to find out 
+        /// if a fullscreen activity is taking place and updates the _state. 
+        /// If the _state has changed, invokes an OnFullscreenStateChanged event.
+        /// Sleeps for _pollInterval milliseconds between subsequent polls.
+        /// </summary>
+        private void PollingCycle()
         {
-            _allowRun = true;
             QUERY_USER_NOTIFICATION_STATE qnsState = QUERY_USER_NOTIFICATION_STATE.QUNS_NOT_PRESENT;
-            _ = Task.Run(() =>
+            FullscreenState newState = FullscreenState.Undefined;
+            while (Enabled)
             {
-                FullscreenState newState = FullscreenState.Undefined;
-                while (_allowRun)
+                if (SHQueryUserNotificationState(out qnsState) == HRESULT_S_OK)
                 {
-                    if (SHQueryUserNotificationState(out qnsState) == HRESULT_S_OK)
+                    if (qnsState == QUERY_USER_NOTIFICATION_STATE.QUNS_ACCEPTS_NOTIFICATIONS)
                     {
-                        if (qnsState == QUERY_USER_NOTIFICATION_STATE.QUNS_ACCEPTS_NOTIFICATIONS)
-                        {
-                            newState = FullscreenState.NoFullscreen;
-                        }
-                        else
-                        {
-                            newState = FullscreenState.IsFullscreen;
-                        }
+                        newState = FullscreenState.NoFullscreen;
                     }
                     else
                     {
-                        newState = FullscreenState.Undefined;
-                    }
-                    if (newState != _state)
-                    {
-                        _state = newState;
-                        OnFullscreenStateChanged?.Invoke(_state);
-                    }
-                    if (_pollInterval > 0)
-                    {
-                        Thread.Sleep(_pollInterval);
+                        newState = FullscreenState.IsFullscreen;
                     }
                 }
-            });
-        }
-
-        public void Stop()
-        {
-            _allowRun = false;
+                else
+                {
+                    newState = FullscreenState.Undefined;
+                }
+                if (newState != _state)
+                {
+                    _state = newState;
+                    OnFullscreenStateChanged?.Invoke(_state);
+                }
+                if (_pollInterval > 0)
+                {
+                    Thread.Sleep(_pollInterval);
+                }
+            }
         }
     }
 }

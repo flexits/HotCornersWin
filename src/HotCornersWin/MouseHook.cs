@@ -4,29 +4,23 @@ using System.Timers;
 namespace HotCornersWin
 {
     /// <summary>
-    /// Tracks mouse cursor and generates events on its movement.
+    /// Polls the mouse cursor with given intervals and generates events 
+    /// with current cursor coordinates. The events will not be generated 
+    /// while a mouse button is being held down.
     /// </summary>
     public class MouseHook : IDisposable
     {
-        public delegate void MouseActionHandler(Point coords);
+        public delegate void CursorCoordinatesUpdateHandler(Point coords);
 
         /// <summary>
-        /// Invoked on mouse movement detection.
+        /// Invoked on every mouse cursor coordinates poll.
         /// </summary>
-        public event MouseActionHandler? Move;
-
-        private readonly IKeyboardMouseEvents _keyboardMouseEvents;
-
-        private readonly System.Timers.Timer _timer;
-
-        private bool _enabled = false;
-
-        private bool _isMouseBtnReleased = true;
+        public event CursorCoordinatesUpdateHandler? CoordinatesUpdated;
 
         /// <summary>
-        /// Enable or disable mouse tracking (does nothing if disabled).
+        /// Enable or disable cursor polling (does nothing if disabled).
         /// </summary>
-        public bool IsEnabled
+        public bool Enabled
         {
             get { return _enabled; }
             set 
@@ -36,70 +30,68 @@ namespace HotCornersWin
                     _enabled = value;
                     if (_enabled)
                     {
-                        //_keyboardMouseEvents.MouseMove += MouseHook_MouseMove;
-                        _keyboardMouseEvents.MouseDown += MouseHook_MouseDown;
-                        _keyboardMouseEvents.MouseUp += MouseHook_MouseUp;
+                        _keyboardMouseEvents.MouseDown += OnMouseDown;
+                        _keyboardMouseEvents.MouseUp += OnMouseUp;
                         _timer.Start();
                     }
                     else
                     {
-                        //_keyboardMouseEvents.MouseMove -= MouseHook_MouseMove;
-                        _keyboardMouseEvents.MouseDown -= MouseHook_MouseDown;
-                        _keyboardMouseEvents.MouseUp -= MouseHook_MouseUp;
+                        _keyboardMouseEvents.MouseDown -= OnMouseDown;
+                        _keyboardMouseEvents.MouseUp -= OnMouseUp;
                         _timer.Stop();
                     }
                 }
             }
         }
 
-        public MouseHook()
+        private bool _enabled = false;
+
+        private readonly IKeyboardMouseEvents _keyboardMouseEvents;
+
+        private readonly System.Timers.Timer _timer;
+
+        private bool _isMouseBtnReleased = true;
+
+        public MouseHook(int pollInterval = 100)
         {
+            if (pollInterval <= 0)
+            {
+                pollInterval = 1;
+            }
             _keyboardMouseEvents = Hook.GlobalEvents();
             _timer = new System.Timers.Timer()
             { 
                 AutoReset = true,
-                Interval = 75
+                Interval = pollInterval
             };
             _timer.Elapsed += OnTimerElapsed;
         }
 
-        private void MouseHook_MouseUp(object? sender, MouseEventArgs e)
+        public void Dispose()
         {
-            _isMouseBtnReleased = true;
+            _timer.Stop();
+            _timer.Dispose();
+            _keyboardMouseEvents.MouseDown -= OnMouseDown;
+            _keyboardMouseEvents.MouseUp -= OnMouseUp;
+            _keyboardMouseEvents.Dispose();
         }
 
-        private void MouseHook_MouseDown(object? sender, MouseEventArgs e)
+        private void OnMouseDown(object? sender, MouseEventArgs e)
         {
             _isMouseBtnReleased = false;
+        }
+
+        private void OnMouseUp(object? sender, MouseEventArgs e)
+        {
+            _isMouseBtnReleased = true;
         }
 
         private void OnTimerElapsed(object? sender, ElapsedEventArgs e)
         {
             if (_isMouseBtnReleased)
             {
-                
-                Move?.Invoke(Cursor.Position);
+                CoordinatesUpdated?.Invoke(Cursor.Position);
             }
-        }
-
-        /*
-        private void MouseHook_MouseMove(object? sender, MouseEventArgs e)
-        {
-            if (_isMouseBtnReleased)
-            {
-                Move?.Invoke(e.Location);
-            }
-        }
-        */
-
-        public void Dispose()
-        {
-            _timer.Stop();
-            _timer.Dispose();
-            //_keyboardMouseEvents.MouseMove -= MouseHook_MouseMove;
-            _keyboardMouseEvents.MouseDown -= MouseHook_MouseDown;
-            _keyboardMouseEvents.MouseUp -= MouseHook_MouseUp;
-            _keyboardMouseEvents.Dispose();
         }
     }
 }

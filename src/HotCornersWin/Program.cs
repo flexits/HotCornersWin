@@ -4,10 +4,8 @@ using System.Reflection;
 namespace HotCornersWin
 {
     // TODO consider autorun through registry, https://gist.github.com/HelBorn/2266242
-    // TODO ignore actions if mouse button is pressed - to settings
     // TODO custom actions (commands)
     // TODO custom actions (hotkeys)
-    // TODO detect a full-screen app and disable itself
 
     internal static class Program
     {
@@ -27,7 +25,10 @@ namespace HotCornersWin
 
         private static bool _enabled;
 
-        private static bool IsEnabled
+        /// <summary>
+        /// Controls the operation and changes the app's UI respectively.
+        /// </summary>
+        private static bool Enabled
         {
             get { return _enabled; }
             set
@@ -37,7 +38,7 @@ namespace HotCornersWin
                 _notifyIcon.Icon = _enabled ? Properties.Resources.icons8_layout_96_cl : Properties.Resources.icons8_layout_96_bk;
                 string tooltip = _enabled ? Properties.Resources.strEnabled : Properties.Resources.strDisabled;
                 _notifyIcon.Text = $"HotCornersWin ({tooltip})";
-                _mouseHook.IsEnabled = _enabled;
+                _mouseHook.Enabled = _enabled;
             }
         }
 
@@ -82,6 +83,9 @@ namespace HotCornersWin
 
             _fullscreenMonitor = new();
             _fullscreenMonitor.OnFullscreenStateChanged += OnFullscreenStateChanged;
+
+            _dummyForm = new Form();
+            _ = _dummyForm.Handle;
         }
 
         [STAThread]
@@ -112,22 +116,23 @@ namespace HotCornersWin
                 Properties.Settings.Default.AreaSize,
                 Properties.Settings.Default.HitRepeatDelay);
             _hotCornersHelper.CornerReached += ActionCaller.ExecuteAction;
-            _mouseHook.Move += (coords) => _hotCornersHelper?.CornerHitTest(coords);
+            _mouseHook.CoordinatesUpdated += (coords) => _hotCornersHelper?.CornerHitTest(coords);
+            
             // Enable or disable operation according to the settings.
-            IsEnabled = Properties.Settings.Default.IsEnabled;
-            if (Properties.Settings.Default.AutoFullscreen && IsEnabled)
-            {
-                _fullscreenMonitor.Run();
-            }
+            Enabled = Properties.Settings.Default.IsEnabled;
+            _fullscreenMonitor.Enabled = 
+                Properties.Settings.Default.AutoFullscreen && Enabled;
 
-            _dummyForm = new Form();
-            _ = _dummyForm.Handle;
             Application.Run();
         }
 
+        /// <summary>
+        /// Get system screen information accordig to the app's settings.
+        /// </summary>
+        /// <returns>An array of rectangles representing screens' 
+        /// locations and dimensions.</returns>
         private static Rectangle[] GetScreens()
         {
-            // read multi-monitor configuration from settings
             MultiMonCfg moncfg = MultiMonCfg.Primary;
             if (Enum.IsDefined(typeof(MultiMonCfg), Properties.Settings.Default.MultiMonCfg))
             {
@@ -136,24 +141,27 @@ namespace HotCornersWin
             return ScreenInfoHelper.GetScreens(moncfg);
         }
 
+        /// <summary>
+        /// Enable the app if there's nothing running in 
+        /// fullscreen mode, otherwise disable.
+        /// </summary>
+        /// <param name="state">Current fullscreen mode.</param>
         private static void OnFullscreenStateChanged(FullscreenState state)
         {
-            // enable the app if there's nothing running in fullscreen mode,
-            // otherwise disable
             _ = _dummyForm.BeginInvoke(new Action(() =>
             {
-                if (IsEnabled)
+                if (Enabled)
                 {
                     if (state != FullscreenState.NoFullscreen)
                     {
-                        IsEnabled = false;
+                        Enabled = false;
                     }
                 }
                 else
                 {
                     if (state == FullscreenState.NoFullscreen)
                     {
-                        IsEnabled = true;
+                        Enabled = true;
                     }
                 }
                 Debug.WriteLine($"Fullscreen state changed to {state}"); // TODO remove debug
@@ -181,7 +189,7 @@ namespace HotCornersWin
             if (_wasIconClicked)
             {
                 _wasIconClicked = false;
-                // show Settings on sigle click
+                // show Settings on single click
                 MenuItemSettings_Click(sender, e);
             }
         }
@@ -191,19 +199,12 @@ namespace HotCornersWin
             // reset the clicked flag
             _wasIconClicked = false;
             // toggle enable on double click and save changes
-            IsEnabled = !IsEnabled;
-            Properties.Settings.Default.IsEnabled = IsEnabled;
+            Enabled = !Enabled;
+            Properties.Settings.Default.IsEnabled = Enabled;
             Properties.Settings.Default.Save();
             if (Properties.Settings.Default.AutoFullscreen)
             {
-                if (IsEnabled)
-                {
-                    _fullscreenMonitor.Run();
-                }
-                else
-                {
-                    _fullscreenMonitor.Stop();
-                }
+                _fullscreenMonitor.Enabled = Enabled;
             }
         }
 
@@ -215,6 +216,7 @@ namespace HotCornersWin
                 Text = Properties.Resources.FormSettingsText,
                 TopMost = true,
             };
+            // if settings were changed, apply
             if (fs.ShowDialog() == DialogResult.OK)
             {
                 if (_hotCornersHelper is not null)
@@ -224,14 +226,8 @@ namespace HotCornersWin
                     _hotCornersHelper.RepetitiveHitDelay = Properties.Settings.Default.HitRepeatDelay;
                 }
                 ActionCaller.ReloadSettings();
-                if (Properties.Settings.Default.AutoFullscreen && IsEnabled)
-                {
-                    _fullscreenMonitor.Run();
-                }
-                else
-                {
-                    _fullscreenMonitor.Stop();
-                }
+                _fullscreenMonitor.Enabled = 
+                    Properties.Settings.Default.AutoFullscreen && Enabled;
             }
         }
 
@@ -248,7 +244,7 @@ namespace HotCornersWin
 
         private static void MenuItemQuit_Click(object? sender, EventArgs e)
         {
-            _fullscreenMonitor.Stop();
+            _fullscreenMonitor.Enabled = false;
             _mouseHook?.Dispose();
             _notifyIcon?.Dispose();
             Application.Exit();
