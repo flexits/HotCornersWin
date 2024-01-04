@@ -27,10 +27,11 @@ Download the latest version from the [Releases](https://github.com/flexits/HotCo
 ### TODO list:
 * Ignore actions if mouse button is pressed (on dragging) — implemented, needs testing
 * Auto-disable if a full-screen app is running — implemented, needs testing
-* Adjustable delay before triggering an action (set separately for different corners)
-* Custom actions (commands and hotkeys)
-* Autostart settings
-* Looks terrible under Win11 — move to WinUI 3, redesign icons
+* [Adjustable delay before triggering an action](https://github.com/flexits/HotCornersWin/issues/4) (set separately for different corners)
+* Custom actions ([commands](https://github.com/flexits/HotCornersWin/issues/5) and [hotkeys](https://github.com/flexits/HotCornersWin/issues/6))
+* Manage startup in the app's [settings](https://github.com/flexits/HotCornersWin/issues/7)
+* Looks terrible under Win11 — [move to WinUI 3](https://github.com/flexits/HotCornersWin/issues/8), [redesign icons](https://github.com/flexits/HotCornersWin/issues/9)
+* feel free to add yours...
 
 ### Attributions:
 
