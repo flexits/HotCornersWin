@@ -109,13 +109,13 @@ namespace HotCornersWin.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("250")]
-        public int HitRepeatDelay {
+        [global::System.Configuration.DefaultSettingValueAttribute("75")]
+        public int PollInterval {
             get {
-                return ((int)(this["HitRepeatDelay"]));
+                return ((int)(this["PollInterval"]));
             }
             set {
-                this["HitRepeatDelay"] = value;
+                this["PollInterval"] = value;
             }
         }
         

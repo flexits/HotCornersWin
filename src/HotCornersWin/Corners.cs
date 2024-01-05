@@ -1,7 +1,7 @@
 ﻿namespace HotCornersWin
 {
     /// <summary>
-    /// Enumeration of the hot corners available.
+    /// Hot corners' positions.
     /// </summary>
     public enum Corners
     { 

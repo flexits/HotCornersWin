@@ -23,8 +23,8 @@
     <Setting Name="AreaSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
-    <Setting Name="HitRepeatDelay" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">250</Value>
+    <Setting Name="PollInterval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">75</Value>
     </Setting>
     <Setting Name="AutoFullscreen" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

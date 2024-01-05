@@ -5,6 +5,8 @@
     /// </summary>
     public static class ActionCaller
     {
+        // TODO Corners' delays
+
         /// <summary>
         /// All available actions and their human-readable names.
         /// </summary>

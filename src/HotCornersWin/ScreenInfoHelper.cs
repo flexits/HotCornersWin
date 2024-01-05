@@ -1,10 +1,48 @@
-﻿namespace HotCornersWin
+﻿using System.Runtime.InteropServices;
+
+namespace HotCornersWin
 {
+    /// <summary>
+    /// State of the computer for the current user.
+    /// </summary>
+    public enum FullscreenState
+    {
+        Undefined,
+
+        /// <summary>
+        /// Nothing is currently running in a full screen mode, 
+        /// user notification is allowed.
+        /// </summary>
+        NoFullscreen,
+
+        /// <summary>
+        /// Something is running in a full screen mode or a 
+        /// user notification is inappropriate due to other reasons.
+        /// </summary>
+        IsFullscreen,
+    }
+
     /// <summary>
     /// A helper class to process the system screens information.
     /// </summary>
     public static class ScreenInfoHelper
     {
+        private enum QUERY_USER_NOTIFICATION_STATE
+        {
+            QUNS_NOT_PRESENT = 1,
+            QUNS_BUSY = 2,
+            QUNS_RUNNING_D3D_FULL_SCREEN = 3,
+            QUNS_PRESENTATION_MODE = 4,
+            QUNS_ACCEPTS_NOTIFICATIONS = 5,
+            QUNS_QUIET_TIME = 6,
+            QUNS_APP = 7
+        };
+
+        private const int HRESULT_S_OK = 0;
+
+        [DllImport("Shell32.dll")]
+        private static extern int SHQueryUserNotificationState(out QUERY_USER_NOTIFICATION_STATE state);
+
         /// <summary>
         /// Get system screen information according to the specified 
         /// multi-monitor behavior scenario.
@@ -12,7 +50,7 @@
         /// <returns>An array of rectangles representing screens' 
         /// locations and dimensions.
         /// The array will be empty on any error.</returns>
-        public static Rectangle[] GetScreens(MultiMonCfg moncfg)
+        public static Rectangle[] GetScreensInfo(MultiMonCfg moncfg)
         {
             switch (moncfg)
             {
@@ -29,6 +67,33 @@
                     return Screen.AllScreens.Select(s => s.Bounds).ToArray();
             }
             return Array.Empty<Rectangle>();
+        }
+
+        /// <summary>
+        /// Get the current computer screen state: is something running in a fullscreen mode 
+        /// thus preventing user notifications or not.
+        /// </summary>
+        /// <returns>FullscreenState.NoFullscreen if a user notification is allowed, 
+        /// FullscreenState.IsFullscreen otherwise, or 
+        /// FullscreenState.Undefined in case of a failure.</returns>
+        public static FullscreenState GetFullscreenState()
+        {
+            QUERY_USER_NOTIFICATION_STATE qnsState = QUERY_USER_NOTIFICATION_STATE.QUNS_NOT_PRESENT;
+            if (SHQueryUserNotificationState(out qnsState) == HRESULT_S_OK)
+            {
+                if (qnsState == QUERY_USER_NOTIFICATION_STATE.QUNS_ACCEPTS_NOTIFICATIONS)
+                {
+                    return FullscreenState.NoFullscreen;
+                }
+                else
+                {
+                    return FullscreenState.IsFullscreen;
+                }
+            }
+            else
+            {
+                return FullscreenState.Undefined;
+            }
         }
     }
 }

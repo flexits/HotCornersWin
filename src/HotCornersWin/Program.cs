@@ -12,21 +12,28 @@ namespace HotCornersWin
         private static readonly NotifyIcon _notifyIcon;
         private static readonly ToolStripMenuItem _menuItemSwitch;
         private static readonly MouseHook _mouseHook;
-        private static readonly FullscreenMonitor _fullscreenMonitor;
-        private static HotCornersHelper? _hotCornersHelper;
-        private static Form _dummyForm;
-        
+        private static readonly System.Timers.Timer _timer;
+
+        private const int ACTION_DELAY = 0; // TODO introduce an option in Settings
+
+        private static readonly Form _dummyForm; // for accessing the UI thread
+
         /// <summary>
         /// The flag is used to distinguish single and double clicks.
         /// It is set when a click occurs and must be reset 
         /// when either a single or double click is handled.
         /// </summary>
-        private static bool _wasIconClicked;
+        private static bool _wasIconClicked = false;
 
-        private static bool _enabled;
+        private static int _pollCyclesCounter = 0;
+        private static Corners _lastTestCorner = Corners.None;
+
+        private static bool _enabled = false;
 
         /// <summary>
-        /// Controls the operation and changes the app's UI respectively.
+        /// The app's state flag. On set, changes the app's icon, 
+        /// menu switch and tooltip according to its state.
+        /// Doesn't actually impact the main timer!
         /// </summary>
         private static bool Enabled
         {
@@ -35,10 +42,9 @@ namespace HotCornersWin
             {
                 _enabled = value;
                 _menuItemSwitch.Checked = _enabled;
-                _notifyIcon.Icon = _enabled ? Properties.Resources.icons8_layout_96_cl : Properties.Resources.icons8_layout_96_bk;
+                _notifyIcon.Icon = _enabled ? Properties.Resources.icon_new_on : Properties.Resources.icon_new_off;
                 string tooltip = _enabled ? Properties.Resources.strEnabled : Properties.Resources.strDisabled;
                 _notifyIcon.Text = $"HotCornersWin ({tooltip})";
-                _mouseHook.Enabled = _enabled;
             }
         }
 
@@ -81,10 +87,14 @@ namespace HotCornersWin
 
             _mouseHook = new();
 
-            _fullscreenMonitor = new();
-            _fullscreenMonitor.OnFullscreenStateChanged += OnFullscreenStateChanged;
+            _timer = new(75);
+            _timer.Elapsed += OnTimerElapsed;
 
-            _dummyForm = new Form();
+            _dummyForm = new Form()
+            {
+                TopMost = false,
+                WindowState = FormWindowState.Minimized
+            };
             _ = _dummyForm.Handle;
         }
 
@@ -112,22 +122,86 @@ namespace HotCornersWin
             }
 
             // Init mouse movement processing on the selected monitor configuration.
-            _hotCornersHelper = new(screens, 
-                Properties.Settings.Default.AreaSize,
-                Properties.Settings.Default.HitRepeatDelay);
-            _hotCornersHelper.CornerReached += ActionCaller.ExecuteAction;
-            _mouseHook.CoordinatesUpdated += (coords) => _hotCornersHelper?.CornerHitTest(coords);
-            
+            HotCornersHelper.Screens = screens;
+            HotCornersHelper.CornerRadius = Properties.Settings.Default.AreaSize;
+
+            // Set polling interval
+            _timer.Interval = Properties.Settings.Default.PollInterval;
+
             // Enable or disable operation according to the settings.
             Enabled = Properties.Settings.Default.IsEnabled;
-            _fullscreenMonitor.Enabled = 
-                Properties.Settings.Default.AutoFullscreen && Enabled;
+            _timer.Enabled = Enabled;
 
             Application.Run();
         }
 
+        private static void OnTimerElapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            // Disable operation if something's running in a full screen mode.
+            if (Properties.Settings.Default.AutoFullscreen)
+            {
+                FullscreenState fullscreenState = ScreenInfoHelper.GetFullscreenState();
+                if (fullscreenState == FullscreenState.NoFullscreen)
+                {
+                    // operation allowed, check if the app is already running
+                    if (!Enabled)
+                    {
+                        _ = _dummyForm.BeginInvoke(new Action(() => Enabled = true));
+                        Debug.WriteLine($"Fullscreen state changed to {fullscreenState}, the app's enabled"); // TODO remove debug
+                    }
+                }
+                else
+                {
+                    // operation not allowed, disable the app if not already and quit
+                    if (Enabled)
+                    {
+                        _ = _dummyForm.BeginInvoke(new Action(() => Enabled = false));
+                        Debug.WriteLine($"Fullscreen state changed to {fullscreenState}, the app's disabled"); // TODO remove debug
+                    }
+                    return;
+                }
+            }
+
+            // Ignore cursor movements when a button is pressed (dragging).
+            if (_mouseHook.IsMouseButtonPressed)
+            {
+                // TODO introduce an option in Settings
+                return;
+            }
+
+            // Hit test cursor
+            Corners currentCorner = HotCornersHelper.HitTest(_mouseHook.CursorPosition);
+            if (currentCorner == Corners.None)
+            {
+                // a miss; reset counter and exit
+                _lastTestCorner = Corners.None;
+                _pollCyclesCounter = 0;
+                return;
+            }
+            // a hit:
+            // if the corner was already hit in previous cycles,
+            // wait for a delay to expire and fire the correspondent action;
+            // if the delay has already expired, do nothing to avoid repetitive 
+            // action invocation while the cursor stays still
+            Debug.WriteLine($"Hit at {currentCorner}"); // TODO remove debug
+            if (_lastTestCorner == currentCorner)
+            {
+                _pollCyclesCounter++;
+            }
+            else
+            {
+                _pollCyclesCounter = 0;
+            }
+            if (_pollCyclesCounter == ACTION_DELAY) // TODO settings
+            {
+                Debug.WriteLine($"Action at {currentCorner} after {_pollCyclesCounter} polls"); // TODO remove debug
+                ActionCaller.ExecuteAction(currentCorner);
+            }
+            _lastTestCorner = currentCorner;
+        }
+
         /// <summary>
-        /// Get system screen information accordig to the app's settings.
+        /// Get system screen information according to the app's settings.
         /// </summary>
         /// <returns>An array of rectangles representing screens' 
         /// locations and dimensions.</returns>
@@ -138,34 +212,7 @@ namespace HotCornersWin
             {
                 moncfg = (MultiMonCfg)Properties.Settings.Default.MultiMonCfg;
             }
-            return ScreenInfoHelper.GetScreens(moncfg);
-        }
-
-        /// <summary>
-        /// Enable the app if there's nothing running in 
-        /// fullscreen mode, otherwise disable.
-        /// </summary>
-        /// <param name="state">Current fullscreen mode.</param>
-        private static void OnFullscreenStateChanged(FullscreenState state)
-        {
-            _ = _dummyForm.BeginInvoke(new Action(() =>
-            {
-                if (Enabled)
-                {
-                    if (state != FullscreenState.NoFullscreen)
-                    {
-                        Enabled = false;
-                    }
-                }
-                else
-                {
-                    if (state == FullscreenState.NoFullscreen)
-                    {
-                        Enabled = true;
-                    }
-                }
-                Debug.WriteLine($"Fullscreen state changed to {state}"); // TODO remove debug
-            }));
+            return ScreenInfoHelper.GetScreensInfo(moncfg);
         }
 
         private static async void NotifyIcon_MouseClick(object? sender, MouseEventArgs e)
@@ -200,34 +247,25 @@ namespace HotCornersWin
             _wasIconClicked = false;
             // toggle enable on double click and save changes
             Enabled = !Enabled;
+            _timer.Enabled = Enabled;
             Properties.Settings.Default.IsEnabled = Enabled;
             Properties.Settings.Default.Save();
-            if (Properties.Settings.Default.AutoFullscreen)
-            {
-                _fullscreenMonitor.Enabled = Enabled;
-            }
         }
 
         private static void MenuItemSettings_Click(object? sender, EventArgs e)
         {
             FormSettings fs = new()
             {
-                Icon = Properties.Resources.icons8_layout_96_cl,
+                Icon = Properties.Resources.icon_new_on,
                 Text = Properties.Resources.FormSettingsText,
                 TopMost = true,
             };
             // if settings were changed, apply
             if (fs.ShowDialog() == DialogResult.OK)
             {
-                if (_hotCornersHelper is not null)
-                {
-                    _hotCornersHelper.Screens = GetScreens();
-                    _hotCornersHelper.CornerAreaSize = Properties.Settings.Default.AreaSize;
-                    _hotCornersHelper.RepetitiveHitDelay = Properties.Settings.Default.HitRepeatDelay;
-                }
+                HotCornersHelper.CornerRadius = Properties.Settings.Default.AreaSize;
+                HotCornersHelper.Screens = GetScreens();
                 ActionCaller.ReloadSettings();
-                _fullscreenMonitor.Enabled = 
-                    Properties.Settings.Default.AutoFullscreen && Enabled;
             }
         }
 
@@ -235,7 +273,7 @@ namespace HotCornersWin
         {
             _ = new FormAbout()
             {
-                Icon = Properties.Resources.icons8_layout_96_cl,
+                Icon = Properties.Resources.icon_new_on,
                 Text = Properties.Resources.FormAboutText,
                 TopMost = true,
             }
@@ -244,7 +282,9 @@ namespace HotCornersWin
 
         private static void MenuItemQuit_Click(object? sender, EventArgs e)
         {
-            _fullscreenMonitor.Enabled = false;
+            _timer.Stop();
+            _timer.Elapsed -= OnTimerElapsed;
+            _timer.Dispose();
             _mouseHook?.Dispose();
             _notifyIcon?.Dispose();
             Application.Exit();

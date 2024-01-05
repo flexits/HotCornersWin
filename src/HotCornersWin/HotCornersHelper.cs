@@ -3,32 +3,12 @@
     /// <summary>
     /// A helper class to determine whether a hot corner of a display was reached.
     /// </summary>
-    public class HotCornersHelper
+    public static class HotCornersHelper
     {
-        public delegate void CornerReachedHandler(Corners corner);
-
-        /// <summary>
-        /// The event will be invoked by the CornerHitTest method  
-        /// if the mouse cursor have reached a screen corner.
-        /// </summary>
-        public event CornerReachedHandler? CornerReached;
-
-        private readonly Dictionary<Point, Corners> _cornerCoords = new();
-
-        private int _cornerAreaSize;
-
-        private int _repetitiveHitDelay;
-
-        private Corners _lastTestCorner = Corners.None;
-
-        private Corners _lastHitCorner = Corners.None;
-
-        private long _lasHitTimestamp = 0;
-
         /// <summary>
         /// Dimensions (Width, Height) and locations (X, Y) of system screen(s).
         /// </summary>
-        public Rectangle[] Screens
+        public static Rectangle[] Screens
         {
             set
             {
@@ -49,97 +29,45 @@
         }
 
         /// <summary>
-        /// A screen corner is a square area with side of the give size.
+        /// A radius of a screen corner in pixels.
         /// </summary>
-        public int CornerAreaSize
+        public static int CornerRadius
         {
-            get { return _cornerAreaSize; }
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), 
-                        "Corner area size value must be positive");
-                }
-                _cornerAreaSize = value;
-            }
-        }
-
-        /// <summary>
-        /// Delay in milliseconds before repetitive firing CornerReached 
-        /// event for the same corner that was activated previously.
-        /// </summary>
-        public int RepetitiveHitDelay
-        {
-            get { return _repetitiveHitDelay; }
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value),
-                        "Delay value must be positive");
+                        "Corner area size value must be positive");
                 }
-                _repetitiveHitDelay = value;
+                _cornerRadius = value;
             }
         }
 
-        public HotCornersHelper(Rectangle[] screens, int cornerAreaSize = 5, int repetitiveHitDelay = 250)
-        {
-            Screens = screens;
-            CornerAreaSize = cornerAreaSize;
-            RepetitiveHitDelay = repetitiveHitDelay;
-        }
+        private static readonly Dictionary<Point, Corners> _cornerCoords = new();
+
+        private static int _cornerRadius = 5;
 
         /// <summary>
-        /// Test if the mouse cursor is in a screen corner.
-        /// Invokes CornerReached event.
-        /// The event will be invoked only once, 
-        /// a repeated invocation is possible only after the cursor 
-        /// leaves the corner area.
+        /// Test if the mouse cursor is within a screen corner.
         /// </summary>
         /// <param name="coords">The cursor coordinates.</param>
-        public void CornerHitTest(Point coords)
+        /// <returns>The screen corner that matches the supplied coordinates,
+        /// otherwise Corners.None.</returns>
+        public static Corners HitTest(Point coords)
         {
-            // hit test cursor
-            Corners currentCorner = Corners.None;
             foreach (var pair in _cornerCoords)
             {
                 Point diff = coords.AbsDiff(pair.Key);
-                if (diff.X <= _cornerAreaSize && diff.Y <= _cornerAreaSize)
+                if (diff.X <= _cornerRadius && diff.Y <= _cornerRadius)
                 {
-                    if (diff.Hypotenuse() <= _cornerAreaSize)
+                    if (diff.Hypotenuse() <= _cornerRadius)
                     {
-                        currentCorner = pair.Value;
-                        break;
+                        return pair.Value;
                     }
                 }
             }
-            if (currentCorner == Corners.None)
-            {
-                // no hit, nothing to do here
-                _lastTestCorner = Corners.None;
-                return;
-            }
-            // hit:
-            // don't trigger the same corner multiple times without leaving it
-            if (_lastTestCorner == currentCorner)
-            {
-                return;
-            }
-            // ensure a delay before triggering the same corner after leaving it
-            long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            if (_lastHitCorner == currentCorner)
-            {
-                if (currentTime - _lasHitTimestamp < _repetitiveHitDelay)
-                {
-                    return;
-                }
-            }
-            _lastTestCorner = currentCorner;
-            System.Diagnostics.Debug.WriteLine($"invoke at {currentCorner}"); // TODO remove debug
-            _lasHitTimestamp = currentTime;
-            _lastHitCorner = currentCorner;
-            CornerReached?.Invoke(currentCorner);
+            return Corners.None;
         }
     }
 }

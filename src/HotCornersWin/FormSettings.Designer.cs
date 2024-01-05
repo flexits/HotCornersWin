@@ -45,19 +45,19 @@
             radioButtonPrim = new RadioButton();
             radioButtonVirt = new RadioButton();
             groupBoxAdvanced = new GroupBox();
-            numericUpDownRepDelay = new NumericUpDown();
-            labelRepDelay = new Label();
+            checkBoxAutoFullscreen = new CheckBox();
+            numericUpDownPoll = new NumericUpDown();
+            labelPollInterval = new Label();
             labelRadius = new Label();
             numericUpDownRadius = new NumericUpDown();
             buttonDebugInfo = new Button();
             buttonCustomActions = new Button();
-            checkBoxAutoFullscreen = new CheckBox();
             contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBoxCorners.SuspendLayout();
             groupBoxMulti.SuspendLayout();
             groupBoxAdvanced.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDownRepDelay).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownPoll).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownRadius).BeginInit();
             SuspendLayout();
             // 
@@ -206,8 +206,8 @@
             // groupBoxAdvanced
             // 
             groupBoxAdvanced.Controls.Add(checkBoxAutoFullscreen);
-            groupBoxAdvanced.Controls.Add(numericUpDownRepDelay);
-            groupBoxAdvanced.Controls.Add(labelRepDelay);
+            groupBoxAdvanced.Controls.Add(numericUpDownPoll);
+            groupBoxAdvanced.Controls.Add(labelPollInterval);
             groupBoxAdvanced.Controls.Add(labelRadius);
             groupBoxAdvanced.Controls.Add(numericUpDownRadius);
             groupBoxAdvanced.Location = new Point(380, 228);
@@ -217,23 +217,34 @@
             groupBoxAdvanced.TabStop = false;
             groupBoxAdvanced.Text = "Advanced settings:";
             // 
-            // numericUpDownRepDelay
+            // checkBoxAutoFullscreen
             // 
-            numericUpDownRepDelay.Location = new Point(237, 43);
-            numericUpDownRepDelay.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
-            numericUpDownRepDelay.Name = "numericUpDownRepDelay";
-            numericUpDownRepDelay.Size = new Size(69, 23);
-            numericUpDownRepDelay.TabIndex = 3;
-            numericUpDownRepDelay.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            checkBoxAutoFullscreen.AutoSize = true;
+            checkBoxAutoFullscreen.Location = new Point(6, 73);
+            checkBoxAutoFullscreen.Name = "checkBoxAutoFullscreen";
+            checkBoxAutoFullscreen.Size = new Size(83, 19);
+            checkBoxAutoFullscreen.TabIndex = 4;
+            checkBoxAutoFullscreen.Text = "checkBox1";
+            checkBoxAutoFullscreen.UseVisualStyleBackColor = true;
             // 
-            // labelRepDelay
+            // numericUpDownPoll
             // 
-            labelRepDelay.AutoSize = true;
-            labelRepDelay.Location = new Point(6, 51);
-            labelRepDelay.Name = "labelRepDelay";
-            labelRepDelay.Size = new Size(148, 15);
-            labelRepDelay.TabIndex = 2;
-            labelRepDelay.Text = "Repetitive action delay, ms";
+            numericUpDownPoll.Location = new Point(237, 43);
+            numericUpDownPoll.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
+            numericUpDownPoll.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDownPoll.Name = "numericUpDownPoll";
+            numericUpDownPoll.Size = new Size(69, 23);
+            numericUpDownPoll.TabIndex = 3;
+            numericUpDownPoll.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // labelPollInterval
+            // 
+            labelPollInterval.AutoSize = true;
+            labelPollInterval.Location = new Point(6, 51);
+            labelPollInterval.Name = "labelPollInterval";
+            labelPollInterval.Size = new Size(192, 15);
+            labelPollInterval.TabIndex = 2;
+            labelPollInterval.Text = "Cursor position polling interval, ms";
             // 
             // labelRadius
             // 
@@ -274,16 +285,6 @@
             buttonCustomActions.UseVisualStyleBackColor = true;
             buttonCustomActions.Visible = false;
             // 
-            // checkBoxAutoFullscreen
-            // 
-            checkBoxAutoFullscreen.AutoSize = true;
-            checkBoxAutoFullscreen.Location = new Point(6, 73);
-            checkBoxAutoFullscreen.Name = "checkBoxAutoFullscreen";
-            checkBoxAutoFullscreen.Size = new Size(83, 19);
-            checkBoxAutoFullscreen.TabIndex = 4;
-            checkBoxAutoFullscreen.Text = "checkBox1";
-            checkBoxAutoFullscreen.UseVisualStyleBackColor = true;
-            // 
             // FormSettings
             // 
             AcceptButton = buttonApply;
@@ -312,7 +313,7 @@
             groupBoxMulti.PerformLayout();
             groupBoxAdvanced.ResumeLayout(false);
             groupBoxAdvanced.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDownRepDelay).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownPoll).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownRadius).EndInit();
             ResumeLayout(false);
         }
@@ -339,8 +340,8 @@
         private NumericUpDown numericUpDownRadius;
         private Button buttonDebugInfo;
         private Button buttonCustomActions;
-        private Label labelRepDelay;
-        private NumericUpDown numericUpDownRepDelay;
         private CheckBox checkBoxAutoFullscreen;
+        private NumericUpDown numericUpDownPoll;
+        private Label labelPollInterval;
     }
 }

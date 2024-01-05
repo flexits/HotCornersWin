@@ -16,7 +16,7 @@ namespace HotCornersWin
             radioButtonPrim.Text = Properties.Resources.strMonPrim;
             radioButtonSept.Text = Properties.Resources.strMonSepr;
             labelRadius.Text = Properties.Resources.strCornerRadius;
-            labelRepDelay.Text = Properties.Resources.strRepeatHitDelay;
+            labelPollInterval.Text = Properties.Resources.strPollInterval;
             buttonApply.Text = Properties.Resources.strApply;
             buttonCancel.Text = Properties.Resources.strCancel;
             buttonCustomActions.Text = Properties.Resources.strCustAct;
@@ -28,7 +28,7 @@ namespace HotCornersWin
         private void FormSettings_Load(object sender, EventArgs e)
         {
             numericUpDownRadius.Value = Properties.Settings.Default.AreaSize;
-            numericUpDownRepDelay.Value = Properties.Settings.Default.HitRepeatDelay;
+            numericUpDownPoll.Value = Properties.Settings.Default.PollInterval;
             checkBoxAutoFullscreen.Checked = Properties.Settings.Default.AutoFullscreen;
 
             int index = -1;
@@ -75,7 +75,7 @@ namespace HotCornersWin
         private void buttonApply_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.AreaSize = (int)numericUpDownRadius.Value;
-            Properties.Settings.Default.HitRepeatDelay = (int)numericUpDownRepDelay.Value;
+            Properties.Settings.Default.PollInterval = (int)numericUpDownPoll.Value;
             Properties.Settings.Default.AutoFullscreen = checkBoxAutoFullscreen.Checked;
             // validate monitor config
             MultiMonCfg monCfg = MultiMonCfg.Primary;
@@ -87,7 +87,7 @@ namespace HotCornersWin
             {
                 monCfg = MultiMonCfg.Separate;
             }
-            if (ScreenInfoHelper.GetScreens(monCfg).Length == 0)
+            if (ScreenInfoHelper.GetScreensInfo(monCfg).Length == 0)
             {
                 _ = MessageBox.Show(Properties.Resources.strBoundsErr,
                     Properties.Resources.strFatalErr,
