@@ -22,22 +22,11 @@ namespace HotCornersWin
             }.Start();
         }
 
-        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            _ = new Process
-            {
-                StartInfo = new ProcessStartInfo("https://uxwing.com/")
-                {
-                    UseShellExecute = true
-                }
-            }.Start();
-        }
-
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             _ = new Process
             {
-                StartInfo = new ProcessStartInfo("https://icons8.com/icon/3pKFQN9sPxow/layout")
+                StartInfo = new ProcessStartInfo("https://github.com/Lisa24Jackson")
                 {
                     UseShellExecute = true
                 }

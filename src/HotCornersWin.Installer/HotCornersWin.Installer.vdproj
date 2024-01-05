@@ -15,13 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_6004549BD2A64675B27A5544540441F2"
+        "MsmKey" = "8:_A0FB276812314041B74A8AC182682224"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_A0FB276812314041B74A8AC182682224"
+        "MsmKey" = "8:_C1AA8F4441C64E42A4F093DEDBFE4F19"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -122,10 +122,10 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6004549BD2A64675B27A5544540441F2"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C1AA8F4441C64E42A4F093DEDBFE4F19"
             {
-            "SourcePath" = "8:..\\..\\resources\\icons8-layout-96-cl.ico"
-            "TargetName" = "8:icon.ico"
+            "SourcePath" = "8:..\\..\\resources\\icon-new-on.ico"
+            "TargetName" = "8:icon-new-on.ico"
             "Tag" = "8:"
             "Folder" = "8:_235CF004E55846EA8165685ABF127890"
             "Condition" = "8:"
@@ -228,7 +228,7 @@
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.6.5"
+        "ProductVersion" = "8:0.7.0"
         "Manufacturer" = "8:HotCornersWin"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -352,7 +352,7 @@
             "Target" = "8:_A0FB276812314041B74A8AC182682224"
             "Folder" = "8:_1F889160752B400A9066536405CCD804"
             "WorkingFolder" = "8:_235CF004E55846EA8165685ABF127890"
-            "Icon" = "8:_6004549BD2A64675B27A5544540441F2"
+            "Icon" = "8:_C1AA8F4441C64E42A4F093DEDBFE4F19"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_B70EA8F579ED42AF9EF17BAFB10F5335"
@@ -366,7 +366,7 @@
             "Target" = "8:_A0FB276812314041B74A8AC182682224"
             "Folder" = "8:_C0F978E22FDC4F3EAE996AC766EDE497"
             "WorkingFolder" = "8:_235CF004E55846EA8165685ABF127890"
-            "Icon" = "8:_6004549BD2A64675B27A5544540441F2"
+            "Icon" = "8:_C1AA8F4441C64E42A4F093DEDBFE4F19"
             "Feature" = "8:"
             }
         }
@@ -770,7 +770,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A0FB276812314041B74A8AC182682224"
             {
-            "SourcePath" = "8:..\\HotCornersWin\\obj\\Release\\net7.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\HotCornersWin\\obj\\Debug\\net7.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_235CF004E55846EA8165685ABF127890"

@@ -91,9 +91,9 @@ namespace HotCornersWin.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon icons8_layout_96_bk {
+        internal static System.Drawing.Icon icon_new_off {
             get {
-                object obj = ResourceManager.GetObject("icons8_layout_96_bk", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_new_off", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -101,9 +101,9 @@ namespace HotCornersWin.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon icons8_layout_96_cl {
+        internal static System.Drawing.Icon icon_new_on {
             get {
-                object obj = ResourceManager.GetObject("icons8_layout_96_cl", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_new_on", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -442,11 +442,11 @@ namespace HotCornersWin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Repetitive action delay, ms.
+        ///   Looks up a localized string similar to Cursor position polling interval, ms.
         /// </summary>
-        internal static string strRepeatHitDelay {
+        internal static string strPollInterval {
             get {
-                return ResourceManager.GetString("strRepeatHitDelay", resourceCulture);
+                return ResourceManager.GetString("strPollInterval", resourceCulture);
             }
         }
     }

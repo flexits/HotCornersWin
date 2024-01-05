@@ -8,10 +8,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Copyright>Aleksandr Korostelin</Copyright>
     <SignAssembly>False</SignAssembly>
-    <AssemblyVersion>0.0.5</AssemblyVersion>
-    <FileVersion>0.0.5</FileVersion>
+    <AssemblyVersion>0.7.0</AssemblyVersion>
+    <FileVersion>0.7.0</FileVersion>
     <PackageIcon>icons8-layout-96.png</PackageIcon>
-    <ApplicationIcon>icons8-layout-96-cl.ico</ApplicationIcon>
+    <ApplicationIcon>icon-new-on.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -23,14 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="icons8-layout-96-cl.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\resources\icons8-layout-96.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+    <Content Include="icon-new-on.ico" />
   </ItemGroup>
 
   <ItemGroup>

@@ -127,11 +127,11 @@
   <data name="FormSettingsText" xml:space="preserve">
     <value>Settings - HotCornersWin</value>
   </data>
-  <data name="icons8_layout_96_bk" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icons8-layout-96-bk.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icon_new_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon-new-off.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icons8_layout_96_cl" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icons8-layout-96-cl.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icon_new_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon-new-on.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="saActionCenter" xml:space="preserve">
     <value>Action center</value>
@@ -244,7 +244,7 @@
   <data name="strMonVirt" xml:space="preserve">
     <value>Hot corners on the virtual display (the four farmost corners)</value>
   </data>
-  <data name="strRepeatHitDelay" xml:space="preserve">
-    <value>Repetitive action delay, ms</value>
+  <data name="strPollInterval" xml:space="preserve">
+    <value>Cursor position polling interval, ms</value>
   </data>
 </root>

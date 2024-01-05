@@ -30,11 +30,9 @@ Download the latest version from the [Releases](https://github.com/flexits/HotCo
 * [Adjustable delay before triggering an action](https://github.com/flexits/HotCornersWin/issues/4) (set separately for different corners)
 * Custom actions ([commands](https://github.com/flexits/HotCornersWin/issues/5) and [hotkeys](https://github.com/flexits/HotCornersWin/issues/6))
 * Manage startup in the app's [settings](https://github.com/flexits/HotCornersWin/issues/7)
-* Looks terrible under Win11 — [move to WinUI 3](https://github.com/flexits/HotCornersWin/issues/8), [redesign icons](https://github.com/flexits/HotCornersWin/issues/9)
+* Looks terrible under Win11 — [move to WinUI 3](https://github.com/flexits/HotCornersWin/issues/8)
 * feel free to add yours...
 
 ### Attributions:
 
-<a target="_blank" href="https://icons8.com/icon/3pKFQN9sPxow/layout">Screen</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
-
-Image by <a target="_blank" href="https://uxwing.com/">UXWing</a>
+Icons by <a target="_blank" href="https://github.com/Lisa24Jackson">Lisa Jackson</a>
