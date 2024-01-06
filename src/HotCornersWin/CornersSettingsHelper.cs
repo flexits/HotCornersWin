@@ -41,6 +41,7 @@ namespace HotCornersWin
                 try
                 {
                     Properties.Settings.Default.CustomActions = JsonSerializer.Serialize(value);
+                    // TODO reload actions
                     Properties.Settings.Default.Save();
                 }
                 catch { }

@@ -66,6 +66,7 @@
         private void buttonApply_Click(object sender, EventArgs e)
         {
             CornersSettingsHelper.CustomActionCommands = _actions;
+            // TODO don't close the window but apply settings
             DialogResult = DialogResult.OK;
         }
 

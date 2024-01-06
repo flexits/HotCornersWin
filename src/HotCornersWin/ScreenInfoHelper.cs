@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace HotCornersWin
 {
@@ -81,12 +82,14 @@ namespace HotCornersWin
             QUERY_USER_NOTIFICATION_STATE qnsState = QUERY_USER_NOTIFICATION_STATE.QUNS_NOT_PRESENT;
             if (SHQueryUserNotificationState(out qnsState) == HRESULT_S_OK)
             {
+                // TODO open start menu changes the state to QUNS_APP thus disrupting the operation! 
                 if (qnsState == QUERY_USER_NOTIFICATION_STATE.QUNS_ACCEPTS_NOTIFICATIONS)
                 {
                     return FullscreenState.NoFullscreen;
                 }
                 else
                 {
+                    Debug.WriteLine($"QNS State is {qnsState}"); // TODO remove debug
                     return FullscreenState.IsFullscreen;
                 }
             }

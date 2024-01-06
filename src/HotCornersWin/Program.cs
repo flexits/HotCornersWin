@@ -4,15 +4,14 @@ using System.Reflection;
 namespace HotCornersWin
 {
     // TODO consider autorun through registry, https://gist.github.com/HelBorn/2266242
-    // TODO custom actions (commands)
     // TODO custom actions (hotkeys)
 
     internal static class Program
     {
         private static readonly NotifyIcon _notifyIcon;
         private static readonly ToolStripMenuItem _menuItemSwitch;
-        private static readonly MouseHook _mouseHook;
-        private static readonly System.Timers.Timer _timer;
+
+        private static readonly HotCornersProcessor _cornersProcessor;
 
         private static readonly Form _dummyForm; // for accessing the UI thread
 
@@ -23,17 +22,14 @@ namespace HotCornersWin
         /// </summary>
         private static bool _wasIconClicked = false;
 
-        private static int _pollCyclesCounter = 0;
-        private static Corners _lastTestCorner = Corners.None;
-
-        private static bool _enabled = false;
+        //private static bool _enabled = false;
 
         /// <summary>
         /// The app's state flag. On set, changes the app's icon, 
         /// menu switch and tooltip according to its state.
         /// Doesn't actually impact the main timer!
         /// </summary>
-        private static bool Enabled
+        /*private static bool Enabled
         {
             get { return _enabled; }
             set
@@ -44,7 +40,7 @@ namespace HotCornersWin
                 string tooltip = _enabled ? Properties.Resources.strEnabled : Properties.Resources.strDisabled;
                 _notifyIcon.Text = $"HotCornersWin ({tooltip})";
             }
-        }
+        }*/
 
         static Program()
         {
@@ -83,10 +79,8 @@ namespace HotCornersWin
             _notifyIcon.MouseClick += NotifyIcon_MouseClick;
             _notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
 
-            _mouseHook = new();
-
-            _timer = new(75);
-            _timer.Elapsed += OnTimerElapsed;
+            _cornersProcessor = new();
+            _cornersProcessor.StateChanged += CornersProcessorStateChanged;
 
             _dummyForm = new Form()
             {
@@ -94,6 +88,8 @@ namespace HotCornersWin
                 WindowState = FormWindowState.Minimized
             };
             _ = _dummyForm.Handle;
+
+            CornersProcessorStateChanged(false);
         }
 
         [STAThread]
@@ -124,78 +120,21 @@ namespace HotCornersWin
             CornersHitTester.CornerRadius = Properties.Settings.Default.AreaSize;
 
             // Set polling interval
-            _timer.Interval = Properties.Settings.Default.PollInterval;
+            _cornersProcessor.PollInterval = Properties.Settings.Default.PollInterval;
 
             // Enable or disable operation according to the settings.
-            Enabled = Properties.Settings.Default.IsEnabled;
-            _timer.Enabled = Enabled;
+            _cornersProcessor.DisableOnFullscreen = Properties.Settings.Default.AutoFullscreen;
+            _cornersProcessor.Enabled = Properties.Settings.Default.IsEnabled;
 
             Application.Run();
         }
 
-        private static void OnTimerElapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        private static void CornersProcessorStateChanged(bool enabled)
         {
-            // Disable operation if something's running in a full screen mode.
-            if (Properties.Settings.Default.AutoFullscreen)
-            {
-                FullscreenState fullscreenState = ScreenInfoHelper.GetFullscreenState();
-                if (fullscreenState == FullscreenState.NoFullscreen)
-                {
-                    // operation allowed, check if the app is already running
-                    if (!Enabled)
-                    {
-                        _ = _dummyForm.BeginInvoke(new Action(() => Enabled = true));
-                        Debug.WriteLine($"Fullscreen state changed to {fullscreenState}, the app's enabled"); // TODO remove debug
-                    }
-                }
-                else
-                {
-                    // operation not allowed, disable the app if not already and quit
-                    if (Enabled)
-                    {
-                        _ = _dummyForm.BeginInvoke(new Action(() => Enabled = false));
-                        Debug.WriteLine($"Fullscreen state changed to {fullscreenState}, the app's disabled"); // TODO remove debug
-                    }
-                    return;
-                }
-            }
-
-            // Ignore cursor movements when a button is pressed (dragging).
-            if (_mouseHook.IsMouseButtonPressed)
-            {
-                // TODO introduce an option in Settings
-                return;
-            }
-
-            // Hit test cursor
-            Corners currentCorner = CornersHitTester.HitTest(_mouseHook.CursorPosition);
-            if (currentCorner == Corners.None)
-            {
-                // a miss; reset counter and exit
-                _lastTestCorner = Corners.None;
-                _pollCyclesCounter = 0;
-                return;
-            }
-            // a hit:
-            // if the corner was already hit in previous cycles,
-            // wait for a delay to expire and fire the correspondent action;
-            // if the delay has already expired, do nothing to avoid repetitive 
-            // action invocation while the cursor stays still
-            Debug.WriteLine($"Hit at {currentCorner}"); // TODO remove debug
-            if (_lastTestCorner == currentCorner)
-            {
-                _pollCyclesCounter++;
-            }
-            else
-            {
-                _pollCyclesCounter = 0;
-            }
-            if (_pollCyclesCounter == CornersSettingsHelper.GetDelay(currentCorner))
-            {
-                Debug.WriteLine($"Action at {currentCorner} after {_pollCyclesCounter} polls"); // TODO remove debug
-                CornersSettingsHelper.GetAction(currentCorner).Invoke();
-            }
-            _lastTestCorner = currentCorner;
+            _menuItemSwitch.Checked = enabled;
+            _notifyIcon.Icon = enabled ? Properties.Resources.icon_new_on : Properties.Resources.icon_new_off;
+            string tooltip = enabled ? Properties.Resources.strEnabled : Properties.Resources.strDisabled;
+            _notifyIcon.Text = $"HotCornersWin ({tooltip})";
         }
 
         /// <summary>
@@ -244,9 +183,8 @@ namespace HotCornersWin
             // reset the clicked flag
             _wasIconClicked = false;
             // toggle enable on double click and save changes
-            Enabled = !Enabled;
-            _timer.Enabled = Enabled;
-            Properties.Settings.Default.IsEnabled = Enabled;
+            _cornersProcessor.Enabled = !_cornersProcessor.Enabled;
+            Properties.Settings.Default.IsEnabled = _cornersProcessor.Enabled;
             Properties.Settings.Default.Save();
         }
 
@@ -261,9 +199,8 @@ namespace HotCornersWin
             // if settings were changed, apply
             if (fs.ShowDialog() == DialogResult.OK)
             {
-                CornersHitTester.CornerRadius = Properties.Settings.Default.AreaSize;
-                CornersHitTester.Screens = GetScreens();
-                CornersSettingsHelper.ReloadSettings();
+                _cornersProcessor.PollInterval = Properties.Settings.Default.PollInterval;
+                _cornersProcessor.DisableOnFullscreen = Properties.Settings.Default.AutoFullscreen;
             }
         }
 
@@ -280,10 +217,7 @@ namespace HotCornersWin
 
         private static void MenuItemQuit_Click(object? sender, EventArgs e)
         {
-            _timer.Stop();
-            _timer.Elapsed -= OnTimerElapsed;
-            _timer.Dispose();
-            _mouseHook?.Dispose();
+            _cornersProcessor.Dispose();
             _notifyIcon?.Dispose();
             Application.Exit();
         }

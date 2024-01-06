@@ -2,8 +2,6 @@ namespace HotCornersWin
 {
     public partial class FormSettings : Form
     {
-        private DialogResult _subDialogResult = DialogResult.Cancel;
-
         public FormSettings()
         {
             InitializeComponent();
@@ -96,6 +94,12 @@ namespace HotCornersWin
             Properties.Settings.Default.DelayRB = (int)numericUpDownDelayRB.Value;
             Properties.Settings.Default.DelayRT = (int)numericUpDownDelayRT.Value;
 
+            // assign actions
+            Properties.Settings.Default.LeftTop = (string)comboBoxLT.SelectedItem;
+            Properties.Settings.Default.RightTop = (string)comboBoxRT.SelectedItem;
+            Properties.Settings.Default.LeftBottom = (string)comboBoxLB.SelectedItem;
+            Properties.Settings.Default.RightBottom = (string)comboBoxRB.SelectedItem;
+
             Properties.Settings.Default.AreaSize = (int)numericUpDownRadius.Value;
             Properties.Settings.Default.PollInterval = (int)numericUpDownPoll.Value;
             Properties.Settings.Default.AutoFullscreen = checkBoxAutoFullscreen.Checked;
@@ -110,7 +114,8 @@ namespace HotCornersWin
             {
                 monCfg = MultiMonCfg.Separate;
             }
-            if (ScreenInfoHelper.GetScreensInfo(monCfg).Length == 0)
+            var screens = ScreenInfoHelper.GetScreensInfo(monCfg);
+            if (screens.Length == 0)
             {
                 _ = MessageBox.Show(Properties.Resources.strBoundsErr,
                     Properties.Resources.strFatalErr,
@@ -119,38 +124,26 @@ namespace HotCornersWin
             }
             Properties.Settings.Default.MultiMonCfg = (int)monCfg;
 
-            // assign actions
-            Properties.Settings.Default.LeftTop = (string)comboBoxLT.SelectedItem;
-            Properties.Settings.Default.RightTop = (string)comboBoxRT.SelectedItem;
-            Properties.Settings.Default.LeftBottom = (string)comboBoxLB.SelectedItem;
-            Properties.Settings.Default.RightBottom = (string)comboBoxRB.SelectedItem;
             Properties.Settings.Default.Save();
-            DialogResult = DialogResult.OK;
-        }
 
-        private void buttonCancel_Click(object sender, EventArgs e)
-        {
-            if (_subDialogResult == DialogResult.OK)
-            {
-                DialogResult = DialogResult.OK;
-            }
-            else
-            {
-                DialogResult = DialogResult.Cancel;
-            }
+            // TODO PollInterval and AutoFullscreen won't apply here 
+            CornersHitTester.CornerRadius = Properties.Settings.Default.AreaSize;
+            CornersHitTester.Screens = screens;
+            CornersSettingsHelper.ReloadSettings();
         }
 
         private void buttonCustomActions_Click(object sender, EventArgs e)
         {
-            _subDialogResult = new FormActionsEditor()
+            var fae = new FormActionsEditor()
             {
                 Icon = Properties.Resources.icon_new_on,
                 Text = Properties.Resources.FormActionsEditorText,
                 TopMost = true,
                 StartPosition = FormStartPosition.CenterParent,
-            }.ShowDialog(this);
-            if (_subDialogResult == DialogResult.OK)
+            };
+            if (fae.ShowDialog(this) == DialogResult.OK)
             {
+                // TODO see CornersSettingsHelper line 44
                 CornersSettingsHelper.ReloadSettings();
                 LoadActions();
             }

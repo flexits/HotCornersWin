@@ -244,7 +244,6 @@
             buttonCancel.TabIndex = 21;
             buttonCancel.Text = "Cancel";
             buttonCancel.UseVisualStyleBackColor = true;
-            buttonCancel.Click += buttonCancel_Click;
             // 
             // groupBoxMulti
             // 
@@ -378,6 +377,7 @@
             AcceptButton = buttonApply;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = buttonCancel;
             ClientSize = new Size(706, 369);
             Controls.Add(buttonCustomActions);
             Controls.Add(buttonDebugInfo);
