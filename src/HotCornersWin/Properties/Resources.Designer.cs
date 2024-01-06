@@ -80,6 +80,15 @@ namespace HotCornersWin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actions Editor.
+        /// </summary>
+        internal static string FormActionsEditorText {
+            get {
+                return ResourceManager.GetString("FormActionsEditorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings - HotCornersWin.
         /// </summary>
         internal static string FormSettingsText {
@@ -235,6 +244,15 @@ namespace HotCornersWin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        internal static string strAdd {
+            get {
+                return ResourceManager.GetString("strAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced settings:.
         /// </summary>
         internal static string strAdvSet {
@@ -325,6 +343,33 @@ namespace HotCornersWin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shell command:.
+        /// </summary>
+        internal static string strCommand {
+            get {
+                return ResourceManager.GetString("strCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The shell command value must not be empty!.
+        /// </summary>
+        internal static string strCommandEmpty {
+            get {
+                return ResourceManager.GetString("strCommandEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm removal.
+        /// </summary>
+        internal static string strConfirmRemoval {
+            get {
+                return ResourceManager.GetString("strConfirmRemoval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hot corner area radius, px.
         /// </summary>
         internal static string strCornerRadius {
@@ -361,6 +406,15 @@ namespace HotCornersWin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        internal static string strEdit {
+            get {
+                return ResourceManager.GetString("strEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to enabled.
         /// </summary>
         internal static string strEnabled {
@@ -370,11 +424,29 @@ namespace HotCornersWin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string strError {
+            get {
+                return ResourceManager.GetString("strError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fatal error.
         /// </summary>
         internal static string strFatalErr {
             get {
                 return ResourceManager.GetString("strFatalErr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finish.
+        /// </summary>
+        internal static string strFinish {
+            get {
+                return ResourceManager.GetString("strFinish", resourceCulture);
             }
         }
         
@@ -451,11 +523,65 @@ namespace HotCornersWin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name:.
+        /// </summary>
+        internal static string strName {
+            get {
+                return ResourceManager.GetString("strName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This name already exists, use a unique one!.
+        /// </summary>
+        internal static string strNameAlreadyExists {
+            get {
+                return ResourceManager.GetString("strNameAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name must not be empty!.
+        /// </summary>
+        internal static string strNameEmpty {
+            get {
+                return ResourceManager.GetString("strNameEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cursor position polling interval, ms.
         /// </summary>
         internal static string strPollInterval {
             get {
                 return ResourceManager.GetString("strPollInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm item removal?.
+        /// </summary>
+        internal static string strRemovalWarning {
+            get {
+                return ResourceManager.GetString("strRemovalWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        internal static string strRemove {
+            get {
+                return ResourceManager.GetString("strRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save changes.
+        /// </summary>
+        internal static string strSaveChanges {
+            get {
+                return ResourceManager.GetString("strSaveChanges", resourceCulture);
             }
         }
     }

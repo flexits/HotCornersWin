@@ -1,4 +1,7 @@
-﻿namespace HotCornersWin
+﻿using System.Diagnostics;
+using System.Text.Json;
+
+namespace HotCornersWin
 {
     /// <summary>
     /// Wrapper around the app's settings providing access 
@@ -7,9 +10,47 @@
     public static class CornersSettingsHelper
     {
         /// <summary>
-        /// All available actions and their human-readable names.
+        /// User-adjustable actions. 
+        /// Dictionary key is the action name, 
+        /// dictionary value is the Windows shell command.
         /// </summary>
-        private static Dictionary<string, Action> _allActions = new()
+        public static Dictionary<string, string> CustomActionCommands
+        {
+            get
+            {
+                try
+                {
+                    var actions = JsonSerializer.
+                        Deserialize<Dictionary<string, string>>(Properties.Settings.Default.CustomActions);
+                    if (actions is null)
+                    {
+                        return new Dictionary<string, string>();
+                    }
+                    else
+                    {
+                        return actions;
+                    }
+                }
+                catch
+                {
+                    return new Dictionary<string, string>();
+                }
+            }
+            set
+            {
+                try
+                {
+                    Properties.Settings.Default.CustomActions = JsonSerializer.Serialize(value);
+                    Properties.Settings.Default.Save();
+                }
+                catch { }
+            }
+        }
+
+        /// <summary>
+        /// Predefined actions and their human-readable names.
+        /// </summary>
+        private static readonly Dictionary<string, Action> _predefinedActions = new()
         {
             {Properties.Resources.saNone,  () => { } },
             {Properties.Resources.saStartMenu,  () => {SendKeys.SendWait("^{ESC}"); } },
@@ -93,6 +134,11 @@
         };
 
         /// <summary>
+        /// All available actions and their human-readable names.
+        /// </summary>
+        private static Dictionary<string, Action> _allActions = new();
+
+        /// <summary>
         /// Hot corners and their correspondent actions as configured in the settings.
         /// </summary>
         private static Dictionary<Corners, Action> _cornerActions = new()
@@ -124,6 +170,34 @@
         /// </summary>
         public static void ReloadSettings()
         {
+            _cornerDelays[Corners.LeftTop] = Properties.Settings.Default.DelayLT;
+            _cornerDelays[Corners.LeftBottom] = Properties.Settings.Default.DelayLB;
+            _cornerDelays[Corners.RightTop] = Properties.Settings.Default.DelayRT;
+            _cornerDelays[Corners.RightBottom] = Properties.Settings.Default.DelayRB;
+
+            _allActions.Clear();
+            foreach (var action in _predefinedActions)
+            {
+                _ = _allActions.TryAdd(action.Key, action.Value);
+            }
+            foreach (var command in CustomActionCommands)
+            {
+                if (string.IsNullOrEmpty(command.Value))
+                {
+                    continue;
+                }
+                _ = _allActions.TryAdd(command.Key, () =>
+                {
+                    _ = new Process
+                    {
+                        StartInfo = new ProcessStartInfo(command.Value)
+                        {
+                            UseShellExecute = true
+                        }
+                    }.Start();
+                });
+            }
+
             _cornerActions[Corners.LeftTop] = _allActions
                 .TryGetValue(Properties.Settings.Default.LeftTop, out Action? actionLT) ? actionLT : (() => { });
             _cornerActions[Corners.LeftBottom] = _allActions
@@ -132,10 +206,6 @@
                 .TryGetValue(Properties.Settings.Default.RightTop, out Action? actionRT) ? actionRT : (() => { });
             _cornerActions[Corners.RightBottom] = _allActions
                 .TryGetValue(Properties.Settings.Default.RightBottom, out Action? actionRB) ? actionRB : (() => { });
-            _cornerDelays[Corners.LeftTop] = Properties.Settings.Default.DelayLT;
-            _cornerDelays[Corners.LeftBottom] = Properties.Settings.Default.DelayLB;
-            _cornerDelays[Corners.RightTop] = Properties.Settings.Default.DelayRT;
-            _cornerDelays[Corners.RightBottom] = Properties.Settings.Default.DelayRB;
         }
         
         /// <summary>

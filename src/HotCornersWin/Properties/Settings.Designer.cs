@@ -178,5 +178,18 @@ namespace HotCornersWin.Properties {
                 this["DelayRB"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\"{\\\"Calculator\\\":\\\"calc.exe\\\",\\\"GitHub\\\":\\\"https://github.com/flexits/\\\",\\\"All Ta" +
+            "sks\\\":\\\"Shell:::{ED7BA470-8E54-465E-825C-99712043E01C}\\\"}\"")]
+        public string CustomActions {
+            get {
+                return ((string)(this["CustomActions"]));
+            }
+            set {
+                this["CustomActions"] = value;
+            }
+        }
     }
 }

@@ -35,6 +35,12 @@
             pictureBox1 = new PictureBox();
             comboBoxLT = new ComboBox();
             groupBoxCorners = new GroupBox();
+            labelDelay2 = new Label();
+            numericUpDownDelayLB = new NumericUpDown();
+            labelDelay4 = new Label();
+            numericUpDownDelayRB = new NumericUpDown();
+            labelDelay3 = new Label();
+            numericUpDownDelayRT = new NumericUpDown();
             labelDelay1 = new Label();
             numericUpDownDelayLT = new NumericUpDown();
             comboBoxRB = new ComboBox();
@@ -54,23 +60,17 @@
             numericUpDownRadius = new NumericUpDown();
             buttonDebugInfo = new Button();
             buttonCustomActions = new Button();
-            labelDelay3 = new Label();
-            numericUpDownDelayRT = new NumericUpDown();
-            labelDelay4 = new Label();
-            numericUpDownDelayRB = new NumericUpDown();
-            labelDelay2 = new Label();
-            numericUpDownDelayLB = new NumericUpDown();
             contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBoxCorners.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayLB).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayRB).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayRT).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownDelayLT).BeginInit();
             groupBoxMulti.SuspendLayout();
             groupBoxAdvanced.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownPoll).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownRadius).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayRT).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayRB).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayLB).BeginInit();
             SuspendLayout();
             // 
             // contextMenuStrip1
@@ -127,9 +127,60 @@
             groupBoxCorners.Location = new Point(12, 12);
             groupBoxCorners.Name = "groupBoxCorners";
             groupBoxCorners.Size = new Size(680, 210);
-            groupBoxCorners.TabIndex = 3;
+            groupBoxCorners.TabIndex = 1;
             groupBoxCorners.TabStop = false;
             groupBoxCorners.Text = "Choose actions for the hot corners:";
+            // 
+            // labelDelay2
+            // 
+            labelDelay2.AutoSize = true;
+            labelDelay2.Location = new Point(6, 183);
+            labelDelay2.Name = "labelDelay2";
+            labelDelay2.Size = new Size(137, 15);
+            labelDelay2.TabIndex = 13;
+            labelDelay2.Text = "Action delay, poll cycles:";
+            // 
+            // numericUpDownDelayLB
+            // 
+            numericUpDownDelayLB.Location = new Point(155, 181);
+            numericUpDownDelayLB.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDownDelayLB.Name = "numericUpDownDelayLB";
+            numericUpDownDelayLB.Size = new Size(51, 23);
+            numericUpDownDelayLB.TabIndex = 5;
+            // 
+            // labelDelay4
+            // 
+            labelDelay4.AutoSize = true;
+            labelDelay4.Location = new Point(474, 183);
+            labelDelay4.Name = "labelDelay4";
+            labelDelay4.Size = new Size(137, 15);
+            labelDelay4.TabIndex = 11;
+            labelDelay4.Text = "Action delay, poll cycles:";
+            // 
+            // numericUpDownDelayRB
+            // 
+            numericUpDownDelayRB.Location = new Point(623, 181);
+            numericUpDownDelayRB.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDownDelayRB.Name = "numericUpDownDelayRB";
+            numericUpDownDelayRB.Size = new Size(51, 23);
+            numericUpDownDelayRB.TabIndex = 9;
+            // 
+            // labelDelay3
+            // 
+            labelDelay3.AutoSize = true;
+            labelDelay3.Location = new Point(474, 53);
+            labelDelay3.Name = "labelDelay3";
+            labelDelay3.Size = new Size(137, 15);
+            labelDelay3.TabIndex = 9;
+            labelDelay3.Text = "Action delay, poll cycles:";
+            // 
+            // numericUpDownDelayRT
+            // 
+            numericUpDownDelayRT.Location = new Point(623, 51);
+            numericUpDownDelayRT.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDownDelayRT.Name = "numericUpDownDelayRT";
+            numericUpDownDelayRT.Size = new Size(51, 23);
+            numericUpDownDelayRT.TabIndex = 7;
             // 
             // labelDelay1
             // 
@@ -146,7 +197,7 @@
             numericUpDownDelayLT.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             numericUpDownDelayLT.Name = "numericUpDownDelayLT";
             numericUpDownDelayLT.Size = new Size(51, 23);
-            numericUpDownDelayLT.TabIndex = 6;
+            numericUpDownDelayLT.TabIndex = 3;
             // 
             // comboBoxRB
             // 
@@ -155,7 +206,7 @@
             comboBoxRB.Location = new Point(474, 152);
             comboBoxRB.Name = "comboBoxRB";
             comboBoxRB.Size = new Size(200, 23);
-            comboBoxRB.TabIndex = 5;
+            comboBoxRB.TabIndex = 8;
             // 
             // comboBoxRT
             // 
@@ -164,7 +215,7 @@
             comboBoxRT.Location = new Point(474, 22);
             comboBoxRT.Name = "comboBoxRT";
             comboBoxRT.Size = new Size(200, 23);
-            comboBoxRT.TabIndex = 4;
+            comboBoxRT.TabIndex = 6;
             // 
             // comboBoxLB
             // 
@@ -173,14 +224,14 @@
             comboBoxLB.Location = new Point(6, 152);
             comboBoxLB.Name = "comboBoxLB";
             comboBoxLB.Size = new Size(200, 23);
-            comboBoxLB.TabIndex = 3;
+            comboBoxLB.TabIndex = 4;
             // 
             // buttonApply
             // 
             buttonApply.Location = new Point(584, 336);
             buttonApply.Name = "buttonApply";
             buttonApply.Size = new Size(108, 23);
-            buttonApply.TabIndex = 4;
+            buttonApply.TabIndex = 20;
             buttonApply.Text = "Apply";
             buttonApply.UseVisualStyleBackColor = true;
             buttonApply.Click += buttonApply_Click;
@@ -190,7 +241,7 @@
             buttonCancel.Location = new Point(12, 336);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(108, 23);
-            buttonCancel.TabIndex = 5;
+            buttonCancel.TabIndex = 21;
             buttonCancel.Text = "Cancel";
             buttonCancel.UseVisualStyleBackColor = true;
             buttonCancel.Click += buttonCancel_Click;
@@ -203,7 +254,7 @@
             groupBoxMulti.Location = new Point(12, 228);
             groupBoxMulti.Name = "groupBoxMulti";
             groupBoxMulti.Size = new Size(362, 102);
-            groupBoxMulti.TabIndex = 6;
+            groupBoxMulti.TabIndex = 10;
             groupBoxMulti.TabStop = false;
             groupBoxMulti.Text = "Multi-monitor settings";
             // 
@@ -213,7 +264,7 @@
             radioButtonSept.Location = new Point(6, 72);
             radioButtonSept.Name = "radioButtonSept";
             radioButtonSept.Size = new Size(277, 19);
-            radioButtonSept.TabIndex = 2;
+            radioButtonSept.TabIndex = 13;
             radioButtonSept.TabStop = true;
             radioButtonSept.Text = "Each physical monitor has the same hot corners";
             radioButtonSept.UseVisualStyleBackColor = true;
@@ -224,7 +275,7 @@
             radioButtonPrim.Location = new Point(6, 47);
             radioButtonPrim.Name = "radioButtonPrim";
             radioButtonPrim.Size = new Size(234, 19);
-            radioButtonPrim.TabIndex = 1;
+            radioButtonPrim.TabIndex = 12;
             radioButtonPrim.TabStop = true;
             radioButtonPrim.Text = "Hot corners on the primary display only";
             radioButtonPrim.UseVisualStyleBackColor = true;
@@ -235,7 +286,7 @@
             radioButtonVirt.Location = new Point(6, 22);
             radioButtonVirt.Name = "radioButtonVirt";
             radioButtonVirt.Size = new Size(339, 19);
-            radioButtonVirt.TabIndex = 0;
+            radioButtonVirt.TabIndex = 11;
             radioButtonVirt.TabStop = true;
             radioButtonVirt.Text = "Hot corners on the virtual display (the four farmost corners)";
             radioButtonVirt.UseVisualStyleBackColor = true;
@@ -250,7 +301,7 @@
             groupBoxAdvanced.Location = new Point(380, 228);
             groupBoxAdvanced.Name = "groupBoxAdvanced";
             groupBoxAdvanced.Size = new Size(312, 102);
-            groupBoxAdvanced.TabIndex = 7;
+            groupBoxAdvanced.TabIndex = 14;
             groupBoxAdvanced.TabStop = false;
             groupBoxAdvanced.Text = "Advanced settings:";
             // 
@@ -260,7 +311,7 @@
             checkBoxAutoFullscreen.Location = new Point(6, 73);
             checkBoxAutoFullscreen.Name = "checkBoxAutoFullscreen";
             checkBoxAutoFullscreen.Size = new Size(83, 19);
-            checkBoxAutoFullscreen.TabIndex = 4;
+            checkBoxAutoFullscreen.TabIndex = 17;
             checkBoxAutoFullscreen.Text = "checkBox1";
             checkBoxAutoFullscreen.UseVisualStyleBackColor = true;
             // 
@@ -271,7 +322,7 @@
             numericUpDownPoll.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDownPoll.Name = "numericUpDownPoll";
             numericUpDownPoll.Size = new Size(69, 23);
-            numericUpDownPoll.TabIndex = 3;
+            numericUpDownPoll.TabIndex = 16;
             numericUpDownPoll.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // labelPollInterval
@@ -299,86 +350,34 @@
             numericUpDownRadius.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDownRadius.Name = "numericUpDownRadius";
             numericUpDownRadius.Size = new Size(69, 23);
-            numericUpDownRadius.TabIndex = 0;
+            numericUpDownRadius.TabIndex = 15;
             numericUpDownRadius.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // buttonDebugInfo
             // 
-            buttonDebugInfo.Location = new Point(470, 336);
+            buttonDebugInfo.Location = new Point(356, 336);
             buttonDebugInfo.Name = "buttonDebugInfo";
             buttonDebugInfo.Size = new Size(108, 23);
-            buttonDebugInfo.TabIndex = 3;
+            buttonDebugInfo.TabIndex = 18;
             buttonDebugInfo.Text = "Debug info";
             buttonDebugInfo.UseVisualStyleBackColor = true;
             buttonDebugInfo.Visible = false;
             // 
             // buttonCustomActions
             // 
-            buttonCustomActions.Location = new Point(356, 336);
+            buttonCustomActions.Location = new Point(470, 336);
             buttonCustomActions.Name = "buttonCustomActions";
             buttonCustomActions.Size = new Size(108, 23);
-            buttonCustomActions.TabIndex = 2;
+            buttonCustomActions.TabIndex = 19;
             buttonCustomActions.Text = "Custom actions";
             buttonCustomActions.UseVisualStyleBackColor = true;
-            buttonCustomActions.Visible = false;
-            // 
-            // labelDelay3
-            // 
-            labelDelay3.AutoSize = true;
-            labelDelay3.Location = new Point(474, 53);
-            labelDelay3.Name = "labelDelay3";
-            labelDelay3.Size = new Size(137, 15);
-            labelDelay3.TabIndex = 9;
-            labelDelay3.Text = "Action delay, poll cycles:";
-            // 
-            // numericUpDownDelayRT
-            // 
-            numericUpDownDelayRT.Location = new Point(623, 51);
-            numericUpDownDelayRT.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDownDelayRT.Name = "numericUpDownDelayRT";
-            numericUpDownDelayRT.Size = new Size(51, 23);
-            numericUpDownDelayRT.TabIndex = 8;
-            // 
-            // labelDelay4
-            // 
-            labelDelay4.AutoSize = true;
-            labelDelay4.Location = new Point(474, 183);
-            labelDelay4.Name = "labelDelay4";
-            labelDelay4.Size = new Size(137, 15);
-            labelDelay4.TabIndex = 11;
-            labelDelay4.Text = "Action delay, poll cycles:";
-            // 
-            // numericUpDownDelayRB
-            // 
-            numericUpDownDelayRB.Location = new Point(623, 181);
-            numericUpDownDelayRB.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDownDelayRB.Name = "numericUpDownDelayRB";
-            numericUpDownDelayRB.Size = new Size(51, 23);
-            numericUpDownDelayRB.TabIndex = 10;
-            // 
-            // labelDelay2
-            // 
-            labelDelay2.AutoSize = true;
-            labelDelay2.Location = new Point(6, 183);
-            labelDelay2.Name = "labelDelay2";
-            labelDelay2.Size = new Size(137, 15);
-            labelDelay2.TabIndex = 13;
-            labelDelay2.Text = "Action delay, poll cycles:";
-            // 
-            // numericUpDownDelayLB
-            // 
-            numericUpDownDelayLB.Location = new Point(155, 181);
-            numericUpDownDelayLB.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDownDelayLB.Name = "numericUpDownDelayLB";
-            numericUpDownDelayLB.Size = new Size(51, 23);
-            numericUpDownDelayLB.TabIndex = 12;
+            buttonCustomActions.Click += buttonCustomActions_Click;
             // 
             // FormSettings
             // 
             AcceptButton = buttonApply;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            CancelButton = buttonCancel;
             ClientSize = new Size(706, 369);
             Controls.Add(buttonCustomActions);
             Controls.Add(buttonDebugInfo);
@@ -388,16 +387,21 @@
             Controls.Add(buttonApply);
             Controls.Add(groupBoxCorners);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            KeyPreview = true;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormSettings";
             StartPosition = FormStartPosition.Manual;
             Text = "Settings - HotCornersWin";
             Load += FormSettings_Load;
+            KeyDown += FormSettings_KeyDown;
             contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             groupBoxCorners.ResumeLayout(false);
             groupBoxCorners.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayLB).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayRB).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayRT).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownDelayLT).EndInit();
             groupBoxMulti.ResumeLayout(false);
             groupBoxMulti.PerformLayout();
@@ -405,9 +409,6 @@
             groupBoxAdvanced.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownPoll).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownRadius).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayRT).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayRB).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayLB).EndInit();
             ResumeLayout(false);
         }
 

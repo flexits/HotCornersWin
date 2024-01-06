@@ -124,6 +124,9 @@
   <data name="FormAboutText" xml:space="preserve">
     <value>About - HotCornersWin</value>
   </data>
+  <data name="FormActionsEditorText" xml:space="preserve">
+    <value>Actions Editor</value>
+  </data>
   <data name="FormSettingsText" xml:space="preserve">
     <value>Settings - HotCornersWin</value>
   </data>
@@ -175,6 +178,9 @@
   <data name="strActionDelay" xml:space="preserve">
     <value>Action delay, poll cycles:</value>
   </data>
+  <data name="strAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
   <data name="strAdvSet" xml:space="preserve">
     <value>Advanced settings:</value>
   </data>
@@ -205,6 +211,15 @@
   <data name="strChooseAction" xml:space="preserve">
     <value>Choose actions and delays for the hot corners:</value>
   </data>
+  <data name="strCommand" xml:space="preserve">
+    <value>Shell command:</value>
+  </data>
+  <data name="strCommandEmpty" xml:space="preserve">
+    <value>The shell command value must not be empty!</value>
+  </data>
+  <data name="strConfirmRemoval" xml:space="preserve">
+    <value>Confirm removal</value>
+  </data>
   <data name="strCornerRadius" xml:space="preserve">
     <value>Hot corner area radius, px</value>
   </data>
@@ -217,11 +232,20 @@
   <data name="strDisabled" xml:space="preserve">
     <value>disabled</value>
   </data>
+  <data name="strEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="strEnabled" xml:space="preserve">
     <value>enabled</value>
   </data>
+  <data name="strError" xml:space="preserve">
+    <value>Error</value>
+  </data>
   <data name="strFatalErr" xml:space="preserve">
     <value>Fatal error</value>
+  </data>
+  <data name="strFinish" xml:space="preserve">
+    <value>Finish</value>
   </data>
   <data name="strMenuAbout" xml:space="preserve">
     <value>About</value>
@@ -247,7 +271,25 @@
   <data name="strMonVirt" xml:space="preserve">
     <value>Hot corners on the virtual display (the four farmost corners)</value>
   </data>
+  <data name="strName" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="strNameAlreadyExists" xml:space="preserve">
+    <value>This name already exists, use a unique one!</value>
+  </data>
+  <data name="strNameEmpty" xml:space="preserve">
+    <value>The name must not be empty!</value>
+  </data>
   <data name="strPollInterval" xml:space="preserve">
     <value>Cursor position polling interval, ms</value>
+  </data>
+  <data name="strRemovalWarning" xml:space="preserve">
+    <value>Confirm item removal?</value>
+  </data>
+  <data name="strRemove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="strSaveChanges" xml:space="preserve">
+    <value>Save changes</value>
   </data>
 </root>

@@ -41,5 +41,8 @@
     <Setting Name="DelayRB" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="CustomActions" Type="System.String" Scope="User">
+      <Value Profile="(Default)">"{\"Calculator\":\"calc.exe\",\"GitHub\":\"https://github.com/flexits/\",\"All Tasks\":\"Shell:::{ED7BA470-8E54-465E-825C-99712043E01C}\"}"</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

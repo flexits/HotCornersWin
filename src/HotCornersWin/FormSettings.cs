@@ -2,7 +2,7 @@ namespace HotCornersWin
 {
     public partial class FormSettings : Form
     {
-        private readonly string[] _actionNames;
+        private DialogResult _subDialogResult = DialogResult.Cancel;
 
         public FormSettings()
         {
@@ -26,7 +26,30 @@ namespace HotCornersWin
             labelDelay2.Text = Properties.Resources.strActionDelay;
             labelDelay3.Text = Properties.Resources.strActionDelay;
             labelDelay4.Text = Properties.Resources.strActionDelay;
-            _actionNames = CornersSettingsHelper.GetActionNames();
+        }
+
+        /// <summary>
+        /// Load actions' names from settings into comboboxes.
+        /// </summary>
+        private void LoadActions()
+        {
+            string[] actionNames = CornersSettingsHelper.GetActionNames();
+            int index = -1;
+            comboBoxLT.DataSource = actionNames.ToArray();
+            index = Array.IndexOf(actionNames, Properties.Settings.Default.LeftTop);
+            comboBoxLT.SelectedIndex = (index >= 0) ? index : 0;
+
+            comboBoxRT.DataSource = actionNames.ToArray();
+            index = Array.IndexOf(actionNames, Properties.Settings.Default.RightTop);
+            comboBoxRT.SelectedIndex = (index >= 0) ? index : 0;
+
+            comboBoxLB.DataSource = actionNames.ToArray();
+            index = Array.IndexOf(actionNames, Properties.Settings.Default.LeftBottom);
+            comboBoxLB.SelectedIndex = (index >= 0) ? index : 0;
+
+            comboBoxRB.DataSource = actionNames.ToArray();
+            index = Array.IndexOf(actionNames, Properties.Settings.Default.RightBottom);
+            comboBoxRB.SelectedIndex = (index >= 0) ? index : 0;
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
@@ -39,23 +62,6 @@ namespace HotCornersWin
             numericUpDownRadius.Value = Properties.Settings.Default.AreaSize;
             numericUpDownPoll.Value = Properties.Settings.Default.PollInterval;
             checkBoxAutoFullscreen.Checked = Properties.Settings.Default.AutoFullscreen;
-
-            int index = -1;
-            comboBoxLT.DataSource = _actionNames.ToArray();
-            index = Array.IndexOf(_actionNames, Properties.Settings.Default.LeftTop);
-            comboBoxLT.SelectedIndex = (index >= 0) ? index : 0;
-
-            comboBoxRT.DataSource = _actionNames.ToArray();
-            index = Array.IndexOf(_actionNames, Properties.Settings.Default.RightTop);
-            comboBoxRT.SelectedIndex = (index >= 0) ? index : 0;
-
-            comboBoxLB.DataSource = _actionNames.ToArray();
-            index = Array.IndexOf(_actionNames, Properties.Settings.Default.LeftBottom);
-            comboBoxLB.SelectedIndex = (index >= 0) ? index : 0;
-
-            comboBoxRB.DataSource = _actionNames.ToArray();
-            index = Array.IndexOf(_actionNames, Properties.Settings.Default.RightBottom);
-            comboBoxRB.SelectedIndex = (index >= 0) ? index : 0;
 
             if (Enum.IsDefined(typeof(MultiMonCfg), Properties.Settings.Default.MultiMonCfg))
             {
@@ -79,6 +85,8 @@ namespace HotCornersWin
             {
                 radioButtonPrim.Checked = true;
             }
+
+            LoadActions();
         }
 
         private void buttonApply_Click(object sender, EventArgs e)
@@ -91,6 +99,7 @@ namespace HotCornersWin
             Properties.Settings.Default.AreaSize = (int)numericUpDownRadius.Value;
             Properties.Settings.Default.PollInterval = (int)numericUpDownPoll.Value;
             Properties.Settings.Default.AutoFullscreen = checkBoxAutoFullscreen.Checked;
+
             // validate monitor config
             MultiMonCfg monCfg = MultiMonCfg.Primary;
             if (radioButtonVirt.Checked)
@@ -109,6 +118,7 @@ namespace HotCornersWin
                 return;
             }
             Properties.Settings.Default.MultiMonCfg = (int)monCfg;
+
             // assign actions
             Properties.Settings.Default.LeftTop = (string)comboBoxLT.SelectedItem;
             Properties.Settings.Default.RightTop = (string)comboBoxRT.SelectedItem;
@@ -120,7 +130,40 @@ namespace HotCornersWin
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.Cancel;
+            if (_subDialogResult == DialogResult.OK)
+            {
+                DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                DialogResult = DialogResult.Cancel;
+            }
+        }
+
+        private void buttonCustomActions_Click(object sender, EventArgs e)
+        {
+            _subDialogResult = new FormActionsEditor()
+            {
+                Icon = Properties.Resources.icon_new_on,
+                Text = Properties.Resources.FormActionsEditorText,
+                TopMost = true,
+                StartPosition = FormStartPosition.CenterParent,
+            }.ShowDialog(this);
+            if (_subDialogResult == DialogResult.OK)
+            {
+                CornersSettingsHelper.ReloadSettings();
+                LoadActions();
+            }
+        }
+
+        private void FormSettings_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Escape:
+                    buttonCancel.PerformClick();
+                    break;
+            }
         }
     }
 }
