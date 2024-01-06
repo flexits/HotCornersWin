@@ -7,13 +7,13 @@ This simple application resides in the notification area and allows user to choo
 
 ### Features
 
-You can choose an action for different corners independently or leave some without an action at all. There's a number of pre-defined actions as well as the Action Editor for creation of **custom actions**. 
+You can choose an action for different corners independently or leave some without an action at all. There's a number of pre-defined actions as well as the Action Editor for creation of **custom actions** – you can assign anything suitable for the Windows Run dialog (Win+R): that is, an executable file, a [URI](https://learn.microsoft.com/en-us/windows/uwp/launch-resume/launch-settings-app?WT.mc_id=WD-MVP-5000693#ms-settings-uri-scheme-reference), or a [CLSID-pointed folder](https://www.autohotkey.com/docs/v1/misc/CLSID-List.htm).
 
 An adjustable **delay** before triggering an action is associated with each hot corner. It's useful if the action has to be executed not immediately on the cursor entering the sensitive area, but when the cursor stays in the sensitive area for a certain time. The sensitive area **size** is customizable too.
 
 **Multi-monitor** environments are fully supported. Hot corners may be placed on the primary display only, on the virtual display (it contains all the monitors combined in one), or repeated on each monitor.
 
-Minimal interference: the application can **autodetect a full-screen application** (a game, for example) launch and exit and automatically turn itself off and on respectively. It **ignores dragging** (basically, any mouse gestures performed with a button held down) and won't launch actions in this case.
+Minimal interference: the application can **autodetect a full-screen application** (a game, for example) launch and exit and automatically turn itself off and on respectively. It **ignores dragging** (basically, any mouse gestures performed with a button held down) and won't trigger actions in this case.
 
 Manual turn on and off is as simple as double-click on the app's icon in the notification area (tray icon). Single click brings the Settings window up.
 
@@ -46,7 +46,7 @@ See [Issues](https://github.com/flexits/HotCornersWin/issues) and feel free to a
 
 ### Contributions
 
-Any contributions are welcomed, not limited to the code but including feature requests, opinions on the app's operation, UI/UX etc. Feel free to open an issue or leave your note in the existing one.
+Any contributions are welcomed, not limited to the code but including feature requests, opinions on the app's operation, UI/UX etc. Feel free to open an issue or leave your note in the existing ones.
 
 ### Attributions:
 
