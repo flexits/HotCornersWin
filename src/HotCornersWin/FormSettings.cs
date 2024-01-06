@@ -22,11 +22,20 @@ namespace HotCornersWin
             buttonCustomActions.Text = Properties.Resources.strCustAct;
             buttonDebugInfo.Text = Properties.Resources.strDebugExport;
             checkBoxAutoFullscreen.Text = Properties.Resources.strAutoFullscreen;
-            _actionNames = ActionCaller.GetActionNames();
+            labelDelay1.Text = Properties.Resources.strActionDelay;
+            labelDelay2.Text = Properties.Resources.strActionDelay;
+            labelDelay3.Text = Properties.Resources.strActionDelay;
+            labelDelay4.Text = Properties.Resources.strActionDelay;
+            _actionNames = CornersSettingsHelper.GetActionNames();
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
+            numericUpDownDelayLT.Value = Properties.Settings.Default.DelayLT;
+            numericUpDownDelayLB.Value = Properties.Settings.Default.DelayLB;
+            numericUpDownDelayRB.Value = Properties.Settings.Default.DelayRB;
+            numericUpDownDelayRT.Value = Properties.Settings.Default.DelayRT;
+
             numericUpDownRadius.Value = Properties.Settings.Default.AreaSize;
             numericUpDownPoll.Value = Properties.Settings.Default.PollInterval;
             checkBoxAutoFullscreen.Checked = Properties.Settings.Default.AutoFullscreen;
@@ -74,6 +83,11 @@ namespace HotCornersWin
 
         private void buttonApply_Click(object sender, EventArgs e)
         {
+            Properties.Settings.Default.DelayLT = (int)numericUpDownDelayLT.Value;
+            Properties.Settings.Default.DelayLB = (int)numericUpDownDelayLB.Value;
+            Properties.Settings.Default.DelayRB = (int)numericUpDownDelayRB.Value;
+            Properties.Settings.Default.DelayRT = (int)numericUpDownDelayRT.Value;
+
             Properties.Settings.Default.AreaSize = (int)numericUpDownRadius.Value;
             Properties.Settings.Default.PollInterval = (int)numericUpDownPoll.Value;
             Properties.Settings.Default.AutoFullscreen = checkBoxAutoFullscreen.Checked;

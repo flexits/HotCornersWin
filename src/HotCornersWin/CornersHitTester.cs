@@ -3,7 +3,7 @@
     /// <summary>
     /// A helper class to determine whether a hot corner of a display was reached.
     /// </summary>
-    public static class HotCornersHelper
+    public static class CornersHitTester
     {
         /// <summary>
         /// Dimensions (Width, Height) and locations (X, Y) of system screen(s).

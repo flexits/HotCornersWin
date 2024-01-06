@@ -172,6 +172,9 @@
   <data name="saWinInk" xml:space="preserve">
     <value>Windows Ink Workspace</value>
   </data>
+  <data name="strActionDelay" xml:space="preserve">
+    <value>Action delay, poll cycles:</value>
+  </data>
   <data name="strAdvSet" xml:space="preserve">
     <value>Advanced settings:</value>
   </data>
@@ -200,7 +203,7 @@
     <value>Cancel</value>
   </data>
   <data name="strChooseAction" xml:space="preserve">
-    <value>Choose actions for the hot corners:</value>
+    <value>Choose actions and delays for the hot corners:</value>
   </data>
   <data name="strCornerRadius" xml:space="preserve">
     <value>Hot corner area radius, px</value>

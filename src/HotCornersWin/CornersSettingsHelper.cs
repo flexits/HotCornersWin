@@ -1,12 +1,11 @@
 ﻿namespace HotCornersWin
 {
     /// <summary>
-    /// Invokes an action associated with a hot corner in the app's settings.
+    /// Wrapper around the app's settings providing access 
+    /// to hot corners' actions and delays.
     /// </summary>
-    public static class ActionCaller
+    public static class CornersSettingsHelper
     {
-        // TODO Corners' delays
-
         /// <summary>
         /// All available actions and their human-readable names.
         /// </summary>
@@ -94,9 +93,9 @@
         };
 
         /// <summary>
-        /// Hot corners and their correspondent actions configured in the settings.
+        /// Hot corners and their correspondent actions as configured in the settings.
         /// </summary>
-        private static Dictionary<Corners, Action> _execActions = new()
+        private static Dictionary<Corners, Action> _cornerActions = new()
         {
             {Corners.LeftTop, () => {} },
             {Corners.RightTop, () => {} },
@@ -104,24 +103,39 @@
             {Corners.RightBottom, () => {} }
         };
 
-        static ActionCaller()
+        /// <summary>
+        /// Hot corners and their correspondent delays as configured in the settings. 
+        /// </summary>
+        private static Dictionary<Corners, int> _cornerDelays = new()
+        {
+            {Corners.LeftTop, 0 },
+            {Corners.RightTop, 0 },
+            {Corners.LeftBottom, 0 },
+            {Corners.RightBottom, 0 }
+        };
+
+        static CornersSettingsHelper()
         {
             ReloadSettings();
         }
 
         /// <summary>
-        /// Reload hot corner actions from the app's settings.
+        /// Reload hot corner settings from the app's settings.
         /// </summary>
         public static void ReloadSettings()
         {
-            _execActions[Corners.LeftTop] = _allActions
+            _cornerActions[Corners.LeftTop] = _allActions
                 .TryGetValue(Properties.Settings.Default.LeftTop, out Action? actionLT) ? actionLT : (() => { });
-            _execActions[Corners.LeftBottom] = _allActions
+            _cornerActions[Corners.LeftBottom] = _allActions
                 .TryGetValue(Properties.Settings.Default.LeftBottom, out Action? actionLB) ? actionLB : (() => { });
-            _execActions[Corners.RightTop] = _allActions
+            _cornerActions[Corners.RightTop] = _allActions
                 .TryGetValue(Properties.Settings.Default.RightTop, out Action? actionRT) ? actionRT : (() => { });
-            _execActions[Corners.RightBottom] = _allActions
+            _cornerActions[Corners.RightBottom] = _allActions
                 .TryGetValue(Properties.Settings.Default.RightBottom, out Action? actionRB) ? actionRB : (() => { });
+            _cornerDelays[Corners.LeftTop] = Properties.Settings.Default.DelayLT;
+            _cornerDelays[Corners.LeftBottom] = Properties.Settings.Default.DelayLB;
+            _cornerDelays[Corners.RightTop] = Properties.Settings.Default.DelayRT;
+            _cornerDelays[Corners.RightBottom] = Properties.Settings.Default.DelayRB;
         }
         
         /// <summary>
@@ -133,14 +147,27 @@
         }
 
         /// <summary>
-        /// Executes the action associated with the given hot corner.
+        /// Get the action associated with the given hot corner.
         /// </summary>
-        public static void ExecuteAction(Corners corner)
+        public static Action GetAction(Corners corner)
         {
-            if (_execActions.TryGetValue(corner, out Action? action))
+            if (_cornerActions.TryGetValue(corner, out Action? action))
             {
-                action?.Invoke();
+                return action;
             }
+            return () => { };
+        }
+
+        /// <summary>
+        /// Get the action trigger delay for the given corner.
+        /// </summary>
+        public static int GetDelay(Corners corner)
+        {
+            if (_cornerDelays.TryGetValue(corner, out int delay))
+            {
+                return delay;
+            }
+            return 0;
         }
     }
 }

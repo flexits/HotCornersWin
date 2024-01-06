@@ -130,5 +130,53 @@ namespace HotCornersWin.Properties {
                 this["AutoFullscreen"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DelayLT {
+            get {
+                return ((int)(this["DelayLT"]));
+            }
+            set {
+                this["DelayLT"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DelayRT {
+            get {
+                return ((int)(this["DelayRT"]));
+            }
+            set {
+                this["DelayRT"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DelayLB {
+            get {
+                return ((int)(this["DelayLB"]));
+            }
+            set {
+                this["DelayLB"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DelayRB {
+            get {
+                return ((int)(this["DelayRB"]));
+            }
+            set {
+                this["DelayRB"] = value;
+            }
+        }
     }
 }

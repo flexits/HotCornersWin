@@ -208,7 +208,7 @@ namespace HotCornersWin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task view.
+        ///   Looks up a localized string similar to Task View.
         /// </summary>
         internal static string saTaskView {
             get {
@@ -222,6 +222,15 @@ namespace HotCornersWin.Properties {
         internal static string saWinInk {
             get {
                 return ResourceManager.GetString("saWinInk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action delay, poll cycles:.
+        /// </summary>
+        internal static string strActionDelay {
+            get {
+                return ResourceManager.GetString("strActionDelay", resourceCulture);
             }
         }
         
@@ -307,7 +316,7 @@ namespace HotCornersWin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose actions for the hot corners:.
+        ///   Looks up a localized string similar to Choose actions and delays for the hot corners:.
         /// </summary>
         internal static string strChooseAction {
             get {

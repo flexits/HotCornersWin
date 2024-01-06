@@ -14,8 +14,6 @@ namespace HotCornersWin
         private static readonly MouseHook _mouseHook;
         private static readonly System.Timers.Timer _timer;
 
-        private const int ACTION_DELAY = 0; // TODO introduce an option in Settings
-
         private static readonly Form _dummyForm; // for accessing the UI thread
 
         /// <summary>
@@ -122,8 +120,8 @@ namespace HotCornersWin
             }
 
             // Init mouse movement processing on the selected monitor configuration.
-            HotCornersHelper.Screens = screens;
-            HotCornersHelper.CornerRadius = Properties.Settings.Default.AreaSize;
+            CornersHitTester.Screens = screens;
+            CornersHitTester.CornerRadius = Properties.Settings.Default.AreaSize;
 
             // Set polling interval
             _timer.Interval = Properties.Settings.Default.PollInterval;
@@ -170,7 +168,7 @@ namespace HotCornersWin
             }
 
             // Hit test cursor
-            Corners currentCorner = HotCornersHelper.HitTest(_mouseHook.CursorPosition);
+            Corners currentCorner = CornersHitTester.HitTest(_mouseHook.CursorPosition);
             if (currentCorner == Corners.None)
             {
                 // a miss; reset counter and exit
@@ -192,10 +190,10 @@ namespace HotCornersWin
             {
                 _pollCyclesCounter = 0;
             }
-            if (_pollCyclesCounter == ACTION_DELAY) // TODO settings
+            if (_pollCyclesCounter == CornersSettingsHelper.GetDelay(currentCorner))
             {
                 Debug.WriteLine($"Action at {currentCorner} after {_pollCyclesCounter} polls"); // TODO remove debug
-                ActionCaller.ExecuteAction(currentCorner);
+                CornersSettingsHelper.GetAction(currentCorner).Invoke();
             }
             _lastTestCorner = currentCorner;
         }
@@ -263,9 +261,9 @@ namespace HotCornersWin
             // if settings were changed, apply
             if (fs.ShowDialog() == DialogResult.OK)
             {
-                HotCornersHelper.CornerRadius = Properties.Settings.Default.AreaSize;
-                HotCornersHelper.Screens = GetScreens();
-                ActionCaller.ReloadSettings();
+                CornersHitTester.CornerRadius = Properties.Settings.Default.AreaSize;
+                CornersHitTester.Screens = GetScreens();
+                CornersSettingsHelper.ReloadSettings();
             }
         }
 

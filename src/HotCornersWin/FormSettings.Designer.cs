@@ -35,6 +35,8 @@
             pictureBox1 = new PictureBox();
             comboBoxLT = new ComboBox();
             groupBoxCorners = new GroupBox();
+            labelDelay1 = new Label();
+            numericUpDownDelayLT = new NumericUpDown();
             comboBoxRB = new ComboBox();
             comboBoxRT = new ComboBox();
             comboBoxLB = new ComboBox();
@@ -52,13 +54,23 @@
             numericUpDownRadius = new NumericUpDown();
             buttonDebugInfo = new Button();
             buttonCustomActions = new Button();
+            labelDelay3 = new Label();
+            numericUpDownDelayRT = new NumericUpDown();
+            labelDelay4 = new Label();
+            numericUpDownDelayRB = new NumericUpDown();
+            labelDelay2 = new Label();
+            numericUpDownDelayLB = new NumericUpDown();
             contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBoxCorners.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayLT).BeginInit();
             groupBoxMulti.SuspendLayout();
             groupBoxAdvanced.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownPoll).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownRadius).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayRT).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayRB).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayLB).BeginInit();
             SuspendLayout();
             // 
             // contextMenuStrip1
@@ -99,6 +111,14 @@
             // 
             // groupBoxCorners
             // 
+            groupBoxCorners.Controls.Add(labelDelay2);
+            groupBoxCorners.Controls.Add(numericUpDownDelayLB);
+            groupBoxCorners.Controls.Add(labelDelay4);
+            groupBoxCorners.Controls.Add(numericUpDownDelayRB);
+            groupBoxCorners.Controls.Add(labelDelay3);
+            groupBoxCorners.Controls.Add(numericUpDownDelayRT);
+            groupBoxCorners.Controls.Add(labelDelay1);
+            groupBoxCorners.Controls.Add(numericUpDownDelayLT);
             groupBoxCorners.Controls.Add(comboBoxRB);
             groupBoxCorners.Controls.Add(comboBoxRT);
             groupBoxCorners.Controls.Add(comboBoxLB);
@@ -111,11 +131,28 @@
             groupBoxCorners.TabStop = false;
             groupBoxCorners.Text = "Choose actions for the hot corners:";
             // 
+            // labelDelay1
+            // 
+            labelDelay1.AutoSize = true;
+            labelDelay1.Location = new Point(6, 53);
+            labelDelay1.Name = "labelDelay1";
+            labelDelay1.Size = new Size(137, 15);
+            labelDelay1.TabIndex = 7;
+            labelDelay1.Text = "Action delay, poll cycles:";
+            // 
+            // numericUpDownDelayLT
+            // 
+            numericUpDownDelayLT.Location = new Point(155, 51);
+            numericUpDownDelayLT.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDownDelayLT.Name = "numericUpDownDelayLT";
+            numericUpDownDelayLT.Size = new Size(51, 23);
+            numericUpDownDelayLT.TabIndex = 6;
+            // 
             // comboBoxRB
             // 
             comboBoxRB.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxRB.FormattingEnabled = true;
-            comboBoxRB.Location = new Point(474, 180);
+            comboBoxRB.Location = new Point(474, 152);
             comboBoxRB.Name = "comboBoxRB";
             comboBoxRB.Size = new Size(200, 23);
             comboBoxRB.TabIndex = 5;
@@ -133,7 +170,7 @@
             // 
             comboBoxLB.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxLB.FormattingEnabled = true;
-            comboBoxLB.Location = new Point(6, 180);
+            comboBoxLB.Location = new Point(6, 152);
             comboBoxLB.Name = "comboBoxLB";
             comboBoxLB.Size = new Size(200, 23);
             comboBoxLB.TabIndex = 3;
@@ -285,6 +322,57 @@
             buttonCustomActions.UseVisualStyleBackColor = true;
             buttonCustomActions.Visible = false;
             // 
+            // labelDelay3
+            // 
+            labelDelay3.AutoSize = true;
+            labelDelay3.Location = new Point(474, 53);
+            labelDelay3.Name = "labelDelay3";
+            labelDelay3.Size = new Size(137, 15);
+            labelDelay3.TabIndex = 9;
+            labelDelay3.Text = "Action delay, poll cycles:";
+            // 
+            // numericUpDownDelayRT
+            // 
+            numericUpDownDelayRT.Location = new Point(623, 51);
+            numericUpDownDelayRT.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDownDelayRT.Name = "numericUpDownDelayRT";
+            numericUpDownDelayRT.Size = new Size(51, 23);
+            numericUpDownDelayRT.TabIndex = 8;
+            // 
+            // labelDelay4
+            // 
+            labelDelay4.AutoSize = true;
+            labelDelay4.Location = new Point(474, 183);
+            labelDelay4.Name = "labelDelay4";
+            labelDelay4.Size = new Size(137, 15);
+            labelDelay4.TabIndex = 11;
+            labelDelay4.Text = "Action delay, poll cycles:";
+            // 
+            // numericUpDownDelayRB
+            // 
+            numericUpDownDelayRB.Location = new Point(623, 181);
+            numericUpDownDelayRB.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDownDelayRB.Name = "numericUpDownDelayRB";
+            numericUpDownDelayRB.Size = new Size(51, 23);
+            numericUpDownDelayRB.TabIndex = 10;
+            // 
+            // labelDelay2
+            // 
+            labelDelay2.AutoSize = true;
+            labelDelay2.Location = new Point(6, 183);
+            labelDelay2.Name = "labelDelay2";
+            labelDelay2.Size = new Size(137, 15);
+            labelDelay2.TabIndex = 13;
+            labelDelay2.Text = "Action delay, poll cycles:";
+            // 
+            // numericUpDownDelayLB
+            // 
+            numericUpDownDelayLB.Location = new Point(155, 181);
+            numericUpDownDelayLB.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDownDelayLB.Name = "numericUpDownDelayLB";
+            numericUpDownDelayLB.Size = new Size(51, 23);
+            numericUpDownDelayLB.TabIndex = 12;
+            // 
             // FormSettings
             // 
             AcceptButton = buttonApply;
@@ -309,12 +397,17 @@
             contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             groupBoxCorners.ResumeLayout(false);
+            groupBoxCorners.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayLT).EndInit();
             groupBoxMulti.ResumeLayout(false);
             groupBoxMulti.PerformLayout();
             groupBoxAdvanced.ResumeLayout(false);
             groupBoxAdvanced.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownPoll).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownRadius).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayRT).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayRB).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownDelayLB).EndInit();
             ResumeLayout(false);
         }
 
@@ -343,5 +436,13 @@
         private CheckBox checkBoxAutoFullscreen;
         private NumericUpDown numericUpDownPoll;
         private Label labelPollInterval;
+        private Label labelDelay1;
+        private NumericUpDown numericUpDownDelayLT;
+        private Label labelDelay2;
+        private NumericUpDown numericUpDownDelayLB;
+        private Label labelDelay4;
+        private NumericUpDown numericUpDownDelayRB;
+        private Label labelDelay3;
+        private NumericUpDown numericUpDownDelayRT;
     }
 }
