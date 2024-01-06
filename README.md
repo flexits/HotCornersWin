@@ -1,8 +1,7 @@
 # HotCornersWin
 Add MacOS hot corners function to Windows 10!
 
-![Settings window and the notification area icon](https://github.com/flexits/HotCornersWin/assets/86118729/fb4171d3-2729-4c53-8fdc-d5411905d51e)
-
+![Settings window and the notification area icon](https://github.com/flexits/HotCornersWin/assets/86118729/b9f6b1ee-2f83-4766-a061-7bd705913496)
 
 A simple notification area application allows user to choose from a list of various actions to be triggered when the mouse cursor hits a corner of the screen. Of course, one can choose independent action for different corners or leave some without an action at all. Multi-monitor environments are supported as well, with customizable placing of the hot corners.
 
