@@ -13,7 +13,7 @@
         private static Dictionary<string, Action> _allActions = new()
         {
             {Properties.Resources.saNone,  () => { } },
-            {Properties.Resources.saStartMenu,  () => {SendKeys.Send("^{ESC}"); } },
+            {Properties.Resources.saStartMenu,  () => {SendKeys.SendWait("^{ESC}"); } },
             {Properties.Resources.saTaskView, () => {
                 KeyboardSend.KeyDown(Keys.LWin);
                 KeyboardSend.KeyDown(Keys.Tab);
@@ -30,13 +30,13 @@
             },
             {Properties.Resources.saRVirtDesktop, () => {
                 KeyboardSend.KeyDown(Keys.LWin);
-                SendKeys.Send("^{RIGHT}");
+                SendKeys.SendWait("^{RIGHT}");
                 KeyboardSend.KeyUp(Keys.LWin);
                 }
             },
             {Properties.Resources.saLVirtDesktop, () => {
                 KeyboardSend.KeyDown(Keys.LWin);
-                SendKeys.Send("^{LEFT}");
+                SendKeys.SendWait("^{LEFT}");
                 KeyboardSend.KeyUp(Keys.LWin);
                 }
             },
