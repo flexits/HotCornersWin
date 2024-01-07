@@ -2,8 +2,8 @@
 {
     public partial class FormActionsEditor : Form
     {
-        private Dictionary<string, string> _actions;
-        private string? _currentItemKey = null;
+        private List<CustomAction> _actions;
+        private CustomAction? _selectedAction = null;
 
         public FormActionsEditor()
         {
@@ -17,28 +17,31 @@
             buttonRemove.Text = Properties.Resources.strRemove;
             labelCommand.Text = Properties.Resources.strCommand;
             labelName.Text = Properties.Resources.strName;
-            _actions = CornersSettingsHelper.CustomActionCommands;
-            listBoxActions.DataSource = _actions.Keys.ToList();
+            _actions = CornersSettingsHelper.CustomActions;
+            listBoxActions.DataSource = _actions;
+            listBoxActions.DisplayMember = "Name";
         }
 
         /// <summary>
-        /// Set Name and Command textboxes contents according to
-        /// the item with the given key. If the key is null or
-        /// doesn't exist, clear the textboxes.
+        /// Set Name and Command textboxes contents according to 
+        /// the properties of the given item. If the item is null,
+        /// clear the textboxes' contents.
         /// </summary>
         /// <param name="itemKey"></param>
-        private void FillEditTextBoxes(string? itemKey = null)
+        private void FillEditTextBoxes(CustomAction? customAction = null)
         {
-            if (!string.IsNullOrEmpty(itemKey)
-                && _actions.TryGetValue(itemKey, out string? itemValue))
-            {
-                textBoxName.Text = itemKey;
-                textBoxCommand.Text = itemValue;
-            }
-            else
+            if (customAction is null)
             {
                 textBoxName.Text = string.Empty;
                 textBoxCommand.Text = string.Empty;
+            }
+            else
+            {
+                textBoxName.Text = customAction.Name;
+                if (customAction is CustomActionShell customActionShell)
+                {
+                    textBoxCommand.Text = customActionShell.Command;
+                }
             }
         }
 
@@ -54,42 +57,60 @@
                 groupBoxEdit.Enabled = true;
                 listBoxActions.Enabled = false;
                 buttonSave.Enabled = false;
+                buttonAdd.Enabled = false;
+                buttonEdit.Enabled = false;
+                buttonRemove.Enabled = false;
             }
             else
             {
                 groupBoxEdit.Enabled = false;
                 listBoxActions.Enabled = true;
                 buttonSave.Enabled = true;
+                buttonAdd.Enabled = true;
+                buttonEdit.Enabled = true;
+                buttonRemove.Enabled = true;
             }
+        }
+
+        /// <summary>
+        /// A dirty hack to update listBoxActions contents.
+        /// </summary>
+        private void ForceListBoxUpdate()
+        {
+            // TODO get rid of this
+            listBoxActions.DataSource = null;
+            listBoxActions.DisplayMember = "";
+            listBoxActions.DataSource = _actions;
+            listBoxActions.DisplayMember = "Name";
         }
 
         private void buttonApply_Click(object sender, EventArgs e)
         {
-            CornersSettingsHelper.CustomActionCommands = _actions;
+            CornersSettingsHelper.CustomActions = _actions;
             // TODO don't close the window but apply settings
             DialogResult = DialogResult.OK;
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            _currentItemKey = null;
+            _selectedAction = null;
             FillEditTextBoxes();
             SwitchUIMode(true);
         }
 
         private void buttonEdit_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_currentItemKey))
+            if (_selectedAction is null)
             {
                 return;
             }
-            FillEditTextBoxes(_currentItemKey);
+            FillEditTextBoxes(_selectedAction);
             SwitchUIMode(true);
         }
 
         private void buttonRemove_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_currentItemKey))
+            if (_selectedAction is null)
             {
                 return;
             }
@@ -102,23 +123,23 @@
             {
                 return;
             }
-            _ = _actions.Remove(_currentItemKey);
+            _ = _actions.Remove(_selectedAction);
 
-            listBoxActions.DataSource = _actions.Keys.ToList();
+            ForceListBoxUpdate();
 
             FillEditTextBoxes();
         }
 
         private void buttonEditCancel_Click(object sender, EventArgs e)
         {
-            FillEditTextBoxes(_currentItemKey);
+            FillEditTextBoxes(_selectedAction);
             SwitchUIMode(false);
         }
 
         private void buttonEditOK_Click(object sender, EventArgs e)
         {
-            string newKey = textBoxName.Text.Trim();
-            if (string.IsNullOrEmpty(newKey))
+            string newName = textBoxName.Text.Trim();
+            if (string.IsNullOrEmpty(newName))
             {
                 _ = MessageBox.Show(
                     Properties.Resources.strNameEmpty,
@@ -137,11 +158,11 @@
                     MessageBoxIcon.Error);
                 return;
             }
-            // if _currentItemKey is null, add a new item
-            // else edit already existing one
-            if (string.IsNullOrEmpty(_currentItemKey))
+            // if _selectedAction is null, add a new item
+            // else edit the existing one
+            if (_selectedAction is null)
             {
-                if (_actions.ContainsKey(newKey))
+                if (_actions.Where(x => x.Name == newName).Count() > 0)
                 {
                     _ = MessageBox.Show(
                     Properties.Resources.strNameAlreadyExists,
@@ -150,10 +171,13 @@
                     MessageBoxIcon.Error);
                     return;
                 }
+                _selectedAction = new CustomActionShell(newName, newCommand);
+                _actions.Add(_selectedAction);
             }
             else
             {
-                if (newKey != _currentItemKey && _actions.ContainsKey(newKey))
+                var coincidences = _actions.Where(x => x.Name == newName);
+                if (newName != _selectedAction.Name && coincidences.Count() > 0)
                 {
                     _ = MessageBox.Show(
                     Properties.Resources.strNameAlreadyExists,
@@ -162,40 +186,28 @@
                     MessageBoxIcon.Error);
                     return;
                 }
-                _actions.Remove(_currentItemKey);
-            }
-            _actions.Add(newKey, newCommand);
-            _currentItemKey = newKey;
-
-            var keys = _actions.Keys.ToList();
-            listBoxActions.DataSource = keys;
-            int index = keys.IndexOf(newKey);
-            if (index >= 0)
-            {
-                listBoxActions.SelectedIndex = index;
+                _selectedAction.Name = newName;
+                if (_selectedAction is CustomActionShell customActionShell)
+                {
+                    customActionShell.Command = newCommand;
+                }
             }
 
+            ForceListBoxUpdate();
             SwitchUIMode(false);
         }
 
         private void listBoxActions_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // remember the selected item key
-            if (listBoxActions.SelectedItem is string selectedKey
-                && !string.IsNullOrEmpty(selectedKey))
+            if (listBoxActions.SelectedItem is CustomAction customAction)
             {
-
-                _currentItemKey = selectedKey;
-                textBoxName.Text = _currentItemKey;
-                textBoxCommand.Text = _actions[_currentItemKey];
-
+                _selectedAction = customAction;
             }
             else
             {
-                _currentItemKey = null;
-                textBoxName.Text = string.Empty;
-                textBoxCommand.Text = string.Empty;
+                _selectedAction = null;
             }
+            FillEditTextBoxes(_selectedAction);
         }
 
         private void listBoxActions_MouseDoubleClick(object sender, MouseEventArgs e)

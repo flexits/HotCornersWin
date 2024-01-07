@@ -143,7 +143,7 @@ namespace HotCornersWin
             };
             if (fae.ShowDialog(this) == DialogResult.OK)
             {
-                // TODO see CornersSettingsHelper line 44
+                // TODO see CornersSettingsHelper line 41
                 CornersSettingsHelper.ReloadSettings();
                 LoadActions();
             }

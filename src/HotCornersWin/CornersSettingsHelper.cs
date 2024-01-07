@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace HotCornersWin
 {
@@ -10,30 +9,28 @@ namespace HotCornersWin
     public static class CornersSettingsHelper
     {
         /// <summary>
-        /// User-adjustable actions. 
-        /// Dictionary key is the action name, 
-        /// dictionary value is the Windows shell command.
+        /// Actions created by user.
         /// </summary>
-        public static Dictionary<string, string> CustomActionCommands
+        public static List<CustomAction> CustomActions
         {
             get
             {
                 try
                 {
-                    var actions = JsonSerializer.
-                        Deserialize<Dictionary<string, string>>(Properties.Settings.Default.CustomActions);
-                    if (actions is null)
+                    var customActions = JsonSerializer.
+                        Deserialize<List<CustomAction>>(Properties.Settings.Default.CustomActions);
+                    if (customActions is null)
                     {
-                        return new Dictionary<string, string>();
+                        return new();
                     }
                     else
                     {
-                        return actions;
+                        return customActions;
                     }
                 }
                 catch
                 {
-                    return new Dictionary<string, string>();
+                    return new();
                 }
             }
             set
@@ -181,22 +178,9 @@ namespace HotCornersWin
             {
                 _ = _allActions.TryAdd(action.Key, action.Value);
             }
-            foreach (var command in CustomActionCommands)
+            foreach (var customAction in CustomActions)
             {
-                if (string.IsNullOrEmpty(command.Value))
-                {
-                    continue;
-                }
-                _ = _allActions.TryAdd(command.Key, () =>
-                {
-                    _ = new Process
-                    {
-                        StartInfo = new ProcessStartInfo(command.Value)
-                        {
-                            UseShellExecute = true
-                        }
-                    }.Start();
-                });
+                _ = _allActions.TryAdd(customAction.Name, customAction.GetAction());
             }
 
             _cornerActions[Corners.LeftTop] = _allActions

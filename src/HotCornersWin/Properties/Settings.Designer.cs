@@ -181,8 +181,9 @@ namespace HotCornersWin.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\"{\\\"Calculator\\\":\\\"calc.exe\\\",\\\"GitHub\\\":\\\"https://github.com/flexits/\\\",\\\"All Ta" +
-            "sks\\\":\\\"Shell:::{ED7BA470-8E54-465E-825C-99712043E01C}\\\"}\"")]
+        [global::System.Configuration.DefaultSettingValueAttribute("[{\"$type\":\"CAShell\",\"Command\":\"calc.exe\",\"Name\":\"Calculator\"},{\"$type\":\"CAShell\"," +
+            "\"Command\":\"https://github.com/flexits/\",\"Name\":\"GitHub\"},{\"$type\":\"CAShell\",\"Com" +
+            "mand\":\"Shell:::{ED7BA470-8E54-465E-825C-99712043E01C}\",\"Name\":\"All Tasks\"}]")]
         public string CustomActions {
             get {
                 return ((string)(this["CustomActions"]));
