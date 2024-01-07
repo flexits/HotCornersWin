@@ -15,7 +15,7 @@ An adjustable **delay** before triggering an action is associated with each hot 
 
 Minimal interference: the application can **autodetect a full-screen application** (a game, for example) launch and exit and automatically turn itself off and on respectively. It **ignores dragging** (basically, any mouse gestures performed with a button held down) and won't trigger actions in this case.
 
-Manual turn on and off is as simple as double-click on the app's icon in the notification area (tray icon). Single click brings the Settings window up.
+Manual turn on and off is as simple as a single click on the app's icon in the notification area (tray icon). A double click brings the Settings window up.
 
 **Small size** – around 1 Mb installation footprint!
 

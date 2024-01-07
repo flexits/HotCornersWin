@@ -169,16 +169,16 @@ namespace HotCornersWin
 
         private static void OnIconSingleClick()
         {
-            // show Settings on single click
-            MenuItemSettings_Click(null, new());
-        }
-
-        private static void OnIconDoubleClick()
-        {
             // toggle enable on double click and save changes
             _cornersProcessor.Enabled = !_cornersProcessor.Enabled;
             Properties.Settings.Default.IsEnabled = _cornersProcessor.Enabled;
             Properties.Settings.Default.Save();
+        }
+
+        private static void OnIconDoubleClick()
+        {
+            // show Settings on single click
+            MenuItemSettings_Click(null, new());
         }
 
         private static void MenuItemSettings_Click(object? sender, EventArgs e)
