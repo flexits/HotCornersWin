@@ -193,9 +193,6 @@
   <data name="strAutoCurUsr" xml:space="preserve">
     <value>Start with Windows for the current user</value>
   </data>
-  <data name="strAutoFullscreen" xml:space="preserve">
-    <value>Turn off if a fullscreen app is opened</value>
-  </data>
   <data name="strAutoOff" xml:space="preserve">
     <value>No autostart</value>
   </data>
@@ -231,6 +228,9 @@
   </data>
   <data name="strDisabled" xml:space="preserve">
     <value>disabled</value>
+  </data>
+  <data name="strDisableOnFullscreen" xml:space="preserve">
+    <value>Turn off if a fullscreen app is opened</value>
   </data>
   <data name="strEdit" xml:space="preserve">
     <value>Edit</value>
@@ -288,6 +288,9 @@
   </data>
   <data name="strRemove" xml:space="preserve">
     <value>Remove</value>
+  </data>
+  <data name="strSaveApply" xml:space="preserve">
+    <value>Save &amp;&amp; Apply</value>
   </data>
   <data name="strSaveChanges" xml:space="preserve">
     <value>Save changes</value>

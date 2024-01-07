@@ -9,7 +9,7 @@ namespace HotCornersWin
     public static class CornersSettingsHelper
     {
         /// <summary>
-        /// Actions created by user.
+        /// Custom actions created by user - get from settings, save to settings.
         /// </summary>
         public static List<CustomAction> CustomActions
         {
@@ -38,8 +38,8 @@ namespace HotCornersWin
                 try
                 {
                     Properties.Settings.Default.CustomActions = JsonSerializer.Serialize(value);
-                    // TODO reload actions
                     Properties.Settings.Default.Save();
+                    ReloadSettings();
                 }
                 catch { }
             }
@@ -134,12 +134,12 @@ namespace HotCornersWin
         /// <summary>
         /// All available actions and their human-readable names.
         /// </summary>
-        private static Dictionary<string, Action> _allActions = new();
+        private static readonly Dictionary<string, Action> _allActions = new();
 
         /// <summary>
         /// Hot corners and their correspondent actions as configured in the settings.
         /// </summary>
-        private static Dictionary<Corners, Action> _cornerActions = new()
+        private static readonly Dictionary<Corners, Action> _cornerActions = new()
         {
             {Corners.LeftTop, () => {} },
             {Corners.RightTop, () => {} },
@@ -150,7 +150,7 @@ namespace HotCornersWin
         /// <summary>
         /// Hot corners and their correspondent delays as configured in the settings. 
         /// </summary>
-        private static Dictionary<Corners, int> _cornerDelays = new()
+        private static readonly Dictionary<Corners, int> _cornerDelays = new()
         {
             {Corners.LeftTop, 0 },
             {Corners.RightTop, 0 },
@@ -164,7 +164,7 @@ namespace HotCornersWin
         }
 
         /// <summary>
-        /// Reload hot corner settings from the app's settings.
+        /// Reload hot corner settings (delays and actions) from the app's settings.
         /// </summary>
         public static void ReloadSettings()
         {

@@ -22,26 +22,6 @@ namespace HotCornersWin
         /// </summary>
         private static bool _wasIconClicked = false;
 
-        //private static bool _enabled = false;
-
-        /// <summary>
-        /// The app's state flag. On set, changes the app's icon, 
-        /// menu switch and tooltip according to its state.
-        /// Doesn't actually impact the main timer!
-        /// </summary>
-        /*private static bool Enabled
-        {
-            get { return _enabled; }
-            set
-            {
-                _enabled = value;
-                _menuItemSwitch.Checked = _enabled;
-                _notifyIcon.Icon = _enabled ? Properties.Resources.icon_new_on : Properties.Resources.icon_new_off;
-                string tooltip = _enabled ? Properties.Resources.strEnabled : Properties.Resources.strDisabled;
-                _notifyIcon.Text = $"HotCornersWin ({tooltip})";
-            }
-        }*/
-
         static Program()
         {
             ApplicationConfiguration.Initialize();
@@ -123,12 +103,15 @@ namespace HotCornersWin
             _cornersProcessor.PollInterval = Properties.Settings.Default.PollInterval;
 
             // Enable or disable operation according to the settings.
-            _cornersProcessor.DisableOnFullscreen = Properties.Settings.Default.AutoFullscreen;
+            _cornersProcessor.DisableOnFullscreen = Properties.Settings.Default.DisableOnFullscreen;
             _cornersProcessor.Enabled = Properties.Settings.Default.IsEnabled;
 
             Application.Run();
         }
 
+        /// <summary>
+        /// Adjust the UI according with the app's state - running or disabled.
+        /// </summary>
         private static void CornersProcessorStateChanged(bool enabled)
         {
             _menuItemSwitch.Checked = enabled;
@@ -173,8 +156,7 @@ namespace HotCornersWin
             if (_wasIconClicked)
             {
                 _wasIconClicked = false;
-                // show Settings on single click
-                MenuItemSettings_Click(sender, e);
+                OnIconSingleClick();
             }
         }
 
@@ -182,6 +164,17 @@ namespace HotCornersWin
         {
             // reset the clicked flag
             _wasIconClicked = false;
+            OnIconDoubleClick();
+        }
+
+        private static void OnIconSingleClick()
+        {
+            // show Settings on single click
+            MenuItemSettings_Click(null, new());
+        }
+
+        private static void OnIconDoubleClick()
+        {
             // toggle enable on double click and save changes
             _cornersProcessor.Enabled = !_cornersProcessor.Enabled;
             Properties.Settings.Default.IsEnabled = _cornersProcessor.Enabled;
@@ -190,18 +183,13 @@ namespace HotCornersWin
 
         private static void MenuItemSettings_Click(object? sender, EventArgs e)
         {
-            FormSettings fs = new()
+            _ = new FormSettings()
             {
                 Icon = Properties.Resources.icon_new_on,
                 Text = Properties.Resources.FormSettingsText,
                 TopMost = true,
-            };
-            // if settings were changed, apply
-            if (fs.ShowDialog() == DialogResult.OK)
-            {
-                _cornersProcessor.PollInterval = Properties.Settings.Default.PollInterval;
-                _cornersProcessor.DisableOnFullscreen = Properties.Settings.Default.AutoFullscreen;
-            }
+                CornersProcessor = _cornersProcessor,
+            }.ShowDialog();
         }
 
         private static void MenuItemAbout_Click(object? sender, EventArgs e)

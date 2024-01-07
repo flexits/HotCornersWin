@@ -2,13 +2,13 @@
 {
     public partial class FormActionsEditor : Form
     {
-        private List<CustomAction> _actions;
+        private readonly List<CustomAction> _actions;
         private CustomAction? _selectedAction = null;
 
         public FormActionsEditor()
         {
             InitializeComponent();
-            buttonSave.Text = Properties.Resources.strSaveChanges;
+            buttonSave.Text = Properties.Resources.strSaveApply;
             buttonCancel.Text = Properties.Resources.strCancel;
             buttonEditCancel.Text = Properties.Resources.strCancel;
             buttonEditOK.Text = Properties.Resources.strFinish;
@@ -17,6 +17,7 @@
             buttonRemove.Text = Properties.Resources.strRemove;
             labelCommand.Text = Properties.Resources.strCommand;
             labelName.Text = Properties.Resources.strName;
+
             _actions = CornersSettingsHelper.CustomActions;
             listBoxActions.DataSource = _actions;
             listBoxActions.DisplayMember = "Name";
@@ -41,6 +42,10 @@
                 if (customAction is CustomActionShell customActionShell)
                 {
                     textBoxCommand.Text = customActionShell.Command;
+                }
+                else if (customAction is CustomActionHotkey customActionHotkey)
+                {
+                    // TODO not implemented
                 }
             }
         }
@@ -75,20 +80,12 @@
         /// <summary>
         /// A dirty hack to update listBoxActions contents.
         /// </summary>
-        private void ForceListBoxUpdate()
+        private void ForceListBoxUpdate() // TODO get rid of this
         {
-            // TODO get rid of this
             listBoxActions.DataSource = null;
             listBoxActions.DisplayMember = "";
             listBoxActions.DataSource = _actions;
             listBoxActions.DisplayMember = "Name";
-        }
-
-        private void buttonApply_Click(object sender, EventArgs e)
-        {
-            CornersSettingsHelper.CustomActions = _actions;
-            // TODO don't close the window but apply settings
-            DialogResult = DialogResult.OK;
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)
@@ -138,6 +135,7 @@
 
         private void buttonEditOK_Click(object sender, EventArgs e)
         {
+            // TODO CustomActionHotkey not implemented
             string newName = textBoxName.Text.Trim();
             if (string.IsNullOrEmpty(newName))
             {
@@ -158,11 +156,10 @@
                     MessageBoxIcon.Error);
                 return;
             }
-            // if _selectedAction is null, add a new item
-            // else edit the existing one
+            // if the selected item is null, add a new one; else edit
             if (_selectedAction is null)
             {
-                if (_actions.Where(x => x.Name == newName).Count() > 0)
+                if (_actions.Where(x => x.Name == newName).Any())
                 {
                     _ = MessageBox.Show(
                     Properties.Resources.strNameAlreadyExists,
@@ -176,8 +173,7 @@
             }
             else
             {
-                var coincidences = _actions.Where(x => x.Name == newName);
-                if (newName != _selectedAction.Name && coincidences.Count() > 0)
+                if (newName != _selectedAction.Name && _actions.Where(x => x.Name == newName).Any())
                 {
                     _ = MessageBox.Show(
                     Properties.Resources.strNameAlreadyExists,
@@ -213,6 +209,12 @@
         private void listBoxActions_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             buttonEdit.PerformClick();
+        }
+
+        private void buttonApply_Click(object sender, EventArgs e)
+        {
+            // save and apply the settings immediately
+            CornersSettingsHelper.CustomActions = _actions;
         }
     }
 }

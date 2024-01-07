@@ -289,15 +289,6 @@ namespace HotCornersWin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Turn off if a fullscreen app is opened.
-        /// </summary>
-        internal static string strAutoFullscreen {
-            get {
-                return ResourceManager.GetString("strAutoFullscreen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No autostart.
         /// </summary>
         internal static string strAutoOff {
@@ -402,6 +393,15 @@ namespace HotCornersWin.Properties {
         internal static string strDisabled {
             get {
                 return ResourceManager.GetString("strDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Turn off if a fullscreen app is opened.
+        /// </summary>
+        internal static string strDisableOnFullscreen {
+            get {
+                return ResourceManager.GetString("strDisableOnFullscreen", resourceCulture);
             }
         }
         
@@ -573,6 +573,15 @@ namespace HotCornersWin.Properties {
         internal static string strRemove {
             get {
                 return ResourceManager.GetString("strRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save &amp;&amp; Apply.
+        /// </summary>
+        internal static string strSaveApply {
+            get {
+                return ResourceManager.GetString("strSaveApply", resourceCulture);
             }
         }
         

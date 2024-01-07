@@ -5,10 +5,10 @@ namespace HotCornersWin
     /// <summary>
     /// Helper class to sent keystrokes to OS using WinAPI.
     /// </summary>
-    public static class KeyboardSend
+    public static partial class KeyboardSend
     {
-        [DllImport("user32.dll")]
-        private static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
+        [LibraryImport("user32.dll")]
+        private static partial void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
 
         private const int KEYEVENTF_EXTENDEDKEY = 1;
         private const int KEYEVENTF_KEYUP = 2;

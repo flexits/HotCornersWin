@@ -2,6 +2,11 @@ namespace HotCornersWin
 {
     public partial class FormSettings : Form
     {
+        /// <summary>
+        /// Pass an instance of HotCornersProcessor here to apply settings to it.
+        /// </summary>
+        public HotCornersProcessor? CornersProcessor { get; set; }
+
         public FormSettings()
         {
             InitializeComponent();
@@ -19,7 +24,7 @@ namespace HotCornersWin
             buttonCancel.Text = Properties.Resources.strCancel;
             buttonCustomActions.Text = Properties.Resources.strCustAct;
             buttonDebugInfo.Text = Properties.Resources.strDebugExport;
-            checkBoxAutoFullscreen.Text = Properties.Resources.strAutoFullscreen;
+            checkBoxDisableOnFullscreen.Text = Properties.Resources.strDisableOnFullscreen;
             labelDelay1.Text = Properties.Resources.strActionDelay;
             labelDelay2.Text = Properties.Resources.strActionDelay;
             labelDelay3.Text = Properties.Resources.strActionDelay;
@@ -59,7 +64,7 @@ namespace HotCornersWin
 
             numericUpDownRadius.Value = Properties.Settings.Default.AreaSize;
             numericUpDownPoll.Value = Properties.Settings.Default.PollInterval;
-            checkBoxAutoFullscreen.Checked = Properties.Settings.Default.AutoFullscreen;
+            checkBoxDisableOnFullscreen.Checked = Properties.Settings.Default.DisableOnFullscreen;
 
             if (Enum.IsDefined(typeof(MultiMonCfg), Properties.Settings.Default.MultiMonCfg))
             {
@@ -89,21 +94,20 @@ namespace HotCornersWin
 
         private void buttonApply_Click(object sender, EventArgs e)
         {
+            // assign delays
             Properties.Settings.Default.DelayLT = (int)numericUpDownDelayLT.Value;
             Properties.Settings.Default.DelayLB = (int)numericUpDownDelayLB.Value;
             Properties.Settings.Default.DelayRB = (int)numericUpDownDelayRB.Value;
             Properties.Settings.Default.DelayRT = (int)numericUpDownDelayRT.Value;
-
             // assign actions
             Properties.Settings.Default.LeftTop = (string)comboBoxLT.SelectedItem;
             Properties.Settings.Default.RightTop = (string)comboBoxRT.SelectedItem;
             Properties.Settings.Default.LeftBottom = (string)comboBoxLB.SelectedItem;
             Properties.Settings.Default.RightBottom = (string)comboBoxRB.SelectedItem;
-
+            // other settings
             Properties.Settings.Default.AreaSize = (int)numericUpDownRadius.Value;
             Properties.Settings.Default.PollInterval = (int)numericUpDownPoll.Value;
-            Properties.Settings.Default.AutoFullscreen = checkBoxAutoFullscreen.Checked;
-
+            Properties.Settings.Default.DisableOnFullscreen = checkBoxDisableOnFullscreen.Checked;
             // validate monitor config
             MultiMonCfg monCfg = MultiMonCfg.Primary;
             if (radioButtonVirt.Checked)
@@ -123,10 +127,14 @@ namespace HotCornersWin
                 return;
             }
             Properties.Settings.Default.MultiMonCfg = (int)monCfg;
-
+            // save the settings
             Properties.Settings.Default.Save();
-
-            // TODO PollInterval and AutoFullscreen won't apply here 
+            // apply the settings immediately
+            if (CornersProcessor is not null)
+            {
+                CornersProcessor.PollInterval = Properties.Settings.Default.PollInterval;
+                CornersProcessor.DisableOnFullscreen = Properties.Settings.Default.DisableOnFullscreen;
+            }
             CornersHitTester.CornerRadius = Properties.Settings.Default.AreaSize;
             CornersHitTester.Screens = screens;
             CornersSettingsHelper.ReloadSettings();
@@ -134,19 +142,14 @@ namespace HotCornersWin
 
         private void buttonCustomActions_Click(object sender, EventArgs e)
         {
-            var fae = new FormActionsEditor()
+            _ = new FormActionsEditor()
             {
                 Icon = Properties.Resources.icon_new_on,
                 Text = Properties.Resources.FormActionsEditorText,
                 TopMost = true,
                 StartPosition = FormStartPosition.CenterParent,
-            };
-            if (fae.ShowDialog(this) == DialogResult.OK)
-            {
-                // TODO see CornersSettingsHelper line 41
-                CornersSettingsHelper.ReloadSettings();
-                LoadActions();
-            }
+            }.ShowDialog(this);
+            LoadActions();
         }
 
         private void FormSettings_KeyDown(object sender, KeyEventArgs e)

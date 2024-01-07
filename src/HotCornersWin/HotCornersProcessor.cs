@@ -116,7 +116,18 @@ namespace HotCornersWin
             if (_pollCyclesCounter == CornersSettingsHelper.GetDelay(currentCorner))
             {
                 Debug.WriteLine($"Action at {currentCorner} after {_pollCyclesCounter} polls"); // TODO remove debug
-                CornersSettingsHelper.GetAction(currentCorner).Invoke();
+                try
+                {
+                    CornersSettingsHelper.GetAction(currentCorner).Invoke();
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(
+                    ex.Message,
+                    Properties.Resources.strError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                }
             }
             _lastTestCorner = currentCorner;
         }

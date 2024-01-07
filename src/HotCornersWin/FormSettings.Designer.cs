@@ -53,7 +53,7 @@
             radioButtonPrim = new RadioButton();
             radioButtonVirt = new RadioButton();
             groupBoxAdvanced = new GroupBox();
-            checkBoxAutoFullscreen = new CheckBox();
+            checkBoxDisableOnFullscreen = new CheckBox();
             numericUpDownPoll = new NumericUpDown();
             labelPollInterval = new Label();
             labelRadius = new Label();
@@ -292,7 +292,7 @@
             // 
             // groupBoxAdvanced
             // 
-            groupBoxAdvanced.Controls.Add(checkBoxAutoFullscreen);
+            groupBoxAdvanced.Controls.Add(checkBoxDisableOnFullscreen);
             groupBoxAdvanced.Controls.Add(numericUpDownPoll);
             groupBoxAdvanced.Controls.Add(labelPollInterval);
             groupBoxAdvanced.Controls.Add(labelRadius);
@@ -306,13 +306,13 @@
             // 
             // checkBoxAutoFullscreen
             // 
-            checkBoxAutoFullscreen.AutoSize = true;
-            checkBoxAutoFullscreen.Location = new Point(6, 73);
-            checkBoxAutoFullscreen.Name = "checkBoxAutoFullscreen";
-            checkBoxAutoFullscreen.Size = new Size(83, 19);
-            checkBoxAutoFullscreen.TabIndex = 17;
-            checkBoxAutoFullscreen.Text = "checkBox1";
-            checkBoxAutoFullscreen.UseVisualStyleBackColor = true;
+            checkBoxDisableOnFullscreen.AutoSize = true;
+            checkBoxDisableOnFullscreen.Location = new Point(6, 73);
+            checkBoxDisableOnFullscreen.Name = "checkBoxAutoFullscreen";
+            checkBoxDisableOnFullscreen.Size = new Size(83, 19);
+            checkBoxDisableOnFullscreen.TabIndex = 17;
+            checkBoxDisableOnFullscreen.Text = "checkBox1";
+            checkBoxDisableOnFullscreen.UseVisualStyleBackColor = true;
             // 
             // numericUpDownPoll
             // 
@@ -434,7 +434,7 @@
         private NumericUpDown numericUpDownRadius;
         private Button buttonDebugInfo;
         private Button buttonCustomActions;
-        private CheckBox checkBoxAutoFullscreen;
+        private CheckBox checkBoxDisableOnFullscreen;
         private NumericUpDown numericUpDownPoll;
         private Label labelPollInterval;
         private Label labelDelay1;

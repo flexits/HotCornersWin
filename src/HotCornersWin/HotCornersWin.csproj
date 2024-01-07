@@ -12,6 +12,7 @@
     <FileVersion>0.8.1</FileVersion>
     <PackageIcon>icons8-layout-96.png</PackageIcon>
     <ApplicationIcon>icon-new-on.ico</ApplicationIcon>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

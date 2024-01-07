@@ -122,12 +122,12 @@ namespace HotCornersWin.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool AutoFullscreen {
+        public bool DisableOnFullscreen {
             get {
-                return ((bool)(this["AutoFullscreen"]));
+                return ((bool)(this["DisableOnFullscreen"]));
             }
             set {
-                this["AutoFullscreen"] = value;
+                this["DisableOnFullscreen"] = value;
             }
         }
         

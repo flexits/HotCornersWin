@@ -26,7 +26,7 @@ namespace HotCornersWin
     /// <summary>
     /// A helper class to process the system screens information.
     /// </summary>
-    public static class ScreenInfoHelper
+    public static partial class ScreenInfoHelper
     {
         private enum QUERY_USER_NOTIFICATION_STATE
         {
@@ -41,8 +41,8 @@ namespace HotCornersWin
 
         private const int HRESULT_S_OK = 0;
 
-        [DllImport("Shell32.dll")]
-        private static extern int SHQueryUserNotificationState(out QUERY_USER_NOTIFICATION_STATE state);
+        [LibraryImport("Shell32.dll")]
+        private static partial int SHQueryUserNotificationState(out QUERY_USER_NOTIFICATION_STATE state);
 
         /// <summary>
         /// Get system screen information according to the specified 
