@@ -82,15 +82,14 @@ namespace HotCornersWin
             QUERY_USER_NOTIFICATION_STATE qnsState = QUERY_USER_NOTIFICATION_STATE.QUNS_NOT_PRESENT;
             if (SHQueryUserNotificationState(out qnsState) == HRESULT_S_OK)
             {
-                // TODO open start menu changes the state to QUNS_APP thus disrupting the operation! 
-                if (qnsState == QUERY_USER_NOTIFICATION_STATE.QUNS_ACCEPTS_NOTIFICATIONS)
+                switch (qnsState)
                 {
-                    return FullscreenState.NoFullscreen;
-                }
-                else
-                {
-                    Debug.WriteLine($"QNS State is {qnsState}"); // TODO remove debug
-                    return FullscreenState.IsFullscreen;
+                    case QUERY_USER_NOTIFICATION_STATE.QUNS_ACCEPTS_NOTIFICATIONS:
+                    case QUERY_USER_NOTIFICATION_STATE.QUNS_QUIET_TIME:
+                    case QUERY_USER_NOTIFICATION_STATE.QUNS_APP:
+                        return FullscreenState.NoFullscreen;
+                    default:
+                        return FullscreenState.IsFullscreen;
                 }
             }
             else
