@@ -60,7 +60,7 @@
             labelVer.Name = "labelVer";
             labelVer.Size = new Size(59, 25);
             labelVer.TabIndex = 1;
-            labelVer.Text = "v0.8.2";
+            labelVer.Text = "v0.8.3";
             // 
             // labelDescription
             // 
@@ -69,7 +69,7 @@
             labelDescription.Name = "labelDescription";
             labelDescription.Size = new Size(265, 15);
             labelDescription.TabIndex = 2;
-            labelDescription.Text = "Add MacOS hot corners function to Windows 10!";
+            labelDescription.Text = "Add macOS hot corners function to Windows 10!";
             // 
             // linkLabelAuthor
             // 

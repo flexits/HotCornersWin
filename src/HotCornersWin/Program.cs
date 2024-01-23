@@ -177,7 +177,7 @@ namespace HotCornersWin
 
         private static void OnIconDoubleClick()
         {
-            // show Settings on single click
+            // show Settings on double click
             MenuItemSettings_Click(null, new());
         }
 

@@ -2,14 +2,18 @@
 
 namespace HotCornersWin
 {
+    /// <summary>
+    /// Performs hot corners monitoring and 
+    /// triggers the corresponding events.
+    /// </summary>
     public class HotCornersProcessor : IDisposable
     {
         public delegate void ProcessingEnabledChangedHandler(bool enabled);
         
+        /// <summary>
+        /// Invoked on hot corners monitoring enable/disable.
+        /// </summary>
         public event ProcessingEnabledChangedHandler? StateChanged;
-
-        /*public delegate void HotCornerTriggerHandler(Action action);
-        public event HotCornerTriggerHandler? HotCornerTriggered;*/
 
         private readonly System.Timers.Timer _timer;
         private readonly MouseHook _mouseHook;
@@ -17,6 +21,9 @@ namespace HotCornersWin
         private Corners _lastTestCorner = Corners.None;
         private bool _blockTrigger = false;
 
+        /// <summary>
+        /// Enable or disable hot corners monitoring.
+        /// </summary>
         public bool Enabled
         {
             get { return _timer.Enabled; }
@@ -30,6 +37,10 @@ namespace HotCornersWin
             }
         }
 
+        /// <summary>
+        /// The cursor location update frequency, ms.
+        /// Must be greater than zero.
+        /// </summary>
         public int PollInterval
         {
             get { return (int)_timer.Interval; }
@@ -43,6 +54,9 @@ namespace HotCornersWin
             }
         }
 
+        /// <summary>
+        /// Auto-disable hot corners monitoring when a full-screen up is running.
+        /// </summary>
         public bool DisableOnFullscreen {  get; set; } = false;
 
         public HotCornersProcessor()
