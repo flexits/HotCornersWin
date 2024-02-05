@@ -30,7 +30,7 @@ namespace HotCornersWin
             {
                 CheckOnClick = true
             };
-            _menuItemSwitch.Click += NotifyIcon_DoubleClick;
+            _menuItemSwitch.Click += (o, e) => OnIconSingleClick();
 
             ToolStripMenuItem menuItemSettings = new(Properties.Resources.strMenuSettings);
             menuItemSettings.Click += MenuItemSettings_Click;
