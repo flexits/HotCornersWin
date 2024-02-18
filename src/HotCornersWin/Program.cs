@@ -114,10 +114,13 @@ namespace HotCornersWin
         /// </summary>
         private static void CornersProcessorStateChanged(bool enabled)
         {
-            _menuItemSwitch.Checked = enabled;
-            _notifyIcon.Icon = enabled ? Properties.Resources.icon_new_on : Properties.Resources.icon_new_off;
-            string tooltip = enabled ? Properties.Resources.strEnabled : Properties.Resources.strDisabled;
-            _notifyIcon.Text = $"HotCornersWin ({tooltip})";
+            _dummyForm.BeginInvoke(new Action(() =>
+            {
+                _menuItemSwitch.Checked = enabled;
+                _notifyIcon.Icon = enabled ? Properties.Resources.icon_new_on : Properties.Resources.icon_new_off;
+                string tooltip = enabled ? Properties.Resources.strEnabled : Properties.Resources.strDisabled;
+                _notifyIcon.Text = $"HotCornersWin ({tooltip})";
+            }));
         }
 
         /// <summary>
