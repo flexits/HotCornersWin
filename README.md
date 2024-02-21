@@ -13,7 +13,9 @@ An adjustable **delay** before triggering an action is associated with each hot 
 
 **Multi-monitor** environments are fully supported. Hot corners may be placed on the primary display only, on the virtual display (it contains all the monitors combined in one), or repeated on each monitor.
 
-Minimal interference: the application can **autodetect a full-screen application** (a game, for example) launch and exit and automatically turn itself off and on respectively. It **ignores dragging** (basically, any mouse gestures performed with a button held down) and won't trigger actions in this case.
+Minimal interference: the application can **autodetect a full-screen application** (a game, for example) launch and exit and automatically turn itself off and on respectively (not compatible with GeForce Experience's overlay right now, [issue #15](https://github.com/flexits/HotCornersWin/issues/15)). 
+
+It **ignores dragging** (basically, any mouse gestures performed with a button held down) and won't trigger actions in this case.
 
 Manual turn on and off is as simple as a single click on the app's icon in the notification area (tray icon). A double click brings the Settings window up.
 
@@ -46,7 +48,7 @@ See [Issues](https://github.com/flexits/HotCornersWin/issues) and feel free to a
 
 ### Contributions
 
-Any contributions are welcomed, not limited to the code but including feature requests, opinions on the app's operation, UI/UX etc. Feel free to open an issue or leave your note in the existing ones.
+Any contributions are welcomed, not limited to the code but including feature requests, opinions on the app's operation, UI/UX etc. Feel free to open an issue, leave your note in the existing ones, or join the [discussion](https://github.com/flexits/HotCornersWin/discussions/16).
 
 ### Attributions:
 
