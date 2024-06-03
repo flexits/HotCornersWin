@@ -1,4 +1,6 @@
-﻿namespace HotCornersWin
+﻿using System.Diagnostics;
+
+namespace HotCornersWin
 {
     /// <summary>
     /// A helper class to determine whether a hot corner of a display was reached.
@@ -12,18 +14,22 @@
         {
             set
             {
-                _cornerCoords.Clear();
+                _screens.Clear();
+                _corners.Clear();
+                _screens.AddRange(value);
                 // Calculate each screen's corners coordinates and add to the enumeration.
                 foreach (var screen in value)
                 {
+                    Dictionary<Point, Corners> cornerCoordinates = new();
                     Point coordLT = new(screen.X, screen.Y);
-                    _cornerCoords.TryAdd(coordLT, Corners.LeftTop);
+                    cornerCoordinates.TryAdd(coordLT, Corners.LeftTop);
                     Point coordLB = new(screen.X, screen.Height + screen.Y);
-                    _cornerCoords.TryAdd(coordLB, Corners.LeftBottom);
+                    cornerCoordinates.TryAdd(coordLB, Corners.LeftBottom);
                     Point coordRT = new(screen.Width + screen.X, screen.Y);
-                    _cornerCoords.TryAdd(coordRT, Corners.RightTop);
+                    cornerCoordinates.TryAdd(coordRT, Corners.RightTop);
                     Point coordRB = new(screen.Width + screen.X, screen.Height + screen.Y);
-                    _cornerCoords.TryAdd(coordRB, Corners.RightBottom);
+                    cornerCoordinates.TryAdd(coordRB, Corners.RightBottom);
+                    _corners.Add(cornerCoordinates);
                 }
             }
         }
@@ -44,8 +50,21 @@
             }
         }
 
-        private static readonly Dictionary<Point, Corners> _cornerCoords = new();
-
+        /// <summary>
+        /// System screens dimensions.
+        /// </summary>
+        private static List<Rectangle> _screens = new();
+        /// <summary>
+        /// System screen corners and their coordinates.
+        /// </summary>
+        private static readonly List<Dictionary<Point, Corners>> _corners = new();
+        /// <summary>
+        /// Index of the screen that current cursor is located in or -1 if not determined.
+        /// </summary>
+        private static int _screenIndex = -1;
+        /// <summary>
+        /// Radius of the area near a corner that a hit is detected in.
+        /// </summary>
         private static int _cornerRadius = 5;
 
         /// <summary>
@@ -56,13 +75,28 @@
         /// otherwise Corners.None.</returns>
         public static Corners HitTest(Point coords)
         {
-            foreach (var pair in _cornerCoords)
+            Debug.WriteLine($"{coords.X}; {coords.Y}");
+            for (int i=0; i< _screens.Count; i++)
+            {
+                if (_screens[i].Contains(coords))
+                {
+                    _screenIndex = i;
+                    break;
+                }
+                _screenIndex = -1;
+            }
+            if (_screenIndex < 0 || _screenIndex >= _corners.Count)
+            {
+                return Corners.None;
+            }
+            foreach (var pair in _corners[_screenIndex])
             {
                 Point diff = coords.AbsDiff(pair.Key);
                 if (diff.X <= _cornerRadius && diff.Y <= _cornerRadius)
                 {
                     if (diff.Hypotenuse() <= _cornerRadius)
                     {
+                        Debug.WriteLine($"Screen {_screenIndex} hit");
                         return pair.Value;
                     }
                 }
