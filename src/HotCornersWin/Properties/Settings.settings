@@ -27,7 +27,7 @@
       <Value Profile="(Default)">75</Value>
     </Setting>
     <Setting Name="DisableOnFullscreen" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="DelayLT" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
