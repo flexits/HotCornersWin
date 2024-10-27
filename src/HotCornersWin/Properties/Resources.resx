@@ -172,6 +172,9 @@
   <data name="saTaskView" xml:space="preserve">
     <value>Task View</value>
   </data>
+  <data name="saWidgetsBoard" xml:space="preserve">
+    <value>Widgets Board</value>
+  </data>
   <data name="saWinInk" xml:space="preserve">
     <value>Windows Ink Workspace</value>
   </data>

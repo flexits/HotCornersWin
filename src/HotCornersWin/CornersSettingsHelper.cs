@@ -129,6 +129,13 @@ namespace HotCornersWin
                 KeyboardSend.KeyUp(Keys.S);
                 }
             },
+            {Properties.Resources.saWidgetsBoard, () => {
+                KeyboardSend.KeyDown(Keys.LWin);
+                KeyboardSend.KeyDown(Keys.W);
+                KeyboardSend.KeyUp(Keys.LWin);
+                KeyboardSend.KeyUp(Keys.W);
+                }
+            }
         };
 
         /// <summary>
