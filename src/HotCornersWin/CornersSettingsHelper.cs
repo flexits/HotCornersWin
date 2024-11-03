@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 
 namespace HotCornersWin
 {
@@ -79,10 +80,13 @@ namespace HotCornersWin
                 }
             },
             {Properties.Resources.saLockPC, () => {
-                KeyboardSend.KeyDown(Keys.LWin);
-                KeyboardSend.KeyDown(Keys.L);
-                KeyboardSend.KeyUp(Keys.LWin);
-                KeyboardSend.KeyUp(Keys.L);
+                _ = new Process
+                    {
+                        StartInfo = new ProcessStartInfo("rundll32.exe", "user32.dll,LockWorkStation")
+                        {
+                            UseShellExecute = true
+                        }
+                    }.Start();
                 }
             },
             {Properties.Resources.saExplorer, () => {
