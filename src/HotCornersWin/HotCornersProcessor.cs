@@ -19,7 +19,8 @@ namespace HotCornersWin
         private readonly MouseHook _mouseHook;
         private int _pollCyclesCounter = 0;
         private Corners _lastTestCorner = Corners.None;
-        private bool _blockTrigger = false;
+        private bool _blockStateChanged = false;
+        private bool _blocked = false;
 
         /// <summary>
         /// Enable or disable hot corners monitoring.
@@ -75,25 +76,36 @@ namespace HotCornersWin
             // Disable operation if something's running in a full screen mode.
             if (DisableOnFullscreen)
             {
-                bool blocked = ScreenInfoHelper.GetFullscreenState() != FullscreenState.NoFullscreen;
-                if (blocked)
+                if (ScreenInfoHelper.GetFullscreenState() != FullscreenState.NoFullscreen)
                 {
-                    if (!_blockTrigger)
+                    if (!_blockStateChanged)
                     {
-                        Debug.WriteLine("Blocked by a fullscreen app"); // TODO remove debug
-                        _blockTrigger = true;
-                        StateChanged?.Invoke(enabled: false);
+                        _blockStateChanged = true;
+                        if (ScreenInfoHelper.DetectNvOverlay())
+                        {
+                            Debug.WriteLine("NV Overlay is on top, ignoring"); // TODO remove debug
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Blocked by a fullscreen app"); // TODO remove debug
+                            StateChanged?.Invoke(enabled: false);
+                            _blocked = true;
+                        }
                     }
-                    return;
                 }
                 else
                 {
-                    if (_blockTrigger)
+                    if (_blockStateChanged)
                     {
                         Debug.WriteLine("Unblocked"); // TODO remove debug
-                        _blockTrigger = false;
+                        _blockStateChanged = false;
                         StateChanged?.Invoke(enabled: true);
+                        _blocked = false;
                     }
+                }
+                if (_blocked)
+                {
+                    return;
                 }
             }
 
