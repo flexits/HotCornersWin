@@ -44,5 +44,8 @@
     <Setting Name="CustomActions" Type="System.String" Scope="User">
       <Value Profile="(Default)">[{"$type":"CAShell","Command":"calc.exe","Name":"Calculator"},{"$type":"CAShell","Command":"https://github.com/flexits/","Name":"GitHub"},{"$type":"CAShell","Command":"Shell:::{ED7BA470-8E54-465E-825C-99712043E01C}","Name":"All Tasks"}]</Value>
     </Setting>
+    <Setting Name="ColorScheme" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

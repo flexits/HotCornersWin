@@ -190,6 +190,9 @@
   <data name="strApply" xml:space="preserve">
     <value>Apply</value>
   </data>
+  <data name="strAuto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
   <data name="strAutoAllUsr" xml:space="preserve">
     <value>Start with Windows for all users</value>
   </data>
@@ -211,6 +214,9 @@
   <data name="strChooseAction" xml:space="preserve">
     <value>Choose actions and delays for the hot corners:</value>
   </data>
+  <data name="strColorScheme" xml:space="preserve">
+    <value>Color scheme (the app restarts on change)</value>
+  </data>
   <data name="strCommand" xml:space="preserve">
     <value>Shell command:</value>
   </data>
@@ -225,6 +231,9 @@
   </data>
   <data name="strCustAct" xml:space="preserve">
     <value>Custom actions</value>
+  </data>
+  <data name="strDark" xml:space="preserve">
+    <value>Dark</value>
   </data>
   <data name="strDebugExport" xml:space="preserve">
     <value>Debug info</value>
@@ -249,6 +258,9 @@
   </data>
   <data name="strFinish" xml:space="preserve">
     <value>Finish</value>
+  </data>
+  <data name="strLight" xml:space="preserve">
+    <value>Light</value>
   </data>
   <data name="strMenuAbout" xml:space="preserve">
     <value>About</value>

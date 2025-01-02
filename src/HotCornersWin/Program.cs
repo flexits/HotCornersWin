@@ -25,6 +25,12 @@ namespace HotCornersWin
         static Program()
         {
             ApplicationConfiguration.Initialize();
+#pragma warning disable WFO5001
+            if (Enum.IsDefined(typeof(SystemColorMode), Properties.Settings.Default.ColorScheme))
+            {
+                Application.SetColorMode((SystemColorMode)Properties.Settings.Default.ColorScheme);
+            }
+#pragma warning restore WFO5001
 
             _menuItemSwitch = new(Properties.Resources.strMenuEnabled)
             {

@@ -60,6 +60,10 @@
             numericUpDownRadius = new NumericUpDown();
             buttonDebugInfo = new Button();
             buttonCustomActions = new Button();
+            groupBoxColorScheme = new GroupBox();
+            radioButtonSystem = new RadioButton();
+            radioButtonDark = new RadioButton();
+            radioButtonLight = new RadioButton();
             contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBoxCorners.SuspendLayout();
@@ -71,6 +75,7 @@
             groupBoxAdvanced.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownPoll).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownRadius).BeginInit();
+            groupBoxColorScheme.SuspendLayout();
             SuspendLayout();
             // 
             // contextMenuStrip1
@@ -228,7 +233,7 @@
             // 
             // buttonApply
             // 
-            buttonApply.Location = new Point(584, 336);
+            buttonApply.Location = new Point(586, 399);
             buttonApply.Name = "buttonApply";
             buttonApply.Size = new Size(108, 23);
             buttonApply.TabIndex = 20;
@@ -238,7 +243,7 @@
             // 
             // buttonCancel
             // 
-            buttonCancel.Location = new Point(12, 336);
+            buttonCancel.Location = new Point(14, 399);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(108, 23);
             buttonCancel.TabIndex = 21;
@@ -304,11 +309,11 @@
             groupBoxAdvanced.TabStop = false;
             groupBoxAdvanced.Text = "Advanced settings:";
             // 
-            // checkBoxAutoFullscreen
+            // checkBoxDisableOnFullscreen
             // 
             checkBoxDisableOnFullscreen.AutoSize = true;
             checkBoxDisableOnFullscreen.Location = new Point(6, 73);
-            checkBoxDisableOnFullscreen.Name = "checkBoxAutoFullscreen";
+            checkBoxDisableOnFullscreen.Name = "checkBoxDisableOnFullscreen";
             checkBoxDisableOnFullscreen.Size = new Size(83, 19);
             checkBoxDisableOnFullscreen.TabIndex = 17;
             checkBoxDisableOnFullscreen.Text = "checkBox1";
@@ -354,7 +359,7 @@
             // 
             // buttonDebugInfo
             // 
-            buttonDebugInfo.Location = new Point(356, 336);
+            buttonDebugInfo.Location = new Point(128, 336);
             buttonDebugInfo.Name = "buttonDebugInfo";
             buttonDebugInfo.Size = new Size(108, 23);
             buttonDebugInfo.TabIndex = 18;
@@ -364,7 +369,7 @@
             // 
             // buttonCustomActions
             // 
-            buttonCustomActions.Location = new Point(470, 336);
+            buttonCustomActions.Location = new Point(14, 336);
             buttonCustomActions.Name = "buttonCustomActions";
             buttonCustomActions.Size = new Size(108, 23);
             buttonCustomActions.TabIndex = 19;
@@ -372,13 +377,59 @@
             buttonCustomActions.UseVisualStyleBackColor = true;
             buttonCustomActions.Click += buttonCustomActions_Click;
             // 
+            // groupBoxColorScheme
+            // 
+            groupBoxColorScheme.Controls.Add(radioButtonLight);
+            groupBoxColorScheme.Controls.Add(radioButtonDark);
+            groupBoxColorScheme.Controls.Add(radioButtonSystem);
+            groupBoxColorScheme.Location = new Point(380, 336);
+            groupBoxColorScheme.Name = "groupBoxColorScheme";
+            groupBoxColorScheme.Size = new Size(312, 57);
+            groupBoxColorScheme.TabIndex = 22;
+            groupBoxColorScheme.TabStop = false;
+            groupBoxColorScheme.Text = "groupBox1";
+            // 
+            // radioButtonSystem
+            // 
+            radioButtonSystem.AutoSize = true;
+            radioButtonSystem.Location = new Point(6, 22);
+            radioButtonSystem.Name = "radioButtonSystem";
+            radioButtonSystem.Size = new Size(94, 19);
+            radioButtonSystem.TabIndex = 0;
+            radioButtonSystem.TabStop = true;
+            radioButtonSystem.Text = "radioButton1";
+            radioButtonSystem.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonDark
+            // 
+            radioButtonDark.AutoSize = true;
+            radioButtonDark.Location = new Point(106, 22);
+            radioButtonDark.Name = "radioButtonDark";
+            radioButtonDark.Size = new Size(94, 19);
+            radioButtonDark.TabIndex = 1;
+            radioButtonDark.TabStop = true;
+            radioButtonDark.Text = "radioButton1";
+            radioButtonDark.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonLight
+            // 
+            radioButtonLight.AutoSize = true;
+            radioButtonLight.Location = new Point(206, 22);
+            radioButtonLight.Name = "radioButtonLight";
+            radioButtonLight.Size = new Size(94, 19);
+            radioButtonLight.TabIndex = 2;
+            radioButtonLight.TabStop = true;
+            radioButtonLight.Text = "radioButton2";
+            radioButtonLight.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             AcceptButton = buttonApply;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = buttonCancel;
-            ClientSize = new Size(706, 369);
+            ClientSize = new Size(706, 434);
+            Controls.Add(groupBoxColorScheme);
             Controls.Add(buttonCustomActions);
             Controls.Add(buttonDebugInfo);
             Controls.Add(groupBoxAdvanced);
@@ -409,6 +460,8 @@
             groupBoxAdvanced.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownPoll).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownRadius).EndInit();
+            groupBoxColorScheme.ResumeLayout(false);
+            groupBoxColorScheme.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -445,5 +498,9 @@
         private NumericUpDown numericUpDownDelayRB;
         private Label labelDelay3;
         private NumericUpDown numericUpDownDelayRT;
+        private GroupBox groupBoxColorScheme;
+        private RadioButton radioButtonLight;
+        private RadioButton radioButtonDark;
+        private RadioButton radioButtonSystem;
     }
 }

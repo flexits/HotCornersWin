@@ -18,6 +18,10 @@ namespace HotCornersWin
             groupBoxCorners.Text = Properties.Resources.strChooseAction;
             groupBoxMulti.Text = Properties.Resources.strMonSet;
             groupBoxAdvanced.Text = Properties.Resources.strAdvSet;
+            groupBoxColorScheme.Text = Properties.Resources.strColorScheme;
+            radioButtonDark.Text = Properties.Resources.strDark;
+            radioButtonLight.Text = Properties.Resources.strLight;
+            radioButtonSystem.Text = Properties.Resources.strAuto;
             radioButtonVirt.Text = Properties.Resources.strMonVirt;
             radioButtonPrim.Text = Properties.Resources.strMonPrim;
             radioButtonSept.Text = Properties.Resources.strMonSepr;
@@ -92,6 +96,24 @@ namespace HotCornersWin
                 radioButtonPrim.Checked = true;
             }
 
+#pragma warning disable WFO5001
+            if (Enum.IsDefined(typeof(SystemColorMode), Properties.Settings.Default.ColorScheme))
+            {
+                switch ((SystemColorMode)Properties.Settings.Default.ColorScheme)
+                {
+                    case SystemColorMode.System:
+                        radioButtonSystem.Checked = true;
+                        break;
+                    case SystemColorMode.Dark:
+                        radioButtonDark.Checked = true;
+                        break;
+                    case SystemColorMode.Classic:
+                        radioButtonLight.Checked = true;
+                        break;
+                }
+            }
+#pragma warning restore WFO5001
+
             LoadActions();
         }
 
@@ -130,9 +152,28 @@ namespace HotCornersWin
                 return;
             }
             Properties.Settings.Default.MultiMonCfg = (int)monCfg;
+            // TODO validate the color scheme setting
+#pragma warning disable WFO5001
+            SystemColorMode colorMode = SystemColorMode.System;
+            if (radioButtonDark.Checked)
+            {
+                colorMode = SystemColorMode.Dark;
+            }
+            else if (radioButtonLight.Checked)
+            {
+                colorMode = SystemColorMode.Classic;
+            }
+            bool wasColorSchemeChanged = Properties.Settings.Default.ColorScheme != (int)colorMode;
+            Properties.Settings.Default.ColorScheme = (int)colorMode;
+#pragma warning restore WFO5001
             // save the settings
             Properties.Settings.Default.Save();
             // apply the settings immediately
+            if (wasColorSchemeChanged)
+            {
+                Application.Restart();
+                Environment.Exit(0);
+            }
             if (CornersProcessor is not null)
             {
                 CornersProcessor.PollInterval = Properties.Settings.Default.PollInterval;
