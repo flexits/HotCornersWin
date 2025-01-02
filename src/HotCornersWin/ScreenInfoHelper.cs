@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Buffers;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace HotCornersWin
@@ -50,7 +51,7 @@ namespace HotCornersWin
             GW_ENABLEDPOPUP = 6
         };
 
-        private const int HRESULT_S_OK = 0;
+        internal const int HRESULT_S_OK = 0;
 
         [LibraryImport("Shell32.dll")]
         internal static partial int SHQueryUserNotificationState(out QUERY_USER_NOTIFICATION_STATE state);
@@ -76,6 +77,12 @@ namespace HotCornersWin
         [LibraryImport("User32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static partial bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        [LibraryImport("User32.dll", StringMarshalling = StringMarshalling.Utf16)]
+        internal static partial int GetWindowTextW(IntPtr hWnd, [Out] char[] lpString, int nMaxCount);
+
+        [LibraryImport("User32.dll", StringMarshalling = StringMarshalling.Utf16)]
+        internal static partial uint GetWindowModuleFileNameW(IntPtr hWnd, [Out] char[] pszFileName, uint cchFileNameMax);
 
         [LibraryImport("User32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -137,7 +144,7 @@ namespace HotCornersWin
 
         /// <summary>
         /// Overlay windows compatibility workaroud
-        /// for nVidia Overlay and MS Text Inpu App:
+        /// for nVidia Overlay and MS Text Input App:
         /// detect if any of theirs tranparent windows is topmost.
         /// </summary>
         /// <returns>True is the topmost fullscreen window 
@@ -158,45 +165,66 @@ namespace HotCornersWin
                 return false;
             }
 
-            // search for overlay windows
-            List<IntPtr> overlayWndhandles = [];
-            foreach (var process in Process.GetProcesses())
-            {
-                if (process.ProcessName.Contains("NVIDIA Overlay", StringComparison.OrdinalIgnoreCase))
-                {
-                    overlayWndhandles.Add(process.MainWindowHandle);
-                }
-                else if (process.ProcessName.Contains("TextInputHost", StringComparison.OrdinalIgnoreCase))
-                {
-                    overlayWndhandles.Add(process.MainWindowHandle);
-                }
-            }
-            if (overlayWndhandles.Count == 0)
-            {
-                // no overlay window found
-                Debug.WriteLine("No overlay detected");
-                return false;
-            }
-
             // check all the topmost windows starting from the first in Z-order
-            // to find a visible fullscreen window
+            const int wndTextLength = 36;
+            char[] wndTextBuffer = ArrayPool<char>.Shared.Rent(wndTextLength + 1);
+            const int wndFileNameLength = 128;
+            char[] wndFileNameBuffer = ArrayPool<char>.Shared.Rent(wndFileNameLength + 1);
+            string wndText, wndFileName;
             IntPtr wndHandle = GetTopWindow(IntPtr.Zero);
             do
             {
-                if (overlayWndhandles.Contains(wndHandle))
-                {
-                    // the overlay is topmost
-                    Debug.WriteLine("An overlay detected!");
-                    return true;
-                }
                 if (IsWindowVisible(wndHandle) && GetWindowRect(wndHandle, out wndRect))
                 {
                     int wndWidth = wndRect.LowerRightX - wndRect.UpperLeftX;
                     int wndHeight = wndRect.LowerRightY - wndRect.UpperLeftY;
                     if (width <= wndWidth && height <= wndHeight)
                     {
-                        // there's a fullsceen window on top of the overlay
-                        Debug.WriteLine($"TOP: {wndHandle:X}; {wndWidth}X{wndHeight}");
+                        // a fullscreen window is detected, get its parameters
+                        // and check for known signatures
+                        int wndTextLengthActual = GetWindowTextW(wndHandle, wndTextBuffer, wndTextLength);
+                        if (wndTextLengthActual > 0)
+                        {
+                            wndText = new string(wndTextBuffer.Take(wndTextLengthActual).ToArray());
+                        }
+                        else
+                        {
+                            wndText = string.Empty;
+                        }
+
+                        if (wndText.Contains("GeForce Overlay", StringComparison.OrdinalIgnoreCase))
+                        {
+                            // nVidia GeForce Overlay window detected
+                            return true;
+                        }
+                        if (wndText.Contains("Text Input Application", StringComparison.OrdinalIgnoreCase))
+                        {
+                            // Microsoft Text Input Application window detected
+                            return true;
+                        }
+
+                        uint wndFileNameLengthActual = GetWindowModuleFileNameW(wndHandle, wndFileNameBuffer, wndFileNameLength);
+                        if (wndFileNameLengthActual > 0)
+                        {
+                            wndFileName = new string(wndFileNameBuffer.Take((int)wndFileNameLengthActual).ToArray());
+                        }
+                        else
+                        {
+                            wndFileName = string.Empty;
+                        }
+
+                        if (wndTextLengthActual == 0 && wndFileName.EndsWith("shcore.dll", StringComparison.OrdinalIgnoreCase))
+                        {
+                            // this overlay window may be on top when Show desktop button at the end of the taskbar is clicked
+                            return true;
+                        }
+                        if (wndText.Contains("Program Manager", StringComparison.OrdinalIgnoreCase) && wndFileName.EndsWith("SHELL32.dll", StringComparison.OrdinalIgnoreCase))
+                        {
+                            // Program Manager window detected
+                            return true;
+                        }
+
+                        //Debug.WriteLine($"{wndHandle:X}; {wndText}; {wndFileName}; {wndWidth}X{wndHeight}");
                         return false;
                     }
                 }
