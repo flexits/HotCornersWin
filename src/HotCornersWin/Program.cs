@@ -21,6 +21,7 @@ namespace HotCornersWin
         /// when either a single or double click is handled.
         /// </summary>
         private static bool _wasIconClicked = false;
+        private static DateTime _iconClickTimestamp = DateTime.Now;
 
         static Program()
         {
@@ -36,7 +37,7 @@ namespace HotCornersWin
             {
                 CheckOnClick = true
             };
-            _menuItemSwitch.Click += (o, e) => OnIconSingleClick();
+            _menuItemSwitch.Click += (o, e) => ToggleOperationOnOff();
 
             ToolStripMenuItem menuItemSettings = new(Properties.Resources.strMenuSettings);
             menuItemSettings.Click += MenuItemSettings_Click;
@@ -62,8 +63,7 @@ namespace HotCornersWin
                 },
                 Visible = true
             };
-            _notifyIcon.MouseClick += NotifyIcon_MouseClick;
-            _notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
+            _notifyIcon.MouseDown += _notifyIcon_MouseDown;
 
             _cornersProcessor = new();
             _cornersProcessor.StateChanged += CornersProcessorStateChanged;
@@ -144,50 +144,50 @@ namespace HotCornersWin
             return ScreenInfoHelper.GetScreensInfo(moncfg);
         }
 
-        private static async void NotifyIcon_MouseClick(object? sender, MouseEventArgs e)
+        private static void _notifyIcon_MouseDown(object? sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
             {
                 return;
             }
-            // if the clicked flag is set, this is a second click - do nothing
+            // If the clicked flag is set, this is a second click:
+            // calculate the time elapsed since the first click and
+            // invoke the double click action if needed.
+            // If the clicked flag isn't set, this is a first click:
+            // set the clicked flag and rememeber the timestamp of the event.
+            // Wait for a possible double click and check the flag,
+            // if it was reset than the double click was processed,
+            // else perform the single click action
             if (_wasIconClicked)
             {
-                return;
+                if (DateTime.Now.Subtract(_iconClickTimestamp).TotalMilliseconds <= SystemInformation.DoubleClickTime)
+                {
+                    _wasIconClicked = false;
+                    // double click action
+                    MenuItemSettings_Click(null, new());
+                    return;
+                }  
             }
-            // if the clicked flag isn't set, this is a first click -
-            // set the flag and wait for a possible double click
             _wasIconClicked = true;
-            await Task.Delay(SystemInformation.DoubleClickTime + 1);
-            // check if the flag was reset, if no -
-            // then there was no double click handled, reset the flag and
-            // execute single click actions
-            if (_wasIconClicked)
+            _iconClickTimestamp = DateTime.Now;
+            _ = Task.Run(async () =>
             {
-                _wasIconClicked = false;
-                OnIconSingleClick();
-            }
+                await Task.Delay(SystemInformation.DoubleClickTime + 5);
+                if (_wasIconClicked)
+                {
+                    _wasIconClicked = false;
+                    // single click action
+                    ToggleOperationOnOff();
+                }
+            });
         }
 
-        private static void NotifyIcon_DoubleClick(object? sender, EventArgs e)
-        {
-            // reset the clicked flag
-            _wasIconClicked = false;
-            OnIconDoubleClick();
-        }
-
-        private static void OnIconSingleClick()
+        private static void ToggleOperationOnOff()
         {
             // toggle enable on double click and save changes
             _cornersProcessor.Enabled = !_cornersProcessor.Enabled;
             Properties.Settings.Default.IsEnabled = _cornersProcessor.Enabled;
             Properties.Settings.Default.Save();
-        }
-
-        private static void OnIconDoubleClick()
-        {
-            // show Settings on double click
-            MenuItemSettings_Click(null, new());
         }
 
         private static void MenuItemSettings_Click(object? sender, EventArgs e)
