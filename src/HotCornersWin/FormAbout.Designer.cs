@@ -45,7 +45,7 @@
             // labelName
             // 
             labelName.AutoSize = true;
-            labelName.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point);
+            labelName.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             labelName.Location = new Point(12, 9);
             labelName.Name = "labelName";
             labelName.Size = new Size(152, 25);
@@ -55,12 +55,12 @@
             // labelVer
             // 
             labelVer.AutoSize = true;
-            labelVer.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point);
+            labelVer.Font = new Font("Segoe UI", 14F);
             labelVer.Location = new Point(170, 9);
             labelVer.Name = "labelVer";
             labelVer.Size = new Size(59, 25);
             labelVer.TabIndex = 1;
-            labelVer.Text = "v0.8.7";
+            labelVer.Text = "v0.9.0";
             // 
             // labelDescription
             // 
