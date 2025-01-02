@@ -28,7 +28,7 @@ namespace HotCornersWin
     /// </summary>
     public static partial class ScreenInfoHelper
     {
-        private enum QUERY_USER_NOTIFICATION_STATE
+        internal enum QUERY_USER_NOTIFICATION_STATE
         {
             QUNS_NOT_PRESENT = 1,
             QUNS_BUSY = 2,
@@ -39,7 +39,7 @@ namespace HotCornersWin
             QUNS_APP = 7
         };
 
-        private enum GW_PARAMS
+        internal enum GW_PARAMS
         {
             GW_HWNDFIRST = 0,
             GW_HWNDLAST = 1,
@@ -53,10 +53,10 @@ namespace HotCornersWin
         private const int HRESULT_S_OK = 0;
 
         [LibraryImport("Shell32.dll")]
-        private static partial int SHQueryUserNotificationState(out QUERY_USER_NOTIFICATION_STATE state);
+        internal static partial int SHQueryUserNotificationState(out QUERY_USER_NOTIFICATION_STATE state);
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct RECT
+        internal struct RECT
         {
             public int UpperLeftX;
             public int UpperLeftY;
@@ -65,18 +65,21 @@ namespace HotCornersWin
         }
 
         [LibraryImport("User32.dll")]
-        private static partial IntPtr GetTopWindow(IntPtr parent);
+        internal static partial IntPtr GetDesktopWindow();
 
         [LibraryImport("User32.dll")]
-        private static partial IntPtr GetWindow(IntPtr hWnd, GW_PARAMS uCmd);
+        internal static partial IntPtr GetTopWindow(IntPtr parent);
+
+        [LibraryImport("User32.dll")]
+        internal static partial IntPtr GetWindow(IntPtr hWnd, GW_PARAMS uCmd);
 
         [LibraryImport("User32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static partial bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+        internal static partial bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
         [LibraryImport("User32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static partial bool IsWindowVisible(IntPtr hWnd);
+        internal static partial bool IsWindowVisible(IntPtr hWnd);
 
 
         /// <summary>
@@ -133,52 +136,57 @@ namespace HotCornersWin
         }
 
         /// <summary>
-        /// nVidia Overlay compatibility workaroud: 
-        /// detect if its tranparent window is topmost.
+        /// Overlay windows compatibility workaroud
+        /// for nVidia Overlay and MS Text Inpu App:
+        /// detect if any of theirs tranparent windows is topmost.
         /// </summary>
         /// <returns>True is the topmost fullscreen window 
-        /// belongs to nVidia Overlay, false in any other case.</returns>
-        public static bool DetectNvOverlay()
+        /// belongs to overlay, false in any other case.</returns>
+        public static bool DetectOverlayWindows()
         {
-            IntPtr nvWindowHandle = 0;
+            // obtain desktop window dimensions
+            IntPtr desktopWndhandle = GetDesktopWindow();
+            int width, height;
+            if (GetWindowRect(desktopWndhandle, out var wndRect))
+            {
+                width = wndRect.LowerRightX - wndRect.UpperLeftX;
+                height = wndRect.LowerRightY - wndRect.UpperLeftY;
+                Debug.WriteLine($"Desktop is {width}X{height}");
+            }
+            else
+            {
+                return false;
+            }
 
+            // search for overlay windows
+            List<IntPtr> overlayWndhandles = [];
             foreach (var process in Process.GetProcesses())
             {
                 if (process.ProcessName.Contains("NVIDIA Overlay", StringComparison.OrdinalIgnoreCase))
                 {
-                    nvWindowHandle = process.MainWindowHandle;
-                    break;
+                    overlayWndhandles.Add(process.MainWindowHandle);
+                }
+                else if (process.ProcessName.Contains("TextInputHost", StringComparison.OrdinalIgnoreCase))
+                {
+                    overlayWndhandles.Add(process.MainWindowHandle);
                 }
             }
-            if (nvWindowHandle == 0)
+            if (overlayWndhandles.Count == 0)
             {
                 // no overlay window found
                 Debug.WriteLine("No overlay detected");
                 return false;
             }
-            // the overlay window is present, get its dimensions
-            // (they're equal to the screen size)
-            int width, height;
-            if (GetWindowRect(nvWindowHandle, out var wndRect))
-            {
-                width = wndRect.LowerRightX - wndRect.UpperLeftX;
-                height = wndRect.LowerRightY - wndRect.UpperLeftY;
-                Debug.WriteLine($"NV Overlay {width}X{height}");
-            }
-            else
-            {
-                // failed to get the overlay window size
-                return false;
-            }
+
             // check all the topmost windows starting from the first in Z-order
             // to find a visible fullscreen window
             IntPtr wndHandle = GetTopWindow(IntPtr.Zero);
             do
             {
-                if (wndHandle == nvWindowHandle)
+                if (overlayWndhandles.Contains(wndHandle))
                 {
                     // the overlay is topmost
-                    Debug.WriteLine("NV Overlay detected!");
+                    Debug.WriteLine("An overlay detected!");
                     return true;
                 }
                 if (IsWindowVisible(wndHandle) && GetWindowRect(wndHandle, out wndRect))

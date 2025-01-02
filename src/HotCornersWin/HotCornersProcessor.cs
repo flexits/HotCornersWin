@@ -78,9 +78,9 @@ namespace HotCornersWin
                     if (!_blockStateChanged)
                     {
                         _blockStateChanged = true;
-                        if (ScreenInfoHelper.DetectNvOverlay())
+                        if (ScreenInfoHelper.DetectOverlayWindows())
                         {
-                            Debug.WriteLine("NV Overlay is on top, ignoring"); // TODO remove debug
+                            Debug.WriteLine("An overlay is on top, ignoring"); // TODO remove debug
                         }
                         else
                         {
