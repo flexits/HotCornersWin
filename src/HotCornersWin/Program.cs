@@ -192,6 +192,12 @@ namespace HotCornersWin
 
         private static void MenuItemSettings_Click(object? sender, EventArgs e)
         {
+            if (Application.OpenForms["FormSettings"] is Form formSettings)
+            {
+                formSettings.BringToFront();
+                return;
+            }
+
             _ = new FormSettings()
             {
                 Icon = Properties.Resources.icon_new_on,
@@ -203,6 +209,12 @@ namespace HotCornersWin
 
         private static void MenuItemAbout_Click(object? sender, EventArgs e)
         {
+            if (Application.OpenForms["FormAbout"] is Form formAbout)
+            {
+                formAbout.BringToFront();
+                return;
+            }
+
             _ = new FormAbout()
             {
                 Icon = Properties.Resources.icon_new_on,
