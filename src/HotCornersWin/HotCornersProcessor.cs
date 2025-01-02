@@ -47,10 +47,7 @@ namespace HotCornersWin
             get { return (int)_timer.Interval; }
             set
             {
-                if (value <= 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value));
-                }
+                ArgumentOutOfRangeException.ThrowIfNegativeOrZero(value);
                 _timer.Interval = value;
             }
         }
@@ -160,10 +157,19 @@ namespace HotCornersWin
 
         public void Dispose()
         {
-            _timer.Stop();
-            _timer.Elapsed -= OnTimerElapsed;
-            _timer.Dispose();
-            _mouseHook?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _timer.Stop();
+                _timer.Elapsed -= OnTimerElapsed;
+                _timer.Dispose();
+                _mouseHook?.Dispose();
+            }
         }
     }
 }

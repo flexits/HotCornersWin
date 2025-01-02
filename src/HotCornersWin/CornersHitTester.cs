@@ -20,7 +20,7 @@ namespace HotCornersWin
                 // Calculate each screen's corners coordinates and add to the enumeration.
                 foreach (var screen in value)
                 {
-                    Dictionary<Point, Corners> cornerCoordinates = new();
+                    Dictionary<Point, Corners> cornerCoordinates = [];
                     Point coordLT = new(screen.X, screen.Y);
                     cornerCoordinates.TryAdd(coordLT, Corners.LeftTop);
                     Point coordLB = new(screen.X, screen.Height + screen.Y);
@@ -53,11 +53,11 @@ namespace HotCornersWin
         /// <summary>
         /// System screens dimensions.
         /// </summary>
-        private static List<Rectangle> _screens = new();
+        private static readonly List<Rectangle> _screens = [];
         /// <summary>
         /// System screen corners and their coordinates.
         /// </summary>
-        private static readonly List<Dictionary<Point, Corners>> _corners = new();
+        private static readonly List<Dictionary<Point, Corners>> _corners = [];
         /// <summary>
         /// Index of the screen that current cursor is located in or -1 if not determined.
         /// </summary>
@@ -75,7 +75,7 @@ namespace HotCornersWin
         /// otherwise Corners.None.</returns>
         public static Corners HitTest(Point coords)
         {
-            Debug.WriteLine($"{coords.X}; {coords.Y}");
+            //Debug.WriteLine($"{coords.X}; {coords.Y}");
             for (int i=0; i< _screens.Count; i++)
             {
                 if (_screens[i].Contains(coords))
@@ -96,7 +96,7 @@ namespace HotCornersWin
                 {
                     if (diff.Hypotenuse() <= _cornerRadius)
                     {
-                        Debug.WriteLine($"Screen {_screenIndex} hit");
+                        //Debug.WriteLine($"Screen {_screenIndex} hit");
                         return pair.Value;
                     }
                 }

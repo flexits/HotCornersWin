@@ -91,18 +91,18 @@ namespace HotCornersWin
             switch (moncfg)
             {
                 case MultiMonCfg.Virtual:
-                    return new Rectangle[] { SystemInformation.VirtualScreen };
+                    return [SystemInformation.VirtualScreen];
                 case MultiMonCfg.Primary:
                     Rectangle? bounds = Screen.PrimaryScreen?.Bounds;
                     if (bounds is not null)
                     {
-                        return new Rectangle[] { (Rectangle)bounds };
+                        return [(Rectangle)bounds];
                     }
                     break;
                 case MultiMonCfg.Separate:
                     return Screen.AllScreens.Select(s => s.Bounds).ToArray();
             }
-            return Array.Empty<Rectangle>();
+            return [];
         }
 
         /// <summary>

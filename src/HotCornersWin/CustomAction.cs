@@ -8,15 +8,13 @@ namespace HotCornersWin
     /// </summary>
     [JsonDerivedType(typeof(CustomActionShell), "CAShell")]
     [JsonDerivedType(typeof(CustomActionHotkey), "CAHotkey")]
-    public abstract class CustomAction
+    [method: JsonConstructor]
+    public abstract class CustomAction()
     {
         /// <summary>
         /// Human-readable name. Must be unique.
         /// </summary>
         public string Name { get; set; } = string.Empty;
-
-        [JsonConstructorAttribute]
-        public CustomAction() { }
 
         /// <summary>
         /// Returns an action to be executed.
@@ -60,9 +58,9 @@ namespace HotCornersWin
     /// </summary>
     public class CustomActionHotkey : CustomAction
     {
-        public List<Keys> MainKeys { get; set; } = new();
+        public List<Keys> MainKeys { get; set; } = [];
 
-        public List<Keys> Modifiers { get; set; } = new();
+        public List<Keys> Modifiers { get; set; } = [];
 
         public CustomActionHotkey(string name)
         {

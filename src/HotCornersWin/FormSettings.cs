@@ -1,7 +1,10 @@
+using System.ComponentModel;
+
 namespace HotCornersWin
 {
     public partial class FormSettings : Form
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         /// <summary>
         /// Pass an instance of HotCornersProcessor here to apply settings to it.
         /// </summary>
@@ -100,10 +103,10 @@ namespace HotCornersWin
             Properties.Settings.Default.DelayRB = (int)numericUpDownDelayRB.Value;
             Properties.Settings.Default.DelayRT = (int)numericUpDownDelayRT.Value;
             // assign actions
-            Properties.Settings.Default.LeftTop = (string)comboBoxLT.SelectedItem;
-            Properties.Settings.Default.RightTop = (string)comboBoxRT.SelectedItem;
-            Properties.Settings.Default.LeftBottom = (string)comboBoxLB.SelectedItem;
-            Properties.Settings.Default.RightBottom = (string)comboBoxRB.SelectedItem;
+            Properties.Settings.Default.LeftTop = comboBoxLT.SelectedItem as string;
+            Properties.Settings.Default.RightTop = comboBoxRT.SelectedItem as string;
+            Properties.Settings.Default.LeftBottom = comboBoxLB.SelectedItem as string;
+            Properties.Settings.Default.RightBottom = comboBoxRB.SelectedItem as string;
             // other settings
             Properties.Settings.Default.AreaSize = (int)numericUpDownRadius.Value;
             Properties.Settings.Default.PollInterval = (int)numericUpDownPoll.Value;

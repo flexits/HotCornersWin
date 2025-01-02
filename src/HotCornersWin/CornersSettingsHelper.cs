@@ -22,7 +22,7 @@ namespace HotCornersWin
                         Deserialize<List<CustomAction>>(Properties.Settings.Default.CustomActions);
                     if (customActions is null)
                     {
-                        return new();
+                        return [];
                     }
                     else
                     {
@@ -31,7 +31,7 @@ namespace HotCornersWin
                 }
                 catch
                 {
-                    return new();
+                    return [];
                 }
             }
             set
@@ -145,7 +145,7 @@ namespace HotCornersWin
         /// <summary>
         /// All available actions and their human-readable names.
         /// </summary>
-        private static readonly Dictionary<string, Action> _allActions = new();
+        private static readonly Dictionary<string, Action> _allActions = [];
 
         /// <summary>
         /// Hot corners and their correspondent actions as configured in the settings.
@@ -209,7 +209,7 @@ namespace HotCornersWin
         /// </summary>
         public static string[] GetActionNames()
         {
-            return _allActions.Keys.ToArray();
+            return [.. _allActions.Keys];
         }
 
         /// <summary>
