@@ -3,7 +3,7 @@ Add hot corners function to Windows 10/11, similar to such of macOS, Gnome and K
 
 ![Settings window and the notification area icon](https://github.com/flexits/HotCornersWin/assets/86118729/b9f6b1ee-2f83-4766-a061-7bd705913496)
 
-This simple application resides in the notification area and allows user to choose from a list of various actions to be triggered when the mouse cursor hits a corner of the screen. It was developed for Windows 10, but works in Windows 11 too, except some visual style inconsistencies. 
+This simple application resides in the notification area and allows user to choose from a list of various actions to be triggered when the mouse cursor hits a corner of the screen. It was developed for Windows 10, but works in Windows 11 too, except some visual style inconsistencies. It's expected to run in previous OS'es down to Windows 7 (only x64) as well, however these old versions aren't supported. 
 
 ### Features
 
@@ -13,16 +13,22 @@ An adjustable **delay** before triggering an action is associated with each hot 
 
 **Multi-monitor** environments are fully supported. Hot corners may be placed on the primary display only, on the virtual display (it contains all the monitors combined in one), or repeated on each monitor.
 
-Minimal interference: the application can **autodetect a full-screen application** (a game, for example) launch and exit and automatically turn itself off and on respectively (not compatible with GeForce Experience's overlay right now, [issue #15](https://github.com/flexits/HotCornersWin/issues/15)). 
+Minimal interference: the application can **autodetect a full-screen application** (a game, for example) launch and exit and automatically turn itself off and on respectively (this feature may not work correctly with certain games and applications and is disabled by default). 
 
 It **ignores dragging** (basically, any mouse gestures performed with a button held down) and won't trigger actions in this case.
 
 Manual turn on and off is as simple as a single click on the app's icon in the notification area (tray icon). A double click brings the Settings window up.
 
-**Small size** – around 1 Mb installation footprint!
+**Dark and light themes** are supported with manual or system-wide switching. However, this feature is [experimental](https://learn.microsoft.com/en-us/dotnet/desktop/winforms/whats-new/net90?view=netdesktop-9.0#dark-mode) until .NET 10, and there are some visual inconsistencies when the dark theme is on.
+
+**Small size** – around 1.5 Mb installation footprint!
 
 ### Installation and usage
-Download the latest version from the [Releases](https://github.com/flexits/HotCornersWin/releases) page and run the installer. The app will be added to the current user's StartUp folder in Start->Programs. Alternatively, use the latest development build from the [Publish](https://github.com/flexits/HotCornersWin/tree/main/publish) folder.
+Download the latest version `*.msi` installer package from the [Releases](https://github.com/flexits/HotCornersWin/releases) page and run the installer. The app will be added to the current user's StartUp folder in Start->Programs. 
+
+There's a **portable version** available as well. Download `*.zip`, unpack to any folder you like and run _HotCornersWin.exe_. The settings will be stored in the `data` subfolder (will be created on first run).
+
+In both cases you're required to have the [.NET 9 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) installed on the PC.
 
 The application does not require any specific settings or fine-tuning. Set the desired actions and basically you're good to go! 
 
@@ -41,6 +47,7 @@ The operation is based on the cyclic polling of the mouse cursor position. It's 
 * Quick Link menu
 * Snip & Sketch
 * Windows Ink Workspace
+* Widgets Board (Windows 11)
 * *add yours!*
 
 ### TODO:
