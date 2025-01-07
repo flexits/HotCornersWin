@@ -96,7 +96,6 @@ namespace HotCornersWin
                     break;
             }
 
-#pragma warning disable WFO5001
             switch (_settings.ColorScheme)
             {
                 case SystemColorMode.System:
@@ -109,7 +108,6 @@ namespace HotCornersWin
                     radioButtonLight.Checked = true;
                     break;
             }
-#pragma warning restore WFO5001
 
             LoadActions();
         }
@@ -130,7 +128,7 @@ namespace HotCornersWin
             _settings.AreaSize = (int)numericUpDownRadius.Value;
             _settings.PollInterval = (int)numericUpDownPoll.Value;
             _settings.DisableOnFullscreen = checkBoxDisableOnFullscreen.Checked;
-            // validate monitor config
+            // monitor config
             MultiMonCfg monCfg = MultiMonCfg.Primary;
             if (radioButtonVirt.Checked)
             {
@@ -149,8 +147,7 @@ namespace HotCornersWin
                 return;
             }
             _settings.MultiMonCfg = monCfg;
-            // TODO validate the color scheme setting
-#pragma warning disable WFO5001
+            // color scheme
             SystemColorMode colorMode = SystemColorMode.System;
             if (radioButtonDark.Checked)
             {
@@ -162,7 +159,6 @@ namespace HotCornersWin
             }
             bool wasColorSchemeChanged = _settings.ColorScheme != colorMode;
             _settings.ColorScheme = colorMode;
-#pragma warning restore WFO5001
             // save the settings
             _appSettingsHelper.Save();
             // apply the settings immediately

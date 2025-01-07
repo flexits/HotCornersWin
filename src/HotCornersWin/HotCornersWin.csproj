@@ -36,6 +36,10 @@
     <Optimize>True</Optimize>
   </PropertyGroup>
   
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);WFO5001</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Include="icon-new-on.ico" />
   </ItemGroup>

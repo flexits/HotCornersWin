@@ -40,9 +40,7 @@ namespace HotCornersWin
             _appSettingsHelper = new(settingsStorageOption);
             _cornersSettingsHelper = new(_appSettingsHelper);
 
-#pragma warning disable WFO5001
             Application.SetColorMode(_appSettingsHelper.Settings.ColorScheme);
-#pragma warning restore WFO5001
 
             _menuItemSwitch = new(Properties.Resources.strMenuEnabled)
             {
