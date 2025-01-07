@@ -2,12 +2,14 @@
 {
     public partial class FormActionsEditor : Form
     {
+        private readonly ICornersSettingsHelper _cornersSettingsHelper;
         private readonly List<CustomAction> _actions;
         private CustomAction? _selectedAction = null;
 
-        public FormActionsEditor()
+        public FormActionsEditor(ICornersSettingsHelper cornersSettingsHelper)
         {
             InitializeComponent();
+            _cornersSettingsHelper = cornersSettingsHelper;
             buttonSave.Text = Properties.Resources.strSaveApply;
             buttonCancel.Text = Properties.Resources.strCancel;
             buttonEditCancel.Text = Properties.Resources.strCancel;
@@ -18,7 +20,7 @@
             labelCommand.Text = Properties.Resources.strCommand;
             labelName.Text = Properties.Resources.strName;
 
-            _actions = CornersSettingsHelper.CustomActions;
+            _actions = _cornersSettingsHelper.CustomActions;
             listBoxActions.DataSource = _actions;
             listBoxActions.DisplayMember = "Name";
         }
@@ -214,7 +216,7 @@
         private void buttonApply_Click(object sender, EventArgs e)
         {
             // save and apply the settings immediately
-            CornersSettingsHelper.CustomActions = _actions;
+            _cornersSettingsHelper.CustomActions = _actions;
         }
     }
 }

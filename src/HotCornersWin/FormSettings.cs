@@ -10,9 +10,16 @@ namespace HotCornersWin
         /// </summary>
         public HotCornersProcessor? CornersProcessor { get; set; }
 
-        public FormSettings()
+        private readonly ICornersSettingsHelper _cornersSettingsHelper;
+        private readonly IAppSettingsHelper _appSettingsHelper;
+        private readonly AppSettingsData _settings;
+
+        public FormSettings(IAppSettingsHelper appSettingsHelper, ICornersSettingsHelper cornersSettingsHelper)
         {
             InitializeComponent();
+            _cornersSettingsHelper = cornersSettingsHelper;
+            _appSettingsHelper = appSettingsHelper;
+            _settings = appSettingsHelper.Settings;
             Rectangle workingArea = Screen.GetWorkingArea(this);
             Location = new(workingArea.Right - Size.Width, workingArea.Bottom - Size.Height);
             groupBoxCorners.Text = Properties.Resources.strChooseAction;
@@ -43,74 +50,64 @@ namespace HotCornersWin
         /// </summary>
         private void LoadActions()
         {
-            string[] actionNames = CornersSettingsHelper.GetActionNames();
+            string[] actionNames = _cornersSettingsHelper.GetActionNames();
             int index = -1;
             comboBoxLT.DataSource = actionNames.ToArray();
-            index = Array.IndexOf(actionNames, Properties.Settings.Default.LeftTop);
+            index = Array.IndexOf(actionNames, _settings.LeftTop);
             comboBoxLT.SelectedIndex = (index >= 0) ? index : 0;
 
             comboBoxRT.DataSource = actionNames.ToArray();
-            index = Array.IndexOf(actionNames, Properties.Settings.Default.RightTop);
+            index = Array.IndexOf(actionNames, _settings.RightTop);
             comboBoxRT.SelectedIndex = (index >= 0) ? index : 0;
 
             comboBoxLB.DataSource = actionNames.ToArray();
-            index = Array.IndexOf(actionNames, Properties.Settings.Default.LeftBottom);
+            index = Array.IndexOf(actionNames, _settings.LeftBottom);
             comboBoxLB.SelectedIndex = (index >= 0) ? index : 0;
 
             comboBoxRB.DataSource = actionNames.ToArray();
-            index = Array.IndexOf(actionNames, Properties.Settings.Default.RightBottom);
+            index = Array.IndexOf(actionNames, _settings.RightBottom);
             comboBoxRB.SelectedIndex = (index >= 0) ? index : 0;
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
-            numericUpDownDelayLT.Value = Properties.Settings.Default.DelayLT;
-            numericUpDownDelayLB.Value = Properties.Settings.Default.DelayLB;
-            numericUpDownDelayRB.Value = Properties.Settings.Default.DelayRB;
-            numericUpDownDelayRT.Value = Properties.Settings.Default.DelayRT;
+            numericUpDownDelayLT.Value = _settings.DelayLT;
+            numericUpDownDelayLB.Value = _settings.DelayLB;
+            numericUpDownDelayRB.Value = _settings.DelayRB;
+            numericUpDownDelayRT.Value = _settings.DelayRT;
 
-            numericUpDownRadius.Value = Properties.Settings.Default.AreaSize;
-            numericUpDownPoll.Value = Properties.Settings.Default.PollInterval;
-            checkBoxDisableOnFullscreen.Checked = Properties.Settings.Default.DisableOnFullscreen;
+            numericUpDownRadius.Value = _settings.AreaSize;
+            numericUpDownPoll.Value = _settings.PollInterval;
+            checkBoxDisableOnFullscreen.Checked = _settings.DisableOnFullscreen;
 
-            if (Enum.IsDefined(typeof(MultiMonCfg), Properties.Settings.Default.MultiMonCfg))
+            switch (_settings.MultiMonCfg)
             {
-                switch ((MultiMonCfg)Properties.Settings.Default.MultiMonCfg)
-                {
-                    case MultiMonCfg.Virtual:
-                        radioButtonVirt.Checked = true;
-                        break;
-                    case MultiMonCfg.Primary:
-                        radioButtonPrim.Checked = true;
-                        break;
-                    case MultiMonCfg.Separate:
-                        radioButtonSept.Checked = true;
-                        break;
-                    default:
-                        radioButtonPrim.Checked = true;
-                        break;
-                }
-            }
-            else
-            {
-                radioButtonPrim.Checked = true;
+                case MultiMonCfg.Virtual:
+                    radioButtonVirt.Checked = true;
+                    break;
+                case MultiMonCfg.Primary:
+                    radioButtonPrim.Checked = true;
+                    break;
+                case MultiMonCfg.Separate:
+                    radioButtonSept.Checked = true;
+                    break;
+                default:
+                    radioButtonPrim.Checked = true;
+                    break;
             }
 
 #pragma warning disable WFO5001
-            if (Enum.IsDefined(typeof(SystemColorMode), Properties.Settings.Default.ColorScheme))
+            switch (_settings.ColorScheme)
             {
-                switch ((SystemColorMode)Properties.Settings.Default.ColorScheme)
-                {
-                    case SystemColorMode.System:
-                        radioButtonSystem.Checked = true;
-                        break;
-                    case SystemColorMode.Dark:
-                        radioButtonDark.Checked = true;
-                        break;
-                    case SystemColorMode.Classic:
-                        radioButtonLight.Checked = true;
-                        break;
-                }
+                case SystemColorMode.System:
+                    radioButtonSystem.Checked = true;
+                    break;
+                case SystemColorMode.Dark:
+                    radioButtonDark.Checked = true;
+                    break;
+                case SystemColorMode.Classic:
+                    radioButtonLight.Checked = true;
+                    break;
             }
 #pragma warning restore WFO5001
 
@@ -120,19 +117,19 @@ namespace HotCornersWin
         private void buttonApply_Click(object sender, EventArgs e)
         {
             // assign delays
-            Properties.Settings.Default.DelayLT = (int)numericUpDownDelayLT.Value;
-            Properties.Settings.Default.DelayLB = (int)numericUpDownDelayLB.Value;
-            Properties.Settings.Default.DelayRB = (int)numericUpDownDelayRB.Value;
-            Properties.Settings.Default.DelayRT = (int)numericUpDownDelayRT.Value;
+            _settings.DelayLT = (int)numericUpDownDelayLT.Value;
+            _settings.DelayLB = (int)numericUpDownDelayLB.Value;
+            _settings.DelayRB = (int)numericUpDownDelayRB.Value;
+            _settings.DelayRT = (int)numericUpDownDelayRT.Value;
             // assign actions
-            Properties.Settings.Default.LeftTop = comboBoxLT.SelectedItem as string;
-            Properties.Settings.Default.RightTop = comboBoxRT.SelectedItem as string;
-            Properties.Settings.Default.LeftBottom = comboBoxLB.SelectedItem as string;
-            Properties.Settings.Default.RightBottom = comboBoxRB.SelectedItem as string;
+            _settings.LeftTop = comboBoxLT.SelectedItem as string ?? string.Empty;
+            _settings.RightTop = comboBoxRT.SelectedItem as string ?? string.Empty;
+            _settings.LeftBottom = comboBoxLB.SelectedItem as string ?? string.Empty;
+            _settings.RightBottom = comboBoxRB.SelectedItem as string ?? string.Empty;
             // other settings
-            Properties.Settings.Default.AreaSize = (int)numericUpDownRadius.Value;
-            Properties.Settings.Default.PollInterval = (int)numericUpDownPoll.Value;
-            Properties.Settings.Default.DisableOnFullscreen = checkBoxDisableOnFullscreen.Checked;
+            _settings.AreaSize = (int)numericUpDownRadius.Value;
+            _settings.PollInterval = (int)numericUpDownPoll.Value;
+            _settings.DisableOnFullscreen = checkBoxDisableOnFullscreen.Checked;
             // validate monitor config
             MultiMonCfg monCfg = MultiMonCfg.Primary;
             if (radioButtonVirt.Checked)
@@ -151,7 +148,7 @@ namespace HotCornersWin
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            Properties.Settings.Default.MultiMonCfg = (int)monCfg;
+            _settings.MultiMonCfg = monCfg;
             // TODO validate the color scheme setting
 #pragma warning disable WFO5001
             SystemColorMode colorMode = SystemColorMode.System;
@@ -163,11 +160,11 @@ namespace HotCornersWin
             {
                 colorMode = SystemColorMode.Classic;
             }
-            bool wasColorSchemeChanged = Properties.Settings.Default.ColorScheme != (int)colorMode;
-            Properties.Settings.Default.ColorScheme = (int)colorMode;
+            bool wasColorSchemeChanged = _settings.ColorScheme != colorMode;
+            _settings.ColorScheme = colorMode;
 #pragma warning restore WFO5001
             // save the settings
-            Properties.Settings.Default.Save();
+            _appSettingsHelper.Save();
             // apply the settings immediately
             if (wasColorSchemeChanged)
             {
@@ -176,17 +173,17 @@ namespace HotCornersWin
             }
             if (CornersProcessor is not null)
             {
-                CornersProcessor.PollInterval = Properties.Settings.Default.PollInterval;
-                CornersProcessor.DisableOnFullscreen = Properties.Settings.Default.DisableOnFullscreen;
+                CornersProcessor.PollInterval = _settings.PollInterval;
+                CornersProcessor.DisableOnFullscreen = _settings.DisableOnFullscreen;
             }
-            CornersHitTester.CornerRadius = Properties.Settings.Default.AreaSize;
+            CornersHitTester.CornerRadius = _settings.AreaSize;
             CornersHitTester.Screens = screens;
-            CornersSettingsHelper.ReloadSettings();
+            _cornersSettingsHelper.ReloadSettings();
         }
 
         private void buttonCustomActions_Click(object sender, EventArgs e)
         {
-            _ = new FormActionsEditor()
+            _ = new FormActionsEditor(_cornersSettingsHelper)
             {
                 Icon = Properties.Resources.icon_new_on,
                 Text = Properties.Resources.FormActionsEditorText,

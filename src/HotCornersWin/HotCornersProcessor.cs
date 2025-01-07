@@ -15,6 +15,8 @@ namespace HotCornersWin
         /// </summary>
         public event ProcessingEnabledChangedHandler? StateChanged;
 
+        private readonly ICornersSettingsHelper _cornersSettingsHelper;
+
         private readonly System.Timers.Timer _timer;
         private readonly MouseHook _mouseHook;
         private int _pollCyclesCounter = 0;
@@ -57,8 +59,9 @@ namespace HotCornersWin
         /// </summary>
         public bool DisableOnFullscreen {  get; set; } = false;
 
-        public HotCornersProcessor()
+        public HotCornersProcessor(ICornersSettingsHelper cornersSettingsHelper)
         {
+            _cornersSettingsHelper = cornersSettingsHelper;
             _mouseHook = new();
             _timer = new()
             {
@@ -136,12 +139,12 @@ namespace HotCornersWin
             {
                 _pollCyclesCounter = 0;
             }
-            if (_pollCyclesCounter == CornersSettingsHelper.GetDelay(currentCorner))
+            if (_pollCyclesCounter == _cornersSettingsHelper.GetDelay(currentCorner))
             {
                 Debug.WriteLine($"Action at {currentCorner} after {_pollCyclesCounter} polls"); // TODO remove debug
                 try
                 {
-                    CornersSettingsHelper.GetAction(currentCorner).Invoke();
+                    _cornersSettingsHelper.GetAction(currentCorner).Invoke();
                 }
                 catch (Exception ex)
                 {

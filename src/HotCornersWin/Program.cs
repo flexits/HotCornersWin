@@ -8,7 +8,12 @@ namespace HotCornersWin
 
     internal static class Program
     {
+        private static readonly AppSettingsHelper _appSettingsHelper;
+
+        private static readonly CornersSettingsHelper _cornersSettingsHelper;
+
         private static readonly NotifyIcon _notifyIcon;
+
         private static readonly ToolStripMenuItem _menuItemSwitch;
 
         private static readonly HotCornersProcessor _cornersProcessor;
@@ -26,11 +31,17 @@ namespace HotCornersWin
         static Program()
         {
             ApplicationConfiguration.Initialize();
+
+#if PORTABLE
+            SettingsStorageOption settingsStorageOption = SettingsStorageOption.Filesystem;
+#else
+            SettingsStorageOption settingsStorageOption = SettingsStorageOption.Default;
+#endif
+            _appSettingsHelper = new(settingsStorageOption);
+            _cornersSettingsHelper = new(_appSettingsHelper);
+
 #pragma warning disable WFO5001
-            if (Enum.IsDefined(typeof(SystemColorMode), Properties.Settings.Default.ColorScheme))
-            {
-                Application.SetColorMode((SystemColorMode)Properties.Settings.Default.ColorScheme);
-            }
+            Application.SetColorMode(_appSettingsHelper.Settings.ColorScheme);
 #pragma warning restore WFO5001
 
             _menuItemSwitch = new(Properties.Resources.strMenuEnabled)
@@ -63,9 +74,9 @@ namespace HotCornersWin
                 },
                 Visible = true
             };
-            _notifyIcon.MouseDown += _notifyIcon_MouseDown;
+            _notifyIcon.MouseDown += NotifyIcon_MouseDown;
 
-            _cornersProcessor = new();
+            _cornersProcessor = new(_cornersSettingsHelper);
             _cornersProcessor.StateChanged += CornersProcessorStateChanged;
 
             _dummyForm = new Form()
@@ -103,14 +114,14 @@ namespace HotCornersWin
 
             // Init mouse movement processing on the selected monitor configuration.
             CornersHitTester.Screens = screens;
-            CornersHitTester.CornerRadius = Properties.Settings.Default.AreaSize;
+            CornersHitTester.CornerRadius = _appSettingsHelper.Settings.AreaSize;
 
             // Set polling interval
-            _cornersProcessor.PollInterval = Properties.Settings.Default.PollInterval;
+            _cornersProcessor.PollInterval = _appSettingsHelper.Settings.PollInterval;
 
             // Enable or disable operation according to the settings.
-            _cornersProcessor.DisableOnFullscreen = Properties.Settings.Default.DisableOnFullscreen;
-            _cornersProcessor.Enabled = Properties.Settings.Default.IsEnabled;
+            _cornersProcessor.DisableOnFullscreen = _appSettingsHelper.Settings.DisableOnFullscreen;
+            _cornersProcessor.Enabled = _appSettingsHelper.Settings.IsEnabled;
 
             Application.Run();
         }
@@ -136,15 +147,15 @@ namespace HotCornersWin
         /// locations and dimensions.</returns>
         private static Rectangle[] GetScreens()
         {
-            MultiMonCfg moncfg = MultiMonCfg.Primary;
+            /*MultiMonCfg moncfg = MultiMonCfg.Primary;
             if (Enum.IsDefined(typeof(MultiMonCfg), Properties.Settings.Default.MultiMonCfg))
             {
                 moncfg = (MultiMonCfg)Properties.Settings.Default.MultiMonCfg;
-            }
-            return ScreenInfoHelper.GetScreensInfo(moncfg);
+            }*/
+            return ScreenInfoHelper.GetScreensInfo(_appSettingsHelper.Settings.MultiMonCfg);
         }
 
-        private static void _notifyIcon_MouseDown(object? sender, MouseEventArgs e)
+        private static void NotifyIcon_MouseDown(object? sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
             {
@@ -186,8 +197,8 @@ namespace HotCornersWin
         {
             // toggle enable on double click and save changes
             _cornersProcessor.Enabled = !_cornersProcessor.Enabled;
-            Properties.Settings.Default.IsEnabled = _cornersProcessor.Enabled;
-            Properties.Settings.Default.Save();
+            _appSettingsHelper.Settings.IsEnabled = _cornersProcessor.Enabled;
+            _appSettingsHelper.Save();
         }
 
         private static void MenuItemSettings_Click(object? sender, EventArgs e)
@@ -198,7 +209,7 @@ namespace HotCornersWin
                 return;
             }
 
-            _ = new FormSettings()
+            _ = new FormSettings(_appSettingsHelper, _cornersSettingsHelper)
             {
                 Icon = Properties.Resources.icon_new_on,
                 Text = Properties.Resources.FormSettingsText,

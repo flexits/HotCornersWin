@@ -3,23 +3,19 @@ using System.Text.Json;
 
 namespace HotCornersWin
 {
-    /// <summary>
-    /// Wrapper around the app's settings providing access 
-    /// to hot corners' actions and delays.
-    /// </summary>
-    public static class CornersSettingsHelper
+    public class CornersSettingsHelper : ICornersSettingsHelper
     {
         /// <summary>
         /// Custom actions created by user - get from settings, save to settings.
         /// </summary>
-        public static List<CustomAction> CustomActions
+        public List<CustomAction> CustomActions
         {
             get
             {
                 try
                 {
                     var customActions = JsonSerializer.
-                        Deserialize<List<CustomAction>>(Properties.Settings.Default.CustomActions);
+                        Deserialize<List<CustomAction>>(_settings.CustomActions);
                     if (customActions is null)
                     {
                         return [];
@@ -38,8 +34,8 @@ namespace HotCornersWin
             {
                 try
                 {
-                    Properties.Settings.Default.CustomActions = JsonSerializer.Serialize(value);
-                    Properties.Settings.Default.Save();
+                    _settings.CustomActions = JsonSerializer.Serialize(value);
+                    _appSettingsHelper.Save();
                     ReloadSettings();
                 }
                 catch { }
@@ -49,7 +45,7 @@ namespace HotCornersWin
         /// <summary>
         /// Predefined actions and their human-readable names.
         /// </summary>
-        private static readonly Dictionary<string, Action> _predefinedActions = new()
+        private readonly Dictionary<string, Action> _predefinedActions = new()
         {
             {Properties.Resources.saNone,  () => { } },
             {Properties.Resources.saStartMenu,  () => {SendKeys.SendWait("^{ESC}"); } },
@@ -145,12 +141,12 @@ namespace HotCornersWin
         /// <summary>
         /// All available actions and their human-readable names.
         /// </summary>
-        private static readonly Dictionary<string, Action> _allActions = [];
+        private readonly Dictionary<string, Action> _allActions = [];
 
         /// <summary>
         /// Hot corners and their correspondent actions as configured in the settings.
         /// </summary>
-        private static readonly Dictionary<Corners, Action> _cornerActions = new()
+        private readonly Dictionary<Corners, Action> _cornerActions = new()
         {
             {Corners.LeftTop, () => {} },
             {Corners.RightTop, () => {} },
@@ -161,7 +157,7 @@ namespace HotCornersWin
         /// <summary>
         /// Hot corners and their correspondent delays as configured in the settings. 
         /// </summary>
-        private static readonly Dictionary<Corners, int> _cornerDelays = new()
+        private readonly Dictionary<Corners, int> _cornerDelays = new()
         {
             {Corners.LeftTop, 0 },
             {Corners.RightTop, 0 },
@@ -169,20 +165,25 @@ namespace HotCornersWin
             {Corners.RightBottom, 0 }
         };
 
-        static CornersSettingsHelper()
+        private readonly IAppSettingsHelper _appSettingsHelper;
+        private readonly AppSettingsData _settings;
+
+        public CornersSettingsHelper(IAppSettingsHelper appSettingsHelper)
         {
+            _appSettingsHelper = appSettingsHelper;
+            _settings = appSettingsHelper.Settings;
             ReloadSettings();
         }
 
         /// <summary>
         /// Reload hot corner settings (delays and actions) from the app's settings.
         /// </summary>
-        public static void ReloadSettings()
+        public void ReloadSettings()
         {
-            _cornerDelays[Corners.LeftTop] = Properties.Settings.Default.DelayLT;
-            _cornerDelays[Corners.LeftBottom] = Properties.Settings.Default.DelayLB;
-            _cornerDelays[Corners.RightTop] = Properties.Settings.Default.DelayRT;
-            _cornerDelays[Corners.RightBottom] = Properties.Settings.Default.DelayRB;
+            _cornerDelays[Corners.LeftTop] = _settings.DelayLT;
+            _cornerDelays[Corners.LeftBottom] = _settings.DelayLB;
+            _cornerDelays[Corners.RightTop] = _settings.DelayRT;
+            _cornerDelays[Corners.RightBottom] = _settings.DelayRB;
 
             _allActions.Clear();
             foreach (var action in _predefinedActions)
@@ -195,19 +196,19 @@ namespace HotCornersWin
             }
 
             _cornerActions[Corners.LeftTop] = _allActions
-                .TryGetValue(Properties.Settings.Default.LeftTop, out Action? actionLT) ? actionLT : (() => { });
+                .TryGetValue(_settings.LeftTop, out Action? actionLT) ? actionLT : (() => { });
             _cornerActions[Corners.LeftBottom] = _allActions
-                .TryGetValue(Properties.Settings.Default.LeftBottom, out Action? actionLB) ? actionLB : (() => { });
+                .TryGetValue(_settings.LeftBottom, out Action? actionLB) ? actionLB : (() => { });
             _cornerActions[Corners.RightTop] = _allActions
-                .TryGetValue(Properties.Settings.Default.RightTop, out Action? actionRT) ? actionRT : (() => { });
+                .TryGetValue(_settings.RightTop, out Action? actionRT) ? actionRT : (() => { });
             _cornerActions[Corners.RightBottom] = _allActions
-                .TryGetValue(Properties.Settings.Default.RightBottom, out Action? actionRB) ? actionRB : (() => { });
+                .TryGetValue(_settings.RightBottom, out Action? actionRB) ? actionRB : (() => { });
         }
-        
+
         /// <summary>
         /// Returns an array of human-readable names for all available actions.
         /// </summary>
-        public static string[] GetActionNames()
+        public string[] GetActionNames()
         {
             return [.. _allActions.Keys];
         }
@@ -215,7 +216,7 @@ namespace HotCornersWin
         /// <summary>
         /// Get the action associated with the given hot corner.
         /// </summary>
-        public static Action GetAction(Corners corner)
+        public Action GetAction(Corners corner)
         {
             if (_cornerActions.TryGetValue(corner, out Action? action))
             {
@@ -227,7 +228,7 @@ namespace HotCornersWin
         /// <summary>
         /// Get the action trigger delay for the given corner.
         /// </summary>
-        public static int GetDelay(Corners corner)
+        public int GetDelay(Corners corner)
         {
             if (_cornerDelays.TryGetValue(corner, out int delay))
             {

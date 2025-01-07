@@ -40,6 +40,7 @@
             linkLabel3 = new LinkLabel();
             label5 = new Label();
             textBox1 = new TextBox();
+            labelPortable = new Label();
             SuspendLayout();
             // 
             // labelName
@@ -147,15 +148,26 @@
             textBox1.Name = "textBox1";
             textBox1.ReadOnly = true;
             textBox1.ScrollBars = ScrollBars.Vertical;
-            textBox1.Size = new Size(267, 223);
+            textBox1.Size = new Size(273, 223);
             textBox1.TabIndex = 12;
             textBox1.Text = resources.GetString("textBox1.Text");
+            // 
+            // labelPortable
+            // 
+            labelPortable.AutoSize = true;
+            labelPortable.Location = new Point(235, 17);
+            labelPortable.Name = "labelPortable";
+            labelPortable.Size = new Size(59, 15);
+            labelPortable.TabIndex = 13;
+            labelPortable.Text = "(portable)";
+            labelPortable.Visible = false;
             // 
             // FormAbout
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(291, 445);
+            ClientSize = new Size(297, 445);
+            Controls.Add(labelPortable);
             Controls.Add(textBox1);
             Controls.Add(label5);
             Controls.Add(linkLabel3);
@@ -189,5 +201,6 @@
         private LinkLabel linkLabel3;
         private Label label5;
         private TextBox textBox1;
+        private Label labelPortable;
     }
 }

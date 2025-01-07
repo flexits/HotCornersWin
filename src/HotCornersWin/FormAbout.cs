@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 
 namespace HotCornersWin
 {
@@ -9,6 +10,21 @@ namespace HotCornersWin
             InitializeComponent();
             Rectangle workingArea = Screen.GetWorkingArea(this);
             Location = new(workingArea.Right - Size.Width, workingArea.Bottom - Size.Height);
+
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            if (version is not null)
+            {
+                labelVer.Text = $"v.{version.Major}.{version.Minor}.{version.Build}";
+            }
+            else
+            {
+                labelVer.Text = string.Empty;
+            }
+#if PORTABLE
+            labelPortable.Visible = true;
+#else
+            labelPortable.Visible = false;
+#endif
         }
 
         private void linkLabelAuthor_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

@@ -1,0 +1,17 @@
+{
+  "IsEnabled": true,
+  "LeftTop": "Task View",
+  "RightTop": "none",
+  "RightBottom": "none",
+  "LeftBottom": "none",
+  "MultiMonCfg": 0,
+  "AreaSize": 5,
+  "PollInterval": 75,
+  "DisableOnFullscreen": false,
+  "DelayLT": 0,
+  "DelayRT": 0,
+  "DelayLB": 0,
+  "DelayRB": 0,
+  "CustomActions": "",
+  "ColorScheme": 1
+}

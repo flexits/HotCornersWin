@@ -8,22 +8,34 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Copyright>Aleksandr Korostelin</Copyright>
     <SignAssembly>False</SignAssembly>
-    <AssemblyVersion>0.9.0</AssemblyVersion>
-    <FileVersion>0.9.0</FileVersion>
+    <AssemblyVersion>0.9.1</AssemblyVersion>
+    <FileVersion>0.9.1</FileVersion>
     <PackageIcon>icons8-layout-96.png</PackageIcon>
     <ApplicationIcon>icon-new-on.ico</ApplicationIcon>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <Configurations>Debug;Release;Debug Portable;Release Portable</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>full</DebugType>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Portable|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DefineConstants>$(DefineConstants);PORTABLE</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>full</DebugType>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Portable|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DefineConstants>$(DefineConstants);PORTABLE</DefineConstants>
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Content Include="icon-new-on.ico" />
   </ItemGroup>
