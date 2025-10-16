@@ -73,10 +73,17 @@ namespace HotCornersWin
 
         private void OnTimerElapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
+            FullscreenState currentFullscreenState = ScreenInfoHelper.GetFullscreenState();
+            // Ignore when the machine is locked or UAC prompt is raised.
+            if (currentFullscreenState is FullscreenState.Undefined or FullscreenState.NotPresent)
+            {
+                return;
+            }
+
             // Disable operation if something's running in a full screen mode.
             if (DisableOnFullscreen)
             {
-                if (ScreenInfoHelper.GetFullscreenState() != FullscreenState.NoFullscreen)
+                if (currentFullscreenState != FullscreenState.NoFullscreen)
                 {
                     if (!_blockStateChanged)
                     {
