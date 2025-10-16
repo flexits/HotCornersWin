@@ -22,6 +22,12 @@ namespace HotCornersWin
         /// user notification is inappropriate due to other reasons.
         /// </summary>
         IsFullscreen,
+
+        /// <summary>
+        /// A screen saver is displayed, the machine is locked, 
+        /// or a nonactive Fast User Switching session is in progress.
+        /// </summary>
+        NotPresent,
     }
 
     /// <summary>
@@ -88,6 +94,12 @@ namespace HotCornersWin
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static partial bool IsWindowVisible(IntPtr hWnd);
 
+        [LibraryImport("user32.dll", SetLastError = true)]
+        private static partial IntPtr OpenInputDesktop(uint dwFlags, [MarshalAs(UnmanagedType.Bool)] bool fInherit, uint dwDesiredAccess);
+
+        [LibraryImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static partial bool CloseDesktop(IntPtr hDesktop);
 
         /// <summary>
         /// Get system screen information according to the specified 
@@ -117,17 +129,35 @@ namespace HotCornersWin
 
         /// <summary>
         /// Get the current computer screen state: is something running in a fullscreen mode 
-        /// thus preventing user notifications or not.
+        /// thus preventing user notifications or not. is the machine locked, etc.
         /// </summary>
         /// <returns>FullscreenState.NoFullscreen if a user notification is allowed, 
         /// FullscreenState.IsFullscreen otherwise, or 
-        /// FullscreenState.Undefined in case of a failure.</returns>
+        /// FullscreenState.Undefined in case of a failure (User Account Control (UAC) prompt).
+        /// FullscreenState.NotPresent if the machine is locked.
+        /// </returns>
         public static FullscreenState GetFullscreenState()
         {
+            // check if the desktop is accessible
+            const int DESKTOP_READOBJECTS = 0x0001; // https://learn.microsoft.com/en-us/windows/win32/winstation/desktop-security-and-access-rights
+            IntPtr hDesktop = OpenInputDesktop(0, false, DESKTOP_READOBJECTS);
+            if (hDesktop == IntPtr.Zero)
+            {
+                //Debug.WriteLine($"OpenInputDesktop failed: {Marshal.GetLastWin32Error()}");
+                return FullscreenState.Undefined;
+            }
+            else
+            {
+                CloseDesktop(hDesktop);
+            }
+
+            // query the current user notification state
             if (SHQueryUserNotificationState(out var qnsState) == HRESULT_S_OK)
             {
                 switch (qnsState)
                 {
+                    case QUERY_USER_NOTIFICATION_STATE.QUNS_NOT_PRESENT:
+                        return FullscreenState.NotPresent;
                     case QUERY_USER_NOTIFICATION_STATE.QUNS_ACCEPTS_NOTIFICATIONS:
                     case QUERY_USER_NOTIFICATION_STATE.QUNS_QUIET_TIME:
                     case QUERY_USER_NOTIFICATION_STATE.QUNS_APP:
