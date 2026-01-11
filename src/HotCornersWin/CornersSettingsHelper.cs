@@ -76,13 +76,20 @@ namespace HotCornersWin
                 }
             },
             {Properties.Resources.saLockPC, () => {
-                _ = new Process
+                    try
                     {
-                        StartInfo = new ProcessStartInfo("rundll32.exe", "user32.dll,LockWorkStation")
-                        {
-                            UseShellExecute = true
-                        }
-                    }.Start();
+                        _ = new Process
+                            {
+                                StartInfo = new ProcessStartInfo("rundll32.exe", "user32.dll,LockWorkStation")
+                                {
+                                    UseShellExecute = true
+                                }
+                            }.Start();
+                    }
+                    catch
+                    { 
+                    // mute the error
+                    }
                 }
             },
             {Properties.Resources.saExplorer, () => {
