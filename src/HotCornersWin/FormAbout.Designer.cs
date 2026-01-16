@@ -61,7 +61,7 @@
             labelVer.Name = "labelVer";
             labelVer.Size = new Size(59, 25);
             labelVer.TabIndex = 1;
-            labelVer.Text = "v0.9.3";
+            labelVer.Text = "v0.9.4";
             // 
             // labelDescription
             // 

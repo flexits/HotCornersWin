@@ -1,4 +1,3 @@
-﻿using System.Diagnostics;
 using System.Text.Json;
 
 namespace HotCornersWin
@@ -78,17 +77,11 @@ namespace HotCornersWin
             {Properties.Resources.saLockPC, () => {
                     try
                     {
-                        _ = new Process
-                            {
-                                StartInfo = new ProcessStartInfo("rundll32.exe", "user32.dll,LockWorkStation")
-                                {
-                                    UseShellExecute = true
-                                }
-                            }.Start();
+                        _ = WinAPIHelper.LockWorkStation();
                     }
                     catch
                     { 
-                    // mute the error
+                        // mute the error
                     }
                 }
             },

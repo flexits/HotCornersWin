@@ -35,6 +35,8 @@ namespace HotCornersWin
     /// </summary>
     public static partial class ScreenInfoHelper
     {
+        // TODO move WinAPI definitions to WinAPIHelper from here
+
         internal enum QUERY_USER_NOTIFICATION_STATE
         {
             QUNS_NOT_PRESENT = 1,
@@ -261,7 +263,7 @@ namespace HotCornersWin
                 wndHandle = GetWindow(wndHandle, GW_PARAMS.GW_HWNDNEXT);
             }
             while (wndHandle != IntPtr.Zero);
-            
+
             return false;
         }
     }
