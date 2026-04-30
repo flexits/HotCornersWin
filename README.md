@@ -1,6 +1,9 @@
 # HotCornersWin
 Add hot corners function to Windows 10/11, similar to such of macOS, Gnome and KDE.
 
+[![License](https://img.shields.io/github/license/flexits/ucterm)](LICENSE) ![OS Windows 10](https://img.shields.io/badge/OS-Windows%2010-blue) ![Language C#](https://img.shields.io/badge/language-C%23-purple) ![.NET 9](https://img.shields.io/badge/.NET-9.0-blue) 
+
+
 ![Settings window and the notification area icon](https://github.com/flexits/HotCornersWin/assets/86118729/b9f6b1ee-2f83-4766-a061-7bd705913496)
 
 This simple application resides in the notification area and allows user to choose from a list of various actions to be triggered when the mouse cursor hits a corner of the screen. It was developed for Windows 10, but works in Windows 11 too, except some visual style inconsistencies. It's expected to run in previous OS'es down to Windows 7 (only x64) as well, however these old versions aren't supported. 
@@ -34,7 +37,7 @@ The application does not require any specific settings or fine-tuning. Set the d
 
 The operation is based on the cyclic polling of the mouse cursor position. It's performed with a specified time interval. The less is the interval value, the faster movements will be captured and more CPU consumed; otherwise, with a big interval some rapid mouse movements will be missed out. The default setting is 75ms and usually it's good enough and needs no adjustment. 
 
-### Available actions:
+### Available actions
 * Start menu
 * Task View
 * Switch to the Virtual Desktop on the left
@@ -50,13 +53,25 @@ The operation is based on the cyclic polling of the mouse cursor position. It's 
 * Widgets Board (Windows 11)
 * *add yours!*
 
-### TODO:
+### TODO
 See [Issues](https://github.com/flexits/HotCornersWin/issues) and feel free to add yours.
 
 ### Contributions
 
 Any contributions are welcomed, not limited to the code but including feature requests, opinions on the app's operation, UI/UX etc. Feel free to open an issue, leave your note in the existing ones, or join the [discussion](https://github.com/flexits/HotCornersWin/discussions/16).
 
-### Attributions:
+### Attributions
 
 Icons by <a target="_blank" href="https://github.com/Lisa24Jackson">Lisa Jackson</a>
+
+And guys, thank you all for these stars!
+
+### Star History
+
+<a href="https://www.star-history.com/?repos=flexits%2FHotCornersWin&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=flexits/HotCornersWin&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=flexits/HotCornersWin&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=flexits/HotCornersWin&type=date&legend=top-left" />
+ </picture>
+</a>
