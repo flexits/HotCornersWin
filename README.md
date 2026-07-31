@@ -1,3 +1,35 @@
+
+<div align="right">
+  <details>
+    <summary >🌐 Language</summary>
+    <div>
+      <div align="center">
+        <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=en">English</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=zh-CN">简体中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=zh-TW">繁體中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=ja">日本語</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=ko">한국어</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=hi">हिन्दी</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=th">ไทย</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=fr">Français</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=de">Deutsch</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=es">Español</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=it">Italiano</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=ru">Русский</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=pt">Português</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=nl">Nederlands</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=pl">Polski</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=ar">العربية</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=fa">فارسی</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=tr">Türkçe</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=vi">Tiếng Việt</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=id">Bahasa Indonesia</a>
+        | <a href="https://openaitx.github.io/view.html?user=flexits&project=HotCornersWin&lang=as">অসমীয়া</
+      </div>
+    </div>
+  </details>
+</div>
+
 # HotCornersWin
 Add hot corners function to Windows 10/11, similar to such of macOS, Gnome and KDE.
 
