@@ -42,13 +42,22 @@ namespace HotCornersWin
         {
             return () =>
             {
-                _ = new Process
+                if (!string.IsNullOrWhiteSpace(Command))
                 {
-                    StartInfo = new ProcessStartInfo(Command)
+                    var tokens = Command.Split(null as char[], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    if (tokens.Length > 0)
                     {
-                        UseShellExecute = true
+                        var name = tokens[0];
+                        var args = tokens[1..];
+                        _ = new Process
+                        {
+                            StartInfo = new ProcessStartInfo(name, args)
+                            {
+                                UseShellExecute = true
+                            }
+                        }.Start();
                     }
-                }.Start();
+                }
             };
         }
     }
