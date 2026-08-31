@@ -198,10 +198,5 @@ namespace HotCornersWin
                     break;
             }
         }
-
-        private void comboBoxLB_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
