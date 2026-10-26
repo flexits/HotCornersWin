@@ -61,9 +61,9 @@
             buttonDebugInfo = new Button();
             buttonCustomActions = new Button();
             groupBoxColorScheme = new GroupBox();
-            radioButtonSystem = new RadioButton();
-            radioButtonDark = new RadioButton();
             radioButtonLight = new RadioButton();
+            radioButtonDark = new RadioButton();
+            radioButtonSystem = new RadioButton();
             contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBoxCorners.SuspendLayout();
@@ -230,25 +230,30 @@
             comboBoxLB.Name = "comboBoxLB";
             comboBoxLB.Size = new Size(200, 23);
             comboBoxLB.TabIndex = 4;
+            comboBoxLB.SelectedIndexChanged += comboBoxLB_SelectedIndexChanged;
             // 
             // buttonApply
             // 
+            buttonApply.BackColor = SystemColors.Window;
+            buttonApply.FlatStyle = FlatStyle.System;
             buttonApply.Location = new Point(586, 399);
             buttonApply.Name = "buttonApply";
             buttonApply.Size = new Size(108, 23);
             buttonApply.TabIndex = 20;
             buttonApply.Text = "Apply";
-            buttonApply.UseVisualStyleBackColor = true;
+            buttonApply.UseVisualStyleBackColor = false;
             buttonApply.Click += buttonApply_Click;
             // 
             // buttonCancel
             // 
+            buttonCancel.BackColor = SystemColors.Window;
+            buttonCancel.FlatStyle = FlatStyle.System;
             buttonCancel.Location = new Point(14, 399);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(108, 23);
             buttonCancel.TabIndex = 21;
             buttonCancel.Text = "Cancel";
-            buttonCancel.UseVisualStyleBackColor = true;
+            buttonCancel.UseVisualStyleBackColor = false;
             // 
             // groupBoxMulti
             // 
@@ -314,7 +319,7 @@
             checkBoxDisableOnFullscreen.AutoSize = true;
             checkBoxDisableOnFullscreen.Location = new Point(6, 73);
             checkBoxDisableOnFullscreen.Name = "checkBoxDisableOnFullscreen";
-            checkBoxDisableOnFullscreen.Size = new Size(83, 19);
+            checkBoxDisableOnFullscreen.Size = new Size(82, 19);
             checkBoxDisableOnFullscreen.TabIndex = 17;
             checkBoxDisableOnFullscreen.Text = "checkBox1";
             checkBoxDisableOnFullscreen.UseVisualStyleBackColor = true;
@@ -359,22 +364,26 @@
             // 
             // buttonDebugInfo
             // 
+            buttonDebugInfo.BackColor = SystemColors.Window;
+            buttonDebugInfo.FlatStyle = FlatStyle.System;
             buttonDebugInfo.Location = new Point(128, 336);
             buttonDebugInfo.Name = "buttonDebugInfo";
             buttonDebugInfo.Size = new Size(108, 23);
             buttonDebugInfo.TabIndex = 18;
             buttonDebugInfo.Text = "Debug info";
-            buttonDebugInfo.UseVisualStyleBackColor = true;
+            buttonDebugInfo.UseVisualStyleBackColor = false;
             buttonDebugInfo.Visible = false;
             // 
             // buttonCustomActions
             // 
+            buttonCustomActions.BackColor = SystemColors.Window;
+            buttonCustomActions.FlatStyle = FlatStyle.System;
             buttonCustomActions.Location = new Point(14, 336);
             buttonCustomActions.Name = "buttonCustomActions";
             buttonCustomActions.Size = new Size(108, 23);
             buttonCustomActions.TabIndex = 19;
             buttonCustomActions.Text = "Custom actions";
-            buttonCustomActions.UseVisualStyleBackColor = true;
+            buttonCustomActions.UseVisualStyleBackColor = false;
             buttonCustomActions.Click += buttonCustomActions_Click;
             // 
             // groupBoxColorScheme
@@ -389,16 +398,16 @@
             groupBoxColorScheme.TabStop = false;
             groupBoxColorScheme.Text = "groupBox1";
             // 
-            // radioButtonSystem
+            // radioButtonLight
             // 
-            radioButtonSystem.AutoSize = true;
-            radioButtonSystem.Location = new Point(6, 22);
-            radioButtonSystem.Name = "radioButtonSystem";
-            radioButtonSystem.Size = new Size(94, 19);
-            radioButtonSystem.TabIndex = 0;
-            radioButtonSystem.TabStop = true;
-            radioButtonSystem.Text = "radioButton1";
-            radioButtonSystem.UseVisualStyleBackColor = true;
+            radioButtonLight.AutoSize = true;
+            radioButtonLight.Location = new Point(206, 22);
+            radioButtonLight.Name = "radioButtonLight";
+            radioButtonLight.Size = new Size(94, 19);
+            radioButtonLight.TabIndex = 2;
+            radioButtonLight.TabStop = true;
+            radioButtonLight.Text = "radioButton2";
+            radioButtonLight.UseVisualStyleBackColor = true;
             // 
             // radioButtonDark
             // 
@@ -411,16 +420,16 @@
             radioButtonDark.Text = "radioButton1";
             radioButtonDark.UseVisualStyleBackColor = true;
             // 
-            // radioButtonLight
+            // radioButtonSystem
             // 
-            radioButtonLight.AutoSize = true;
-            radioButtonLight.Location = new Point(206, 22);
-            radioButtonLight.Name = "radioButtonLight";
-            radioButtonLight.Size = new Size(94, 19);
-            radioButtonLight.TabIndex = 2;
-            radioButtonLight.TabStop = true;
-            radioButtonLight.Text = "radioButton2";
-            radioButtonLight.UseVisualStyleBackColor = true;
+            radioButtonSystem.AutoSize = true;
+            radioButtonSystem.Location = new Point(6, 22);
+            radioButtonSystem.Name = "radioButtonSystem";
+            radioButtonSystem.Size = new Size(94, 19);
+            radioButtonSystem.TabIndex = 0;
+            radioButtonSystem.TabStop = true;
+            radioButtonSystem.Text = "radioButton1";
+            radioButtonSystem.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
